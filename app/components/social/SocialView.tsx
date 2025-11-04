@@ -1,6 +1,10 @@
 "use client";
 import { useState } from "react";
+<<<<<<< HEAD
 import { add_comment, get_comment_update, get_delete_comment, raport_comment } from "@/app/api/get/get_comments";
+=======
+import { add_comment, get_comment_update, get_delete_comment } from "@/app/api/get/get_comments";
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
 
 type CommentUser = {
   id: string;
@@ -155,11 +159,15 @@ export default function SocialView({
                   on {new Date(c.createdAt).toLocaleDateString()}
                 </span>
               </h3>
+<<<<<<< HEAD
             <button
                   className="text-sm px-3 py-1 rounded-md border border-red-500 text-orange-500 hover:bg-red-200 dark:hover:bg-gray-800"
                 onClick={() => raport_comment({id:c.id , tipe: selectedTipe})}>
                   !RAPORT!
               </button>
+=======
+
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
               {c.userId === user && editId !== c.id && (
                 <button
                   className="text-sm px-3 py-1 rounded-md border hover:bg-gray-200 dark:hover:bg-gray-800"

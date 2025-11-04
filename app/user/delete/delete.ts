@@ -2,6 +2,10 @@
 import { prisma } from "@/app/api/prisma";
 import { auth } from "@/app/lib/auth";
 import { headers } from "next/headers";
+<<<<<<< HEAD
+=======
+import { redirect } from "next/navigation";
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
 
 export default async function delete_user() {
   try {
@@ -28,6 +32,7 @@ export default async function delete_user() {
 
     return { success: true, message: "User account has been deactivated" };
 
+<<<<<<< HEAD
   } catch (error: unknown) {
   // Verificăm dacă e un obiect de tip Error sau are proprietatea code (Prisma)
   if (error && typeof error === "object") {
@@ -44,4 +49,15 @@ export default async function delete_user() {
   return { success: false, error: "Unexpected error occurred", details: String(error) };
 }
 
+=======
+  } catch (error: any) {
+    // Dacă e o eroare Prisma
+    if (error?.code) {
+      return { success: false, error: `Database error: ${error.code}`, details: error.message };
+    }
+
+    // Alte erori
+    return { success: false, error: "Unexpected error occurred", details: error?.message || error };
+  }
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
 }

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { signOutAction } from "@/app/api/actions/auth";
 import blankPhoto from "@/public/blank-profile.png";
 
+<<<<<<< HEAD
 type Session = {
   user: {
     id: string;
@@ -17,6 +18,9 @@ type Session = {
 
 
 export default function UserNav({ session }: { session: Session }) {
+=======
+export default function UserNav({ session }: { session: any }) {
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 

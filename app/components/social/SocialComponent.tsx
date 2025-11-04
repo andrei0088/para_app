@@ -1,5 +1,6 @@
 import { get_country_comments, get_landing_comments, get_region_comments, get_takeoff_comments } from "@/app/api/get/get_comments";
 import SocialView from "./SocialView";
+<<<<<<< HEAD
 import type { Comment } from "@/app/types"; 
 
 
@@ -8,6 +9,12 @@ import type { Comment } from "@/app/types";
 type CommentsResponse = {
   userID: string | null;
   comments: Comment[];
+=======
+
+type CommentsResponse = {
+  userID: string | null;
+  comments: any[];
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
 };
 
 type SocialComponentProps = {

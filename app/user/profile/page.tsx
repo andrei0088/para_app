@@ -2,6 +2,10 @@ import { get_my_profile } from "./get_profile";
 import ProfileFormsClient from "./ProfileFormsClient";
 
 export default async function ProfilePage() {
+<<<<<<< HEAD
+=======
+  // Server-side logic
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   const profileRes = await get_my_profile();
 
   if (!profileRes.success) {
@@ -12,6 +16,7 @@ export default async function ProfilePage() {
     );
   }
 
+<<<<<<< HEAD
   const data = profileRes.data;
 
   // Convertim sex din orice string | null în "" | "m" | "f"
@@ -30,6 +35,11 @@ export default async function ProfilePage() {
   return (
     <div className="max-w-xl mx-auto p-6">
       <ProfileFormsClient initialData={sanitizedData} />
+=======
+  return (
+    <div className="max-w-xl mx-auto p-6">
+      <ProfileFormsClient initialData={profileRes.data} />
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
     </div>
   );
 }

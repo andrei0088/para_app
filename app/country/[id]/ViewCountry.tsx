@@ -56,7 +56,11 @@ export default function ViewCountry({ country, regions, sites, months, seasons }
 
       {/* Lista regiunilor */}
       <div className="space-y-6">
+<<<<<<< HEAD
         {regions && regions.map((r) => {
+=======
+        {regions.map((r) => {
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
           const bestMonths = r.bestSeason ?? [];
           return (
             <div

@@ -6,7 +6,11 @@ import Image from "next/image";
 import blankProfile from "@/public/blank-profile.png";
 import change_password from "./change-password";
 import delete_user from "./delete/delete";
+<<<<<<< HEAD
 import change_name from "./change_name";
+=======
+import change_name from "./change_name"; // ✅ IMPORTAT
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
 import { useRouter } from "next/navigation";
 
 interface UserClientProps {
@@ -14,7 +18,10 @@ interface UserClientProps {
 }
 
 export default function UserClient({ initialUser }: UserClientProps) {
+<<<<<<< HEAD
   const router = useRouter(); // 🔹 moved here
+=======
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   const [user, setUser] = useState(initialUser);
   const [editing, setEditing] = useState(false);
   const [newName, setNewName] = useState(initialUser?.name || "");
@@ -22,10 +29,17 @@ export default function UserClient({ initialUser }: UserClientProps) {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [pwMessage, setPwMessage] = useState("");
+<<<<<<< HEAD
   const [, setNewPassword] = useState(""); // 🔹 removed unused variable
   const [passwordStrength, setPasswordStrength] = useState(0);
 
   // Format name (capitalize each word)
+=======
+  const [newPassword, setNewPassword] = useState("");
+  const [passwordStrength, setPasswordStrength] = useState(0);
+
+  // ✅ FORMATĂM NUMELE (fiecare cuvânt Capitalize)
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   const formatName = (name: string) =>
     name
       .trim()
@@ -35,7 +49,11 @@ export default function UserClient({ initialUser }: UserClientProps) {
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
       .join(" ");
 
+<<<<<<< HEAD
   // Upload image
+=======
+  // Upload imagine
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) setProfileImage(acceptedFiles[0]);
   }, []);
@@ -46,7 +64,11 @@ export default function UserClient({ initialUser }: UserClientProps) {
     maxFiles: 1,
   });
 
+<<<<<<< HEAD
   // Handle save
+=======
+  // ✅ HANDLE SAVE modificat să trimită la server + capitalize
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   const handleSave = async () => {
     const formattedName = formatName(newName);
     if (!formattedName) return setMessage("Name cannot be empty.");
@@ -64,12 +86,23 @@ export default function UserClient({ initialUser }: UserClientProps) {
       } else {
         setMessage(`❌ ${result.message || "Error updating name."}`);
       }
+<<<<<<< HEAD
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "Unexpected error occurred";
       setMessage(`❌ ${errorMessage}`);
     } finally {
       setLoading(false);
       router.refresh();
+=======
+    } catch (err: any) {
+      setMessage(`❌ ${err?.message || "Unexpected error occurred"}`);
+    } finally {
+      setLoading(false);
+      const router = useRouter();
+
+router.refresh(); 
+
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
     }
   };
 
@@ -100,9 +133,14 @@ export default function UserClient({ initialUser }: UserClientProps) {
           : data.message || "Unknown error occurred";
         setMessage(errorMsg);
       }
+<<<<<<< HEAD
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "Unexpected error occurred";
       setMessage(errorMessage);
+=======
+    } catch (err: any) {
+      setMessage(err?.message || "Unexpected error occurred");
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
     } finally {
       setLoading(false);
     }
@@ -181,12 +219,20 @@ export default function UserClient({ initialUser }: UserClientProps) {
         </p>
       </div>
 
+<<<<<<< HEAD
       {/* RESET PASSWORD */}
+=======
+      {/* RESET PASSWORD (identic, nu am modificat nimic) */}
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
       <div className="mb-8">
         <h2 className="text-2xl font-semibold mb-4">Reset Password</h2>
 
         <form
+<<<<<<< HEAD
           action={async (formData: FormData) => {
+=======
+          action={async (formData) => {
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
             const result = await change_password(formData);
             setPwMessage(result.message);
           }}

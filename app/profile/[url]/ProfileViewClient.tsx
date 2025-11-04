@@ -3,6 +3,10 @@
 import React from "react";
 import Image from "next/image"; // trebuie să fie în client
 import blankProfile from "@/public/blank-profile.png";
+<<<<<<< HEAD
+=======
+import ProfileVideos from "./ProfileVideos";
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
 
 interface ProfileData {
   name: string;
@@ -18,7 +22,11 @@ interface Props {
 }
 
 export default function ProfileViewClient({ profile }: Props) {
+<<<<<<< HEAD
   const { name, bdate, sex, bio, image } = profile;
+=======
+  const { name, bdate, sex, bio, image, videos } = profile;
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
 
   const calculateAge = (birth: string | Date) => {
     const today = new Date();

@@ -223,7 +223,10 @@ model CountryComment {
   userId    String
   countryId Int
   comment   String
+<<<<<<< HEAD
   raport    Int       @default(0)
+=======
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   createdAt DateTime  @default(now())
   deletedAt DateTime?
 
@@ -236,8 +239,11 @@ model RegionComment {
   userId    String
   regionId  Int
   comment   String
+<<<<<<< HEAD
     raport    Int       @default(0)
 
+=======
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   createdAt DateTime  @default(now())
   deletedAt DateTime?
 
@@ -250,8 +256,11 @@ model TakeoffComment {
   userId    String
   takeoffId Int
   comment   String
+<<<<<<< HEAD
     raport    Int       @default(0)
 
+=======
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   createdAt DateTime  @default(now())
   deletedAt DateTime?
 
@@ -264,8 +273,11 @@ model LandingComment {
   userId    String
   landingId Int
   comment   String
+<<<<<<< HEAD
     raport    Int       @default(0)
 
+=======
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   createdAt DateTime  @default(now())
   deletedAt DateTime?
 
@@ -278,8 +290,11 @@ model Profile {
   id        Int       @id @default(autoincrement())
   userId    String  @unique
   public    Boolean @default(false)
+<<<<<<< HEAD
     raport    Int       @default(0)
 
+=======
+>>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   name      String 
   sex       String?
   url       String @unique
