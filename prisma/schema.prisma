@@ -1,0 +1,297 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// =======================================
+// Country, Region, Takeoff, Landing
+// =======================================
+model Country {
+  id          Int              @id @default(autoincrement())
+  name        String           @unique
+  description String?
+  latitude    Float?
+  longitude   Float?
+  regions     Region[]
+  takeoffs    Takeoff[]
+  landings    Landing[]
+  likes       CountryLike[]
+  comments    CountryComment[]
+}
+
+model Region {
+  id          Int             @id @default(autoincrement())
+  name        String
+  countryId   Int
+  country     Country         @relation(fields: [countryId], references: [id])
+  bestSeason  Int[]
+  description String?
+  latitude    Float?
+  longitude   Float?
+  map         String?
+  takeoffs    Takeoff[]       @relation("TakeoffRegion")
+  landings    Landing[]       @relation("LandingRegion")
+  likes       RegionLike[]
+  comments    RegionComment[]
+}
+
+model Takeoff {
+  id          Int              @id @default(autoincrement())
+  name        String
+  latitude    Float
+  longitude   Float
+  altitude    Float
+  description String?
+  regionId    Int
+  countryId   Int
+  region      Region           @relation("TakeoffRegion", fields: [regionId], references: [id])
+  country     Country          @relation(fields: [countryId], references: [id])
+  likes       TakeoffLike[]
+  comments    TakeoffComment[]
+}
+
+model Landing {
+  id          Int              @id @default(autoincrement())
+  name        String
+  latitude    Float
+  longitude   Float
+  altitude    Float
+  description String?
+  regionId    Int
+  countryId   Int
+  region      Region           @relation("LandingRegion", fields: [regionId], references: [id])
+  country     Country          @relation(fields: [countryId], references: [id])
+  likes       LandingLike[]
+  comments    LandingComment[]
+}
+
+// =======================================
+// User Section
+// =======================================
+enum UserType {
+  Admin
+  Pilot
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  userType      UserType  @default(Pilot)
+
+  image         String?
+  bdate         DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
+  deletedAt     DateTime? // soft delete
+
+
+  sessions Session[]
+  accounts Account[]
+
+  countryLikes CountryLike[]
+  regionLikes  RegionLike[]
+  takeoffLikes TakeoffLike[]
+  landingLikes LandingLike[]
+
+  countryComments CountryComment[]
+  regionComments  RegionComment[]
+  takeoffComments TakeoffComment[]
+  landingComments LandingComment[]
+
+  passwordResetTokens PasswordResetToken? // 👈 ADĂUGAT
+  profile     Profile? 
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+
+  @@map("verification")
+}
+
+// =======================================
+// Likes Section
+// =======================================
+model CountryLike {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  countryId Int
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  country Country @relation(fields: [countryId], references: [id])
+
+  @@unique([userId, countryId])
+}
+
+model RegionLike {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  regionId  Int
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id])
+  region Region @relation(fields: [regionId], references: [id])
+
+  @@unique([userId, regionId])
+}
+
+model TakeoffLike {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  takeoffId Int
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  takeoff Takeoff @relation(fields: [takeoffId], references: [id])
+
+  @@unique([userId, takeoffId])
+}
+
+model LandingLike {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  landingId Int
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  landing Landing @relation(fields: [landingId], references: [id])
+
+  @@unique([userId, landingId])
+}
+
+// =======================================
+// Comment Section
+// =======================================
+model CountryComment {
+  id        Int       @id @default(autoincrement())
+  userId    String
+  countryId Int
+  comment   String
+  raport    Int       @default(0)
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  user    User    @relation(fields: [userId], references: [id])
+  country Country @relation(fields: [countryId], references: [id])
+}
+
+model RegionComment {
+  id        Int       @id @default(autoincrement())
+  userId    String
+  regionId  Int
+  comment   String
+    raport    Int       @default(0)
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  user   User   @relation(fields: [userId], references: [id])
+  region Region @relation(fields: [regionId], references: [id])
+}
+
+model TakeoffComment {
+  id        Int       @id @default(autoincrement())
+  userId    String
+  takeoffId Int
+  comment   String
+    raport    Int       @default(0)
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  user    User    @relation(fields: [userId], references: [id])
+  takeoff Takeoff @relation(fields: [takeoffId], references: [id])
+}
+
+model LandingComment {
+  id        Int       @id @default(autoincrement())
+  userId    String
+  landingId Int
+  comment   String
+    raport    Int       @default(0)
+
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+
+  user    User    @relation(fields: [userId], references: [id])
+  landing Landing @relation(fields: [landingId], references: [id])
+}
+
+
+model Profile {
+  id        Int       @id @default(autoincrement())
+  userId    String  @unique
+  public    Boolean @default(false)
+    raport    Int       @default(0)
+
+  name      String 
+  sex       String?
+  url       String @unique
+  bdate     DateTime
+  bio       String?
+  videos    String[]  @default([]) // array de stringuri pentru link-uri YouTube
+
+  
+  
+  createdAt DateTime  @default(now())
+  
+
+  user      User      @relation(fields: [userId], references: [id])
+  
+}
