@@ -59,6 +59,7 @@ export default async function Region({ params }: { params: { id: string } }) {
   const takeoff: LandingTakeoff[] = sitesRaw.takeoff.map((t) => ({
     id: t.id,
     name: t.name,
+    altitude: t.altitude,
     latitude: t.latitude ?? undefined,
     longitude: t.longitude ?? undefined,
     description: t.description ?? undefined,
@@ -67,6 +68,7 @@ export default async function Region({ params }: { params: { id: string } }) {
   const landing: LandingTakeoff[] = sitesRaw.landing.map((l) => ({
     id: l.id,
     name: l.name,
+    altitude: l.altitude,
     latitude: l.latitude ?? undefined,
     longitude: l.longitude ?? undefined,
     description: l.description ?? undefined,
