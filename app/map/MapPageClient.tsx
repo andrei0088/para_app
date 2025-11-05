@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import SearchMapComp from "./SearchMapComp";
 import MapClientWrapper from "./MapClientWrapper";
@@ -12,12 +13,26 @@ interface MapPageClientProps {
   defaultSelected?: { countryId: number | null; regionId: number | null };
 }
 
-
-export default function MapPageClient({ countries, regions, initialSites, initialCenter, defaultSelected }: MapPageClientProps) {
+export default function MapPageClient({
+  countries,
+  regions,
+  initialSites,
+  initialCenter,
+  defaultSelected,
+}: MapPageClientProps) {
   const [selected, setSelected] = useState<{ countryId: number | null; regionId: number | null }>({
     countryId: defaultSelected?.countryId ?? null,
     regionId: defaultSelected?.regionId ?? null,
   });
+
+  // funcție stabilă care nu se recreează la fiecare render
+  const handleSelect = (countryId: number | null, regionId: number | null) => {
+    setSelected(prev => {
+      // actualizează doar dacă s-a schimbat ceva
+      if (prev.countryId === countryId && prev.regionId === regionId) return prev;
+      return { countryId, regionId };
+    });
+  };
 
   return (
     <div className="flex flex-col h-screen w-full">
@@ -25,7 +40,7 @@ export default function MapPageClient({ countries, regions, initialSites, initia
         countries={countries}
         regions={regions}
         selected={selected}
-        onSelect={(countryId, regionId) => setSelected({ countryId, regionId })}
+        onSelect={handleSelect} // folosim funcția stabilă
       />
       <div className="flex-1">
         <MapClientWrapper

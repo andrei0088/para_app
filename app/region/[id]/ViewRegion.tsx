@@ -55,7 +55,6 @@ export default function ViewRegion({ country, region, takeoff, landing }: Region
     "July", "August", "September", "October", "November", "December",
   ];
 
-  console.log({takeoff});
   return (
     <section className="max-w-6xl mx-auto my-10 p-8 bg-[#faf9f7] dark:bg-gray-900 rounded-2xl shadow-lg">
       {/* Titlu Țară și Regiune */}

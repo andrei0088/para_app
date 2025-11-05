@@ -49,6 +49,8 @@ model Takeoff {
   description String?
   regionId    Int
   countryId   Int
+  map         String?
+
   region      Region           @relation("TakeoffRegion", fields: [regionId], references: [id])
   country     Country          @relation(fields: [countryId], references: [id])
   likes       TakeoffLike[]
@@ -64,6 +66,8 @@ model Landing {
   description String?
   regionId    Int
   countryId   Int
+  map         String?
+
   region      Region           @relation("LandingRegion", fields: [regionId], references: [id])
   country     Country          @relation(fields: [countryId], references: [id])
   likes       LandingLike[]
