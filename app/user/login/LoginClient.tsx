@@ -4,11 +4,7 @@ import { useState, useTransition } from "react";
 import { signInAction } from "@/app/api/actions/auth";
 import Link from "next/link";
 
-interface LoginClientProps {
-  verified?: boolean;
-}
-
-export default function LoginClient({ verified }: LoginClientProps) {
+export default function LoginClient() {
   const [isPending, startTransition] = useTransition();
   const [formState, setFormState] = useState({ email: "", password: "" });
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -27,10 +23,15 @@ export default function LoginClient({ verified }: LoginClientProps) {
 
     startTransition(async () => {
       try {
-        await signInAction(formData);
+        const result = await signInAction(formData);
+        if (result.success) {
+          window.location.href = "/"; // redirect imediat pe client
+        }
       } catch (err: unknown) {
         if (err instanceof Error) {
           setErrorMessage(err.message);
+        } else if (typeof err === "string") {
+          setErrorMessage(err);
         } else {
           setErrorMessage("An unexpected error occurred.");
         }
@@ -42,12 +43,6 @@ export default function LoginClient({ verified }: LoginClientProps) {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
       <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
         <h2 className="text-xl font-semibold text-center mb-4">Log In</h2>
-
-        {verified && (
-          <p className="text-green-600 text-sm text-center mb-3">
-            ✅ Email verified! You can now log in.
-          </p>
-        )}
 
         {errorMessage && (
           <p className="text-red-600 text-sm text-center mb-3">

@@ -69,6 +69,7 @@ export async function resend_create_mail(email: string) {
 }
 
 // ===== SIGN IN =====
+
 export async function signInAction(formData: FormData) {
   const email = (formData.get("email") as string) || "";
   const password = (formData.get("password") as string) || "";
@@ -79,16 +80,21 @@ export async function signInAction(formData: FormData) {
   });
 
   if (!user) throw new Error("User with this email does not exist.");
-  if (user.deletedAt) throw new Error("Your account has been deactivated. Contact support if this is a mistake.");
+  if (user.deletedAt)
+    throw new Error(
+      "Your account has been deactivated. Contact support if this is a mistake."
+    );
 
   try {
     await auth.api.signInEmail({ body: { email, password } });
-    redirect("/");
+    return { success: true };
   } catch (error: unknown) {
-    const errMsg = error instanceof Error ? error.message : "Incorrect credentials.";
+    const errMsg =
+      error instanceof Error ? error.message : "Incorrect credentials.";
     throw new Error(errMsg);
   }
 }
+
 
 // ===== SIGN OUT =====
 export async function signOutAction() {

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 
 interface ResendEmailClientProps {
@@ -9,7 +8,6 @@ interface ResendEmailClientProps {
 }
 
 export default function ResendEmailClient({ email }: ResendEmailClientProps) {
-  const router = useRouter();
   const [message, setMessage] = useState<string>("");
 
   useEffect(() => {
