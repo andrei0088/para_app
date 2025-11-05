@@ -108,82 +108,93 @@ export default function SearchElement({ countrys, regions, select }: SearchEleme
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-wrap items-end gap-4 bg-white p-4 rounded-xl shadow-md max-w-full"
+   <form
+  onSubmit={handleSubmit}
+  className="flex flex-wrap items-end gap-3 md:gap-4 bg-white dark:bg-gray-900 p-3 md:p-4 rounded-xl shadow-md max-w-full"
+>
+  {/* Country */}
+  <div className="flex flex-col flex-1 min-w-[140px]">
+    <label htmlFor="country" className="mb-1 text-sm md:text-base font-medium text-gray-700 dark:text-gray-300">
+      Country
+    </label>
+    <select
+      id="country"
+      className="border border-gray-300 dark:border-gray-600 rounded-lg p-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-gray-200 transition"
+      value={selectedCountryId}
+      onChange={(e) => setSelectedCountryId(Number(e.target.value))}
     >
-      {/* Country */}
-      <div className="flex flex-col flex-1 min-w-[150px]">
-        <label htmlFor="country" className="mb-1 font-medium text-gray-700">Country</label>
-        <select
-          id="country"
-          className="border rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
-          value={selectedCountryId}
-          onChange={(e) => setSelectedCountryId(Number(e.target.value))}
-        >
-          {countrys.map((c) => (
-            <option key={c.id} value={c.id}>{c.name}</option>
-          ))}
-        </select>
-      </div>
+      {countrys.map((c) => (
+        <option key={c.id} value={c.id}>{c.name}</option>
+      ))}
+    </select>
+  </div>
 
-      {/* Region */}
-      <div className="flex flex-col flex-1 min-w-[150px]">
-        <label htmlFor="region" className="mb-1 font-medium text-gray-700">Region</label>
-        <select
-          id="region"
-          className="border rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
-          value={selectedRegionId}
-          onChange={(e) => setSelectedRegionId(e.target.value === "" ? "" : Number(e.target.value))}
-        >
-          <option value="">All regions</option>
-          {filteredRegions.map((r) => (
-            <option key={r.id} value={r.id}>{r.name}</option>
-          ))}
-        </select>
-      </div>
+  {/* Region */}
+  <div className="flex flex-col flex-1 min-w-[140px]">
+    <label htmlFor="region" className="mb-1 text-sm md:text-base font-medium text-gray-700 dark:text-gray-300">
+      Region
+    </label>
+    <select
+      id="region"
+      className="border border-gray-300 dark:border-gray-600 rounded-lg p-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-gray-200 transition"
+      value={selectedRegionId}
+      onChange={(e) => setSelectedRegionId(e.target.value === "" ? "" : Number(e.target.value))}
+    >
+      <option value="">All regions</option>
+      {filteredRegions.map((r) => (
+        <option key={r.id} value={r.id}>{r.name}</option>
+      ))}
+    </select>
+  </div>
 
-      {/* Season */}
-      <div className="flex flex-col flex-1 min-w-[120px]">
-        <label htmlFor="season" className="mb-1 font-medium text-gray-700">Season</label>
-        <select
-          id="season"
-          className="border rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
-          value={selectedSeason}
-          onChange={(e) => setSelectedSeason(e.target.value === "" ? "" : Number(e.target.value))}
-          disabled={!availableSeasons.length}
-        >
-          <option value="">Select a season</option>
-          {availableSeasons.map((s) => (
-            <option key={s} value={s}>{seasonNames[s]}</option>
-          ))}
-        </select>
-      </div>
+  {/* Season */}
+  <div className="flex flex-col flex-1 min-w-[120px]">
+    <label htmlFor="season" className="mb-1 text-sm md:text-base font-medium text-gray-700 dark:text-gray-300">
+      Season
+    </label>
+    <select
+      id="season"
+      className="border border-gray-300 dark:border-gray-600 rounded-lg p-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-gray-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
+      value={selectedSeason}
+      onChange={(e) => setSelectedSeason(e.target.value === "" ? "" : Number(e.target.value))}
+      disabled={!availableSeasons.length}
+    >
+      <option value="">Select a season</option>
+      {availableSeasons.map((s) => (
+        <option key={s} value={s}>{seasonNames[s]}</option>
+      ))}
+    </select>
+  </div>
 
-      {/* Month */}
-      <div className="flex flex-col flex-1 min-w-[120px]">
-        <label htmlFor="month" className="mb-1 font-medium text-gray-700">Month</label>
-        <select
-          id="month"
-          className="border rounded-lg p-2 focus:ring-2 focus:ring-blue-400"
-          value={selectedMonth}
-          onChange={(e) => setSelectedMonth(e.target.value === "" ? "" : Number(e.target.value))}
-          disabled={!availableMonths.length}
-        >
-          <option value="">Select a month</option>
-          {availableMonths.map((m) => (
-            <option key={m} value={m}>{monthNames[m - 1]}</option>
-          ))}
-        </select>
-      </div>
+  {/* Month */}
+  <div className="flex flex-col flex-1 min-w-[120px]">
+    <label htmlFor="month" className="mb-1 text-sm md:text-base font-medium text-gray-700 dark:text-gray-300">
+      Month
+    </label>
+    <select
+      id="month"
+      className="border border-gray-300 dark:border-gray-600 rounded-lg p-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-gray-800 dark:text-gray-200 transition disabled:opacity-50 disabled:cursor-not-allowed"
+      value={selectedMonth}
+      onChange={(e) => setSelectedMonth(e.target.value === "" ? "" : Number(e.target.value))}
+      disabled={!availableMonths.length}
+    >
+      <option value="">Select a month</option>
+      {availableMonths.map((m) => (
+        <option key={m} value={m}>{monthNames[m - 1]}</option>
+      ))}
+    </select>
+  </div>
 
-      {/* Submit */}
-      <button
-        type="submit"
-        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all"
-      >
-        Filter
-      </button>
-    </form>
+  {/* Submit */}
+  <div className="flex items-end">
+    <button
+      type="submit"
+      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-all shadow-sm hover:shadow-md"
+    >
+      Filter
+    </button>
+  </div>
+</form>
+
   );
 }

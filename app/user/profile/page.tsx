@@ -28,7 +28,7 @@ export default async function ProfilePage() {
   };
 
   return (
-    <div className="max-w-xl mx-auto p-6">
+    <div className="">
       <ProfileFormsClient initialData={sanitizedData} />
     </div>
   );

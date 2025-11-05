@@ -40,58 +40,65 @@ export default function LoginClient() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-      <div className="bg-white p-6 rounded-lg shadow-md w-full max-w-sm">
-        <h2 className="text-xl font-semibold text-center mb-4">Log In</h2>
+   <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800 p-6">
+  <div className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 w-full max-w-sm transition-all">
+    <h2 className="text-2xl font-semibold text-center mb-6 text-gray-900 dark:text-gray-100">
+      Welcome Back 👋
+    </h2>
 
-        {errorMessage && (
-          <p className="text-red-600 text-sm text-center mb-3">
-            ❌ {errorMessage}
-          </p>
-        )}
+    {errorMessage && (
+      <p className="text-red-500 text-sm text-center mb-3 font-medium">
+        ❌ {errorMessage}
+      </p>
+    )}
 
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <input
-            type="email"
-            name="email"
-            required
-            placeholder="Email"
-            value={formState.email}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-green-500 focus:outline-none"
-          />
+    <form onSubmit={handleSubmit} className="space-y-4">
+      
+      <input
+        type="email"
+        name="email"
+        required
+        placeholder="Email"
+        value={formState.email}
+        onChange={handleChange}
+        className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 
+        px-4 py-2.5 rounded-lg text-gray-900 dark:text-gray-100
+        focus:ring-2 focus:ring-green-500 focus:outline-none transition"
+      />
 
-          <input
-            type="password"
-            name="password"
-            required
-            placeholder="Password"
-            value={formState.password}
-            onChange={handleChange}
-            className="w-full border px-3 py-2 rounded focus:ring-2 focus:ring-green-500 focus:outline-none"
-          />
+      <input
+        type="password"
+        name="password"
+        required
+        placeholder="Password"
+        value={formState.password}
+        onChange={handleChange}
+        className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800
+        px-4 py-2.5 rounded-lg text-gray-900 dark:text-gray-100
+        focus:ring-2 focus:ring-green-500 focus:outline-none transition"
+      />
 
-          <p>
-            I <Link href="/user/forgot-password" className="text-green-600">Forgot my password</Link>
-          </p>
+      <Link href="/user/forgot-password" className="block text-right text-sm text-green-600 hover:underline">
+        I forgot my password
+      </Link>
 
-          <button
-            type="submit"
-            disabled={isPending}
-            className={`w-full text-white py-2 rounded transition ${
-              isPending ? "bg-green-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"
-            }`}
-          >
-            {isPending ? "Signing in..." : "Sign In"}
-          </button>
-        </form>
+      <button
+        type="submit"
+        disabled={isPending}
+        className={`w-full py-2.5 rounded-lg text-white font-medium transition-all duration-200 
+        ${isPending ? "bg-green-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700 active:scale-[0.98]"}`}
+      >
+        {isPending ? "Signing in..." : "Sign In"}
+      </button>
+    </form>
 
-        {isPending && (
-          <p className="text-center text-gray-500 text-sm mt-3 animate-pulse">
-            Please wait, checking your credentials...
-          </p>
-        )}
-      </div>
-    </div>
+    {isPending && (
+      <p className="text-center text-gray-500 dark:text-gray-400 text-sm mt-4 animate-pulse">
+        Please wait, checking your credentials...
+      </p>
+    )}
+  </div>
+</div>
+
   );
 }

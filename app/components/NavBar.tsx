@@ -47,8 +47,20 @@ export default function NavBarServer() {
         <UserNav />
       </div>
 
-      {/* Mobile */}
-      <NavBarClient />
+     {/* Mobile */}
+{/* Mobile */}
+<div className="relative md:hidden bg-white dark:bg-gray-900 shadow-md px-4 py-2 flex items-center justify-between">
+
+  {/* Burger menu / NavBarClient */}
+  <NavBarClient />
+
+  {/* UserNav în colț dreapta sus */}
+  <div className="absolute right-4 top-2">
+    <UserNav />
+  </div>
+
+</div>
+
     </nav>
   );
 }

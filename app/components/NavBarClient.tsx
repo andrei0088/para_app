@@ -17,9 +17,7 @@ export default function NavBarClient() {
   return (
     <div className="md:hidden w-full">
       <div className="flex items-center justify-between px-6 py-4 bg-white dark:bg-gray-900 shadow-md">
-        <Link href="/" className="text-2xl font-bold text-gray-800 dark:text-gray-100">
-          Para APP
-        </Link>
+       
         <button onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <HiX size={28} /> : <HiMenu size={28} />}
         </button>

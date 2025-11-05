@@ -5,23 +5,29 @@ import ViewRisk from "./foehn/ViewRisk";
 
 export default function RightBar() {
   return (
-    <div className="h-full  bg-gray-100 shadow-md flex flex-col items-center py-4 gap-6">
-      <ViewRisk />
-      {/* Secțiunea de sus */}
-      <div className="flex flex-col items-center text-center">
-        <span className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+    <aside className="w-full h-full lg:w-64 bg-white dark:bg-gray-900 shadow-md flex flex-col items-center py-3 gap-4 border-l border-gray-200 dark:border-gray-700">
+      
+      {/* ViewRisk component */}
+      <div className="w-full px-3">
+        <ViewRisk />
+      </div>
+
+      {/* Powered by */}
+      <div className="flex flex-col items-center text-center px-2">
+        <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
           Powered by
         </span>
-        <Link href="https://www.paragliding-high.eu/" target="_blank" className="mt-1 hover:scale-110 transition-transform">
-          <Image src={logoPH} alt="Paragliding High" width={50} height={50} />
+        <Link 
+          href="https://www.paragliding-high.eu/" 
+          target="_blank" 
+          className="mt-1 hover:scale-110 transition-transform"
+        >
+          <Image src={logoPH} alt="Paragliding High" width={50} height={50} className="rounded-full" />
         </Link>
       </div>
 
-      {/* Aici poți adăuga elemente noi */}
-      <div className="flex flex-col items-center gap-2">
-        {/* Exemplu: un buton sau icon suplimentar */}
-        {/* <button className="bg-blue-500 text-white px-2 py-1 rounded">Click me</button> */}
-      </div>
-    </div>
+      {/* Extra section */}
+      <div className="flex flex-col items-center gap-2 w-full px-3"></div>
+    </aside>
   );
 }

@@ -25,6 +25,7 @@ export default function ProfileFormsClient({ initialData }: ProfileFormsProps) {
   const [urlMessage, setUrlMessage] = useState("");
   const [urlSuggestion, setUrlSuggestion] = useState("");
   const [existingUrls, setExistingUrls] = useState<string[]>([]);
+  const [viewLink, setViewLink] = useState<boolean>(initialData.public);
 
   // Profile fields
   const [formState, setFormState] = useState({
@@ -54,6 +55,10 @@ export default function ProfileFormsClient({ initialData }: ProfileFormsProps) {
     fetchUrls();
   }, []);
 
+  // Regex flexibil pentru YouTube (acceptă parametri extra)
+  const youtubeRegex =
+    /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[?&][\w=&-]*)?$/;
+
   // URL input
   const handleUrlChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -82,13 +87,10 @@ export default function ProfileFormsClient({ initialData }: ProfileFormsProps) {
     else setUrlMessage("Error: " + res.message);
   };
 
-  // Add / Remove video
+  // Add video
   const addVideo = () => {
     const trimmed = videoInput.trim();
     if (!trimmed) return;
-
-    const youtubeRegex =
-      /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})$/;
 
     if (!youtubeRegex.test(trimmed)) {
       setVideoError("Please enter a valid YouTube link!");
@@ -100,6 +102,7 @@ export default function ProfileFormsClient({ initialData }: ProfileFormsProps) {
     setVideoError("");
   };
 
+  // Remove video
   const removeVideo = (idx: number) => {
     setVideos((prev) => prev.filter((_, i) => i !== idx));
   };
@@ -108,13 +111,8 @@ export default function ProfileFormsClient({ initialData }: ProfileFormsProps) {
   const handleProfileChange = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const invalid = videos.some(
-      (v) =>
-        !/^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})$/.test(
-          v
-        )
-    );
-
+    // Validare video
+    const invalid = videos.some((v) => !youtubeRegex.test(v));
     if (invalid) {
       setVideoError("You have invalid YouTube links. Fix them before saving.");
       return;
@@ -130,140 +128,141 @@ export default function ProfileFormsClient({ initialData }: ProfileFormsProps) {
     if (res.success) {
       setFormMessage("Profile updated successfully!");
       setVideoError("");
+      setViewLink(res.data.public); // actualizează view link
     } else {
       setFormMessage("Error: " + res.message);
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-md space-y-6">
-      <h2 className="text-2xl font-bold">{initialData.name}</h2>
-      <Link href={`/profile/${initialData.url}`} className="text-blue-500 hover:underline">
-        View your profile
-      </Link>
+    <div className="w-full min-h-screen bg-gray-100 dark:bg-gray-900 px-4 py-10">
+      <div className="w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md p-6 sm:p-8 md:p-12 mx-auto">
 
-      {/* URL Form */}
-      <form onSubmit={handleUrlChange} className="space-y-2">
-        <label className="font-semibold">Profile URL:</label>
-        <input
-          type="text"
-          value={urlState}
-          onChange={handleUrlChangeInput}
-          className="w-full border px-3 py-2 rounded"
-        />
-        {urlSuggestion && (
-          <p className="text-sm text-gray-600">
-            URL taken! Try: <strong>{urlSuggestion}</strong>
-          </p>
-        )}
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Change URL
-        </button>
-        {urlMessage && <p className="text-sm mt-1">{urlMessage}</p>}
-      </form>
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-10">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Edit Profile</h1>
 
-      {/* Profile Form */}
-      <form onSubmit={handleProfileChange} className="space-y-4">
-        {/* Public */}
-        <div>
-          <label className="font-semibold">Public Profile:</label>
-          <select
-            name="public"
-            value={formState.public}
-            onChange={(e) =>
-              setFormState((prev) => ({ ...prev, public: e.target.value }))
-            }
-            className="w-full border px-3 py-2 rounded"
-          >
-            <option value="yes">Yes</option>
-            <option value="no">No</option>
-          </select>
+          {viewLink ? (
+            <Link href={`/profile/${urlState}`} className="text-green-600 hover:text-green-700 font-medium underline">
+              View Profile
+            </Link>
+          ) : (
+            <span className="text-gray-500 text-sm italic">Make your profile public to view it.</span>
+          )}
         </div>
 
-        {/* Sex */}
-        <div>
-          <label className="font-semibold">Sex:</label>
-          <div className="flex gap-4 mt-1">
-            {["m", "f", ""].map((val) => (
-              <label key={val} className="flex items-center gap-1">
-                <input
-                  type="radio"
-                  name="sex"
-                  value={val}
-                  checked={formState.sex === val}
-                  onChange={(e) =>
-                    setFormState((prev) => ({ ...prev, sex: e.target.value as "m" | "f" | "" }))
-                  }
-                />
-                {val === "m" ? "Male" : val === "f" ? "Female" : "Prefer not to say"}
-              </label>
-            ))}
-          </div>
-        </div>
+        {/* Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
-        {/* Bio */}
-        <div>
-          <label className="font-semibold">Bio:</label>
-          <textarea
-            name="bio"
-            value={formState.bio}
-            onChange={(e) =>
-              setFormState((prev) => ({ ...prev, bio: e.target.value }))
-            }
-            className="w-full border px-3 py-2 rounded"
-          />
-        </div>
-
-        {/* Videos */}
-        <div>
-          <label className="font-semibold">Videos (YouTube links):</label>
-          <div className="flex gap-2 mt-1">
-            <input
-              type="text"
-              value={videoInput}
-              onChange={(e) => setVideoInput(e.target.value)}
-              placeholder="Paste YouTube link"
-              className="flex-1 border px-3 py-2 rounded"
-            />
-            <button
-              type="button"
-              onClick={addVideo}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            >
-              Add
-            </button>
-          </div>
-          {videoError && <p className="text-sm text-red-500 mt-1">{videoError}</p>}
-          <ul className="mt-2 space-y-1">
-            {videos.map((vid, idx) => (
-              <li
-                key={idx}
-                className="flex justify-between items-center border rounded px-2 py-1"
+          {/* Left Side */}
+          <div className="space-y-6">
+            {/* Public */}
+            <div>
+              <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">Public Profile</label>
+              <select
+                name="public"
+                value={formState.public}
+                onChange={(e) => setFormState((p) => ({ ...p, public: e.target.value }))}
+                className="w-full border px-3 py-2 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500"
               >
-                <span className="truncate">{vid}</span>
+                <option value="yes">Yes (visible to everyone)</option>
+                <option value="no">No (no one can see)</option>
+              </select>
+            </div>
+
+            {/* Sex */}
+            <div>
+              <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">Sex</label>
+              <div className="flex gap-6 text-gray-800 dark:text-gray-300">
+                {["m", "f", ""].map((val) => (
+                  <label key={val} className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      name="sex"
+                      value={val}
+                      checked={formState.sex === val}
+                      onChange={(e) => setFormState((p) => ({ ...p, sex: e.target.value as "m" | "f" | "" }))}
+                    />
+                    {val === "m" ? "Male" : val === "f" ? "Female" : "Prefer not to say"}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Bio */}
+            <div>
+              <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">Bio</label>
+              <textarea
+                name="bio"
+                value={formState.bio}
+                onChange={(e) => setFormState((p) => ({ ...p, bio: e.target.value }))}
+                rows={6}
+                className="w-full border px-3 py-2 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500"
+              />
+            </div>
+          </div>
+
+          {/* Right Side */}
+          <div className="space-y-6">
+            {/* Profile URL */}
+            <form onSubmit={handleUrlChange} className="space-y-2">
+              <label className="block font-semibold text-gray-800 dark:text-gray-200">Profile URL</label>
+              <input
+                type="text"
+                value={urlState}
+                onChange={handleUrlChangeInput}
+                className="w-full border px-3 py-2 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500"
+              />
+              {urlSuggestion && <p className="text-sm text-gray-500">Try: <strong>{urlSuggestion}</strong></p>}
+              <button type="submit" className="text-sm text-green-600 hover:text-green-700 underline">
+                Save URL
+              </button>
+              {urlMessage && <p className="text-sm text-gray-600">{urlMessage}</p>}
+            </form>
+
+            {/* Videos */}
+            <div>
+              <label className="block font-semibold mb-1 text-gray-800 dark:text-gray-200">Videos</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={videoInput}
+                  onChange={(e) => setVideoInput(e.target.value)}
+                  placeholder="YouTube link"
+                  className="flex-1 border px-3 py-2 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-green-500"
+                />
                 <button
                   type="button"
-                  onClick={() => removeVideo(idx)}
-                  className="text-red-500 font-bold"
+                  onClick={addVideo}
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
                 >
-                  X
+                  Add
                 </button>
-              </li>
-            ))}
-          </ul>
+              </div>
+              {videoError && <p className="text-red-600 text-sm mt-1">{videoError}</p>}
+              <ul className="mt-2 space-y-1">
+                {videos.map((vid, idx) => (
+                  <li key={idx} className="flex justify-between items-center border rounded px-2 py-1 bg-white dark:bg-gray-700">
+                    <span className="truncate">{vid}</span>
+                    <button onClick={() => removeVideo(idx)} className="text-red-600 font-bold">×</button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
 
-        <button
-          type="submit"
-          className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-        >
-          Save Profile
-        </button>
-        {formMessage && <p className="text-sm mt-1">{formMessage}</p>}
-      </form>
+        {/* Save Profile */}
+        <form onSubmit={handleProfileChange} className="pt-8 border-t border-gray-300 dark:border-gray-700">
+          <button
+            type="submit"
+            className="w-full bg-green-600 text-white py-3 rounded-lg text-lg font-medium hover:bg-green-700 transition"
+          >
+            Save Profile
+          </button>
+          {formMessage && <p className="text-center text-sm mt-2 text-gray-600">{formMessage}</p>}
+        </form>
+      </div>
     </div>
   );
 }

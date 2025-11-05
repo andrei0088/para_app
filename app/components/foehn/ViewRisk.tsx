@@ -45,38 +45,39 @@ export default async function ParaglidingRisk() {
   ];
 
   return (
-    <div className="space-y-3 text-sm px-2">
-      <h2 className="font-bold">Paragliding Wind Risk</h2>
+   <div className="space-y-2 text-sm px-2 md:px-4">
+  <h2 className="font-bold text-gray-800 dark:text-gray-100">Paragliding Wind Risk</h2>
 
-      <h3 className="font-semibold">Foehn:</h3>
-      {foehnPairs.map((pair) => {
-        const p1 = data[pair.i1]?.main?.pressure;
-        const p2 = data[pair.i2]?.main?.pressure;
-        const delta = p1 !== null && p2 !== null ? p1 - p2 : null;
-        const risk = calcRisk(delta);
-        const direction = calcDirection(delta, "foehn");
+  <h3 className="font-semibold text-gray-700 dark:text-gray-200">Foehn:</h3>
+  {foehnPairs.map((pair) => {
+    const p1 = data[pair.i1]?.main?.pressure;
+    const p2 = data[pair.i2]?.main?.pressure;
+    const delta = p1 !== null && p2 !== null ? p1 - p2 : null;
+    const risk = calcRisk(delta);
+    const direction = calcDirection(delta, "foehn");
 
-        return (
-          <p key={pair.name} className={risk.color}>
-            {pair.name}: ΔP = {delta !== null ? delta.toFixed(1) : "N/A"} hPa → {risk.text} | {direction} | {risk.severity}
-          </p>
-        );
-      })}
+    return (
+      <p key={pair.name} className={`${risk.color} text-sm`}>
+        {pair.name}: ΔP = {delta !== null ? delta.toFixed(1) : "N/A"} hPa → {risk.text} | {direction} | {risk.severity}
+      </p>
+    );
+  })}
 
-      <h3 className="font-semibold mt-2">Mistral:</h3>
-      {mistralPairs.map((pair) => {
-        const p1 = data[pair.i1]?.main?.pressure;
-        const p2 = data[pair.i2]?.main?.pressure;
-        const delta = p1 !== null && p2 !== null ? p1 - p2 : null;
-        const risk = calcRisk(delta);
-        const direction = calcDirection(delta, "mistral");
+  <h3 className="font-semibold mt-2 text-gray-700 dark:text-gray-200">Mistral:</h3>
+  {mistralPairs.map((pair) => {
+    const p1 = data[pair.i1]?.main?.pressure;
+    const p2 = data[pair.i2]?.main?.pressure;
+    const delta = p1 !== null && p2 !== null ? p1 - p2 : null;
+    const risk = calcRisk(delta);
+    const direction = calcDirection(delta, "mistral");
 
-        return (
-          <p key={pair.name} className={risk.color}>
-            {pair.name}: ΔP = {delta !== null ? delta.toFixed(1) : "N/A"} hPa → {risk.text} | {direction} | {risk.severity}
-          </p>
-        );
-      })}
-    </div>
+    return (
+      <p key={pair.name} className={`${risk.color} text-sm`}>
+        {pair.name}: ΔP = {delta !== null ? delta.toFixed(1) : "N/A"} hPa → {risk.text} | {direction} | {risk.severity}
+      </p>
+    );
+  })}
+</div>
+
   );
 }

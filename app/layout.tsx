@@ -32,17 +32,23 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <NavBar />
-        {/* Containerul principal */}
-<div className="flex flex-1">
-    <div className="flex-7 p-5">
-              <Analytics />
-              {children}
-      </div>
-    <div className="flex-1">
-      <RightBar />
-    </div>
-  </div>  
-  <Footer />
+
+        {/* Main + RightBar */}
+        <div className="flex flex-1 flex-col lg:flex-row min-h-0">
+          
+          {/* Content principal */}
+          <main className="flex-1 p-5 flex flex-col overflow-auto">
+            <Analytics />
+            {children}
+          </main>
+
+          {/* RightBar */}
+          <aside className="w-full lg:w-64 mt-4 lg:mt-0 lg:flex-shrink-0 lg:flex lg:flex-col">
+            <RightBar />
+          </aside>
+        </div>
+
+        <Footer />
       </body>
     </html>
   );
