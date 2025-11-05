@@ -1,16 +1,8 @@
-import calculateGPSCenter from "../map/functions/calculateGPSCenter";
-import { get_all_takeoff, get_all_landing } from "@/app/api/get/get_places";
 import MapGenerate from "../map/MapGenerate";
 
-
 export default async function HomeMap() {
+  // Tuple cu exact 2 elemente
+  const center: [number, number] = [46.577, 9.975];
 
-  const takeoff = await get_all_takeoff();
-  const landing = await get_all_landing();
-
-  const center = calculateGPSCenter([...takeoff, ...landing]);
-
-  return (
-      <MapGenerate center={center} />
-  );
+  return <MapGenerate center={center} zoom={6} />;
 }
