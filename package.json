@@ -16,6 +16,7 @@
     "@tiptap/extension-underline": "^3.10.1",
     "@tiptap/react": "^3.10.1",
     "@tiptap/starter-kit": "^3.10.1",
+    "@vercel/analytics": "^1.5.0",
     "bcryptjs": "^3.0.2",
     "better-auth": "^1.3.33",
     "leaflet": "^1.9.4",

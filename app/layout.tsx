@@ -4,6 +4,8 @@ import "./globals.css";
 import RightBar from "./components/RightBar";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
+import { Analytics } from '@vercel/analytics/next';
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,7 +34,10 @@ export default function RootLayout({
         <NavBar />
         {/* Containerul principal */}
 <div className="flex flex-1">
-    <div className="flex-7 p-5">{children}</div>
+    <div className="flex-7 p-5">
+              <Analytics />
+              {children}
+      </div>
     <div className="flex-1">
       <RightBar />
     </div>
