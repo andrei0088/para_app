@@ -5,10 +5,7 @@ import { headers } from "next/headers";
 import { prisma } from "../prisma";
 import { revalidatePath } from "next/cache";
 import * as leoProfanity from "leo-profanity";
-<<<<<<< HEAD
 import type { CountryComment, RegionComment, TakeoffComment, LandingComment } from "@prisma/client";
-=======
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
 
 // ==== Configurare filtre limbaj ofensator ====
 leoProfanity.loadDictionary("en");
@@ -27,11 +24,7 @@ leoProfanity.add(italianBadWords);
 leoProfanity.add(spanishBadWords);
 leoProfanity.add(germanBadWords);
 
-<<<<<<< HEAD
 // ==== Tipuri ====
-=======
-// ==== Tipuri TS ====
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
 type ComponentType = "c" | "r" | "t" | "l";
 
 interface UserResult {
@@ -40,11 +33,8 @@ interface UserResult {
   message?: string;
 }
 
-<<<<<<< HEAD
 type CommentWithUser<T> = T & { user: { id: string; name: string } };
 
-=======
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
 // ==== Utilitare ====
 function validateComment(comment: string): boolean {
   return !leoProfanity.check(comment);
@@ -53,13 +43,7 @@ function validateComment(comment: string): boolean {
 async function getUserId(): Promise<UserResult> {
   try {
     const session = await auth.api.getSession({ headers: await headers() });
-<<<<<<< HEAD
     if (!session?.user) return { success: false, message: "Not logged in", id: null };
-=======
-    if (!session?.user) {
-      return { success: false, message: "Not logged in", id: null };
-    }
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
     return { success: true, id: session.user.id };
   } catch (error) {
     const message = error instanceof Error ? error.message : "Error retrieving session";
@@ -68,15 +52,7 @@ async function getUserId(): Promise<UserResult> {
 }
 
 // ==== Adaugă comentariu ====
-<<<<<<< HEAD
 export async function add_comment(component: ComponentType, componentId: number, comment: string) {
-=======
-export async function add_comment(
-  component: ComponentType,
-  componentId: number,
-  comment: string
-) {
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   if (!comment.trim()) return { success: false, message: "Comment cannot be empty." };
   if (!validateComment(comment)) return { success: false, message: "Please avoid offensive language." };
   if (comment.length > 1000) return { success: false, message: "Comment is too long. Maximum 1000 characters allowed." };
@@ -113,80 +89,43 @@ export async function add_comment(
 }
 
 // ==== Obține comentarii ====
-<<<<<<< HEAD
 export async function get_country_comments({ id }: { id: number }) {
   const user = await getUserId();
   const comments: CommentWithUser<CountryComment>[] = await prisma.countryComment.findMany({
     where: { countryId: id, deletedAt: null, raport: { lt: 7 } },
     include: { user: { select: { id: true, name: true } } },
-=======
-type CommentWithUser<T> = T & { user: { id: string; name: string } };
-
-export async function get_country_comments({ id }: { id: number }) {
-  const user = await getUserId();
-  const comments: CommentWithUser<typeof prisma.countryComment>[] = await prisma.countryComment.findMany({
-    where: { countryId: id, deletedAt: null },
-    include: { user: true },
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   });
   return { userID: user.id, comments };
 }
 
 export async function get_region_comments({ id }: { id: number }) {
   const user = await getUserId();
-<<<<<<< HEAD
   const comments: CommentWithUser<RegionComment>[] = await prisma.regionComment.findMany({
     where: { regionId: id, deletedAt: null, raport: { lt: 7 } },
     include: { user: { select: { id: true, name: true } } },
-=======
-  const comments: CommentWithUser<typeof prisma.regionComment>[] = await prisma.regionComment.findMany({
-    where: { regionId: id, deletedAt: null },
-    include: { user: true },
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   });
   return { userID: user.id, comments };
 }
 
 export async function get_takeoff_comments({ id }: { id: number }) {
   const user = await getUserId();
-<<<<<<< HEAD
   const comments: CommentWithUser<TakeoffComment>[] = await prisma.takeoffComment.findMany({
     where: { takeoffId: id, deletedAt: null, raport: { lt: 7 } },
     include: { user: { select: { id: true, name: true } } },
-=======
-  const comments: CommentWithUser<typeof prisma.takeoffComment>[] = await prisma.takeoffComment.findMany({
-    where: { takeoffId: id, deletedAt: null },
-    include: { user: true },
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   });
   return { userID: user.id, comments };
 }
 
 export async function get_landing_comments({ id }: { id: number }) {
   const user = await getUserId();
-<<<<<<< HEAD
   const comments: CommentWithUser<LandingComment>[] = await prisma.landingComment.findMany({
     where: { landingId: id, deletedAt: null, raport: { lt: 7 } },
     include: { user: { select: { id: true, name: true } } },
-=======
-  const comments: CommentWithUser<typeof prisma.landingComment>[] = await prisma.landingComment.findMany({
-    where: { landingId: id, deletedAt: null },
-    include: { user: true },
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   });
   return { userID: user.id, comments };
 }
 
 // ==== Editare și ștergere comentariu ====
-<<<<<<< HEAD
-=======
-type CommentModel = 
-  | typeof prisma.countryComment
-  | typeof prisma.regionComment
-  | typeof prisma.takeoffComment
-  | typeof prisma.landingComment;
-
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
 async function getCommentModel(component: ComponentType, id: number) {
   switch (component) {
     case "c": return prisma.countryComment.findFirst({ where: { id } });
@@ -245,7 +184,6 @@ export async function get_delete_comment(commentId: number, tipe: ComponentType)
 
   return { success: true, message: "Comment deleted", data: deleted };
 }
-<<<<<<< HEAD
 
 // ==== Raport comentariu ====
 export async function raport_comment({ id, tipe }: { id: number; tipe: ComponentType }) {
@@ -286,5 +224,3 @@ export default async function raported_comment() {
     landing: landing.length > 0 ? landing : null,
   };
 }
-=======
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2

@@ -30,7 +30,6 @@ export default function Join() {
       } else {
         setMessage("❌ Oops! Something went wrong: " + (res.error ?? "Unknown error"));
       }
-<<<<<<< HEAD
     } catch (err: unknown) {
   if (err instanceof Error) {
     setMessage("❌ Error: " + err.message);
@@ -38,11 +37,6 @@ export default function Join() {
     setMessage("❌ Unexpected error");
   }
 } finally {
-=======
-    } catch (err: any) {
-      setMessage("❌ Error: " + err.message);
-    } finally {
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
       setLoading(false);
     }
   };

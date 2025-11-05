@@ -44,7 +44,6 @@ export default async function change_password(formData: FormData) {
     });
 
     return { success: true, message: "✅ Password updated successfully!" };
-<<<<<<< HEAD
   } catch (err: unknown) {
     let message = "Unknown error";
 
@@ -54,12 +53,5 @@ export default async function change_password(formData: FormData) {
 
     return { success: false, message };
   
-=======
-  } catch (err: any) {
-    return {
-      success: false,
-      message: err?.message || "Something went wrong, try again later.",
-    };
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   }
 }

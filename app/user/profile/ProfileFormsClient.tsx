@@ -15,13 +15,10 @@ interface ProfileFormsProps {
   };
 }
 
-<<<<<<< HEAD
 interface UrlItem {
   url: string;
 }
 
-=======
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
 export default function ProfileFormsClient({ initialData }: ProfileFormsProps) {
   // URL
   const [urlState, setUrlState] = useState(initialData.url);
@@ -32,23 +29,14 @@ export default function ProfileFormsClient({ initialData }: ProfileFormsProps) {
   // Profile fields
   const [formState, setFormState] = useState({
     public: initialData.public ? "yes" : "no",
-<<<<<<< HEAD
     sex: initialData.sex,
     bio: initialData.bio ?? "",
-=======
-    sex: initialData.sex || "",
-    bio: initialData.bio || "",
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   });
   const [formMessage, setFormMessage] = useState("");
 
   // Videos
   const [videoInput, setVideoInput] = useState("");
-<<<<<<< HEAD
   const [videos, setVideos] = useState<string[]>(initialData.videos ?? []);
-=======
-  const [videos, setVideos] = useState<string[]>(initialData.videos || []);
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   const [videoError, setVideoError] = useState("");
 
   // Preluăm toate URL-urile existente
@@ -57,11 +45,7 @@ export default function ProfileFormsClient({ initialData }: ProfileFormsProps) {
       try {
         const urls = await get_all_url();
         if (urls.success && urls.data) {
-<<<<<<< HEAD
           setExistingUrls(urls.data.map((u: UrlItem) => u.url.toLowerCase()));
-=======
-          setExistingUrls(urls.data.map((u: any) => u.url.toLowerCase()));
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
         }
       } catch (err) {
         console.error(err);
@@ -77,11 +61,7 @@ export default function ProfileFormsClient({ initialData }: ProfileFormsProps) {
 
     const valLower = value.toLowerCase();
     if (existingUrls.includes(valLower)) {
-<<<<<<< HEAD
       let suggestion: string;
-=======
-      let suggestion;
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
       do {
         const rand = Math.floor(Math.random() * 900) + 100;
         suggestion = `${value}${rand}`;
@@ -92,11 +72,7 @@ export default function ProfileFormsClient({ initialData }: ProfileFormsProps) {
     }
   };
 
-<<<<<<< HEAD
   const handleUrlChange = async (e: React.FormEvent<HTMLFormElement>) => {
-=======
-  const handleUrlChange = async (e: React.FormEvent) => {
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
     e.preventDefault();
     const formData = new FormData();
     formData.append("url", urlState);
@@ -109,11 +85,7 @@ export default function ProfileFormsClient({ initialData }: ProfileFormsProps) {
   // Add / Remove video
   const addVideo = () => {
     const trimmed = videoInput.trim();
-<<<<<<< HEAD
     if (!trimmed) return;
-=======
-    if (trimmed === "") return;
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
 
     const youtubeRegex =
       /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})$/;
@@ -133,11 +105,7 @@ export default function ProfileFormsClient({ initialData }: ProfileFormsProps) {
   };
 
   // Submit profile
-<<<<<<< HEAD
   const handleProfileChange = async (e: React.FormEvent<HTMLFormElement>) => {
-=======
-  const handleProfileChange = async (e: React.FormEvent) => {
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
     e.preventDefault();
 
     const invalid = videos.some(
@@ -241,11 +209,7 @@ export default function ProfileFormsClient({ initialData }: ProfileFormsProps) {
           <label className="font-semibold">Bio:</label>
           <textarea
             name="bio"
-<<<<<<< HEAD
             value={formState.bio}
-=======
-            value={formState.bio || ""}
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
             onChange={(e) =>
               setFormState((prev) => ({ ...prev, bio: e.target.value }))
             }

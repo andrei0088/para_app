@@ -60,7 +60,6 @@ export async function giveTop({ component, id }: LikeParams) {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user) redirect("/user/login");
 
-<<<<<<< HEAD
   switch (component) {
     case "c":
       await prisma.countryLike.create({ data: { userId: session.user.id, countryId: id } });
@@ -87,15 +86,6 @@ export async function giveTop({ component, id }: LikeParams) {
 
 
 
-=======
-  const model = likeModels[component];
-  await model.create({ userId: session.user.id, [model.key]: id } as any);
-
-  revalidatePath(`${model.path}${id}`);
-  return { success: true };
-}
-
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
 // ===== REMOVE TOP (UNLIKE) =====
 export async function remove_top({ component, id }: LikeParams) {
   const session = await auth.api.getSession({ headers: await headers() });

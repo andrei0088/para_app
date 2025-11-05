@@ -1,11 +1,7 @@
 import { prisma } from "@/app/api/prisma";
 
 export default async function getProfileByUrl(url: string) {
-<<<<<<< HEAD
   console.log("url-" + url);
-=======
-    console.log("url-"+url);
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   try {
     const profile = await prisma.profile.findFirst({
       where: {
@@ -19,7 +15,6 @@ export default async function getProfileByUrl(url: string) {
     }
 
     return { success: true, data: profile };
-<<<<<<< HEAD
   } catch (err: unknown) {
     let message = "Unknown error";
 
@@ -28,9 +23,5 @@ export default async function getProfileByUrl(url: string) {
     }
 
     return { success: false, message };
-=======
-  } catch (err: any) {
-    return { success: false, message: err.message || "Unknown error" };
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   }
 }

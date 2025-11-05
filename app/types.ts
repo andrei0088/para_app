@@ -4,11 +4,8 @@ export interface Country {
   id: number;
   name: string;
   description?: string; // null -> undefined
-<<<<<<< HEAD
   latitude?: number;
   longitude?: number;
-=======
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
 }
 
 export interface Region {
@@ -80,16 +77,12 @@ export type CommentUser = {
 export type CommentItem = {
   id: number;
   comment: string;
-<<<<<<< HEAD
     raport: number;
 
-=======
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   createdAt: Date;
   userId: string;
   user: CommentUser;
 };
-<<<<<<< HEAD
 
 export type Comment = {
   id: number;
@@ -110,5 +103,3 @@ export interface SignUpResult {
   email?: string;
   user?: Record<string, unknown>;
 }
-=======
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2

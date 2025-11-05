@@ -7,7 +7,6 @@ interface SearchFormProps {
 }
 
 export default async function SearchForm({ select }: SearchFormProps) {
-<<<<<<< HEAD
   // Fetch countries
   const countrysFromApi = await get_all_country();
   const countrys: Country[] = countrysFromApi.map((c) => ({
@@ -31,22 +30,6 @@ export default async function SearchForm({ select }: SearchFormProps) {
     map: r.map ?? undefined,
   }));
 
-=======
-  // Prisma rulează doar aici (server)
-  const countrysFromApi = await get_all_country();
-  const countrys: Country[] = countrysFromApi.map((c) => ({
-    ...c,
-    description: c.description ?? "", // fallback
-  }));
-
-  const regionsFromApi = await get_all_regions();
-  const regions: Region[] = regionsFromApi.map((r) => ({
-    ...r,
-    description: r.description ?? "", // fallback
-  }));
-
-  // Transmitem tot la client
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   return (
     <SearchElement
       countrys={countrys}

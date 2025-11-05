@@ -2,7 +2,6 @@
 
 import { useActionState } from "react";
 import { signUpAction } from "@/app/api/actions/auth";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import type { SignUpResult } from "@/app/types";

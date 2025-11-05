@@ -26,7 +26,6 @@ export default async function change_name(name: string) {
     }
 
     return { success: true, message: "Name updated successfully." };
-<<<<<<< HEAD
   } catch (err: unknown) {
     let message = "Unknown error";
 
@@ -35,12 +34,5 @@ export default async function change_name(name: string) {
     }
 
     return { success: false, message };
-=======
-  } catch (error: any) {
-    return {
-      success: false,
-      message: error?.message || "Failed to update name.",
-    };
->>>>>>> 43fdcb2b923be48ad005f344ea53a63c4b5eb3c2
   }
 }
