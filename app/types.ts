@@ -50,6 +50,9 @@ export interface Site {
   longitude: number;
   countryId: number;
   regionId?: number;
+  map?: string | null;
+  seo?: string | null;
+
   type: "takeoff" | "landing";
 }
 
@@ -63,7 +66,7 @@ export interface BasePlace {
   regionId?: number;
   bestSeason?: number[];
   altitude?: number;
-  map?: string;
+  map?: string | null;
 }
 
 export type PlaceType = "country" | "region" | "takeoff" | "landing";
