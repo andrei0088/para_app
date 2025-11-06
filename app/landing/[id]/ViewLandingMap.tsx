@@ -23,6 +23,7 @@ export default function ViewLandingMap({ map, maps }: MapProps) {
   }, [maps, cloudName]);
 
   const startIndex = maps.indexOf(map);
+if(!map) return "";
 
   return (
     <>

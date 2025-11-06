@@ -23,7 +23,7 @@ export default function ViewTakeoffMap({ map, maps }: MapProps) {
   }, [maps, cloudName]);
 
   const startIndex = maps.indexOf(map);
-
+if(!map) return "";
   return (
     <>
       <CldImage
