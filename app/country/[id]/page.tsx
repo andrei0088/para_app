@@ -1,3 +1,7 @@
+// app/country/[id]/page.tsx
+"use client";
+
+import { notFound } from "next/navigation";
 import { 
   get_country_by_id, 
   get_country_landings_takeoffs, 
@@ -8,58 +12,81 @@ import ViewCountry from "./ViewCountry";
 import MapGenerate from "@/app/components/map/MapGenerate";
 import SearchForm from "@/app/search/SearchForm";
 import SocialComponent from "@/app/components/social/SocialComponent";
-import { notFound } from "next/navigation";
+
+import type { Country, Region, Takeoff, Landing, Sites } from "@/app/types";
 
 interface CountryPageProps {
   params: { id: string };
 }
-export const dynamic = "force-dynamic"; // forțează SSR
+
+export const dynamic = "force-dynamic"; // forțează Server-Side Rendering
 
 export default async function Country({ params }: CountryPageProps) {
   const id = Number(params.id);  
 
   // --- Obține țara ---
-  const country = await get_country_by_id({ id });
-  if (!country) notFound();
+  const countryRaw = await get_country_by_id({ id });
+  if (!countryRaw) notFound();
 
-  // --- Regiuni ---
-  const regionsRaw = await get_country_regions({ id }) ?? [];
-  const regions = regionsRaw.map(r => ({
-  ...r,
-  description: r.description ?? "",  
-  bestSeason: r.bestSeason ?? [],
-  map: r.map ?? "",                 
-  takeoffs: r.takeoffs?.map(t => ({
-    ...t,
-    map: t.map ?? "",
-    description: t.description ?? "",
-  })) ?? [],
-  landings: r.landings?.map(l => ({
-    ...l,
-    map: l.map ?? "",
-    description: l.description ?? "",
-  })) ?? [],
-}));
+  const country: Country = {
+    ...countryRaw,
+    description: countryRaw.description ?? "",
+    latitude: countryRaw.latitude ?? undefined,
+    longitude: countryRaw.longitude ?? undefined,
+  };
 
+  // --- Obține regiunile ---
+  const regionsRaw = (await get_country_regions({ id })) ?? [];
+  const regions: Region[] = regionsRaw.map(r => ({
+    id: r.id,
+    name: r.name,
+    countryId: r.countryId,
+    description: r.description ?? "",
+    bestSeason: r.bestSeason ?? [],
+    map: r.map ?? "",
+    seo: r.seo ?? undefined,
+    takeoffs: (r.takeoffs ?? []).map((t): Takeoff => ({
+      id: t.id,
+      name: t.name,
+      regionId: t.regionId,
+      latitude: t.latitude,
+      longitude: t.longitude,
+      map: t.map ?? undefined,
+    })),
+    landings: (r.landings ?? []).map((l): Landing => ({
+      id: l.id,
+      name: l.name,
+      regionId: l.regionId,
+      latitude: l.latitude,
+      longitude: l.longitude,
+      map: l.map ?? undefined,
+    })),
+  }));
 
   // --- Takeoff + Landing pentru țară ---
-  const sitesRaw = await get_country_landings_takeoffs({ id }) ?? { takeoff: [], landing: [] };
-  const sites = {
-    takeoff: sitesRaw.takeoff.map(t => ({
-      ...t,
-      map: t.map ?? "",
-      description: t.description ?? "",
+  const sitesRaw = (await get_country_landings_takeoffs({ id })) ?? { takeoff: [], landing: [] };
+  const sites: Sites = {
+    takeoff: sitesRaw.takeoff.map((t): Takeoff => ({
+      id: t.id,
+      name: t.name,
+      regionId: t.regionId,
+      latitude: t.latitude,
+      longitude: t.longitude,
+      map: t.map ?? undefined,
     })),
-    landing: sitesRaw.landing.map(l => ({
-      ...l,
-      map: l.map ?? "",
-      description: l.description ?? "",
+    landing: sitesRaw.landing.map((l): Landing => ({
+      id: l.id,
+      name: l.name,
+      regionId: l.regionId,
+      latitude: l.latitude,
+      longitude: l.longitude,
+      map: l.map ?? undefined,
     })),
   };
 
   // --- Determină lunile active ---
-  const months = Array.from(new Set(regions.flatMap(r => r.bestSeason))).sort((a, b) => a - b);
-
+  const months: number[] = regions.flatMap(r => r.bestSeason ?? []).filter((m): m is number => m !== undefined);
+  
   // --- Sezoane afișate ---
   const displaySeason = [
     { name: "Spring", emoji: "🌱", months: [3, 4, 5] },
@@ -91,30 +118,23 @@ export default async function Country({ params }: CountryPageProps) {
       Stay tuned for updates and thank you for your support.
     </p>
   `;
-
-  const countrySafe = {
-    ...country,
-    description: country.description ?? countryDescriptionFallback,
-    latitude: country.latitude ?? undefined,
-    longitude: country.longitude ?? undefined,
-  };
+  if (!country.description) country.description = countryDescriptionFallback;
 
   return (
     <div className="space-y-10">
-
       {/* Harta */}
       <div className="h-[30vh] rounded-xl overflow-hidden shadow-md">
         <MapGenerate
-          center={countrySafe.latitude && countrySafe.longitude ? [countrySafe.latitude, countrySafe.longitude] : undefined}
+          center={country.latitude && country.longitude ? [country.latitude, country.longitude] : undefined}
         />
       </div>
 
       {/* Search */}
-      <SearchForm select={{ country: countrySafe, region: regions }} />
+      <SearchForm select={{ country, region: regions }} />
 
       {/* ViewCountry */}
       <ViewCountry
-        country={countrySafe}
+        country={country}
         regions={regions}
         sites={sites}
         months={months}
@@ -127,7 +147,6 @@ export default async function Country({ params }: CountryPageProps) {
         selectedId={id}
         selectedName={country.name}
       />
-
     </div>
   );
 }
