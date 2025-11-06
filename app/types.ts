@@ -27,6 +27,7 @@ export interface Takeoff {
   latitude: number;
   longitude: number;
   map?: string;
+  seo?: string | null;
 
 }
 
@@ -37,6 +38,8 @@ export interface Landing {
   latitude: number;
   longitude: number;
   map?: string;
+  seo?: string | null;
+
 
 }
 
