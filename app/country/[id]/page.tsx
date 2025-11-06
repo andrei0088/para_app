@@ -1,7 +1,3 @@
-// app/country/[id]/page.tsx
-"use client";
-
-import { notFound } from "next/navigation";
 import { 
   get_country_by_id, 
   get_country_landings_takeoffs, 
@@ -12,81 +8,73 @@ import ViewCountry from "./ViewCountry";
 import MapGenerate from "@/app/components/map/MapGenerate";
 import SearchForm from "@/app/search/SearchForm";
 import SocialComponent from "@/app/components/social/SocialComponent";
-
-import type { Country, Region, Takeoff, Landing, Sites } from "@/app/types";
+import { notFound } from "next/navigation";
 
 interface CountryPageProps {
   params: { id: string };
 }
-
-export const dynamic = "force-dynamic"; // forțează Server-Side Rendering
+export const dynamic = "force-dynamic"; // forțează SSR
 
 export default async function Country({ params }: CountryPageProps) {
   const id = Number(params.id);  
 
   // --- Obține țara ---
-  const countryRaw = await get_country_by_id({ id });
-  if (!countryRaw) notFound();
+  const country = await get_country_by_id({ id });
+  if (!country) notFound();
 
-  const country: Country = {
-    ...countryRaw,
-    description: countryRaw.description ?? "",
-    latitude: countryRaw.latitude ?? undefined,
-    longitude: countryRaw.longitude ?? undefined,
-  };
+  // --- Regiuni ---
+  const regionsRaw = await get_country_regions({ id }) ?? [];
+  console.log({regionsRaw});
+  const regions = regionsRaw.map(r => ({
+  id: r.id,
+  name: r.name,
+  countryId: r.countryId,
+  bestSeason: r.bestSeason ?? [],
+  description: r.description ?? undefined, // normalizează null -> undefined
+  map: r.map ?? undefined,                // normalizează null -> undefined
+  takeoffs: (r.takeoffs ?? []).map(t => ({
+    id: t.id,
+    name: t.name,
+    latitude: t.latitude ?? undefined,
+    longitude: t.longitude ?? undefined,
+    altitude: t.altitude,
+    description: t.description ?? undefined,
+    regionId: t.regionId,
+    countryId: t.countryId,
+    map: t.map ?? undefined,
+  })),
+  landings: (r.landings ?? []).map(l => ({
+    id: l.id,
+    name: l.name,
+    latitude: l.latitude ?? undefined,
+    longitude: l.longitude ?? undefined,
+    altitude: l.altitude,
+    description: l.description ?? undefined,
+    regionId: l.regionId,
+    countryId: l.countryId,
+    map: l.map ?? undefined,
+  })),
+}));
 
-  // --- Obține regiunile ---
-  const regionsRaw = (await get_country_regions({ id })) ?? [];
-  const regions: Region[] = regionsRaw.map(r => ({
-    id: r.id,
-    name: r.name,
-    countryId: r.countryId,
-    description: r.description ?? "",
-    bestSeason: r.bestSeason ?? [],
-    map: r.map ?? "",
-    seo: r.seo || null,
-    takeoffs: (r.takeoffs ?? []).map((t): Takeoff => ({
-      id: t.id,
-      name: t.name,
-      regionId: t.regionId,
-      latitude: t.latitude,
-      longitude: t.longitude,
-      map: t.map ?? undefined,
-    })),
-    landings: (r.landings ?? []).map((l): Landing => ({
-      id: l.id,
-      name: l.name,
-      regionId: l.regionId,
-      latitude: l.latitude,
-      longitude: l.longitude,
-      map: l.map ?? undefined,
-    })),
-  }));
 
   // --- Takeoff + Landing pentru țară ---
-  const sitesRaw = (await get_country_landings_takeoffs({ id })) ?? { takeoff: [], landing: [] };
-  const sites: Sites = {
-    takeoff: sitesRaw.takeoff.map((t): Takeoff => ({
-      id: t.id,
-      name: t.name,
-      regionId: t.regionId,
-      latitude: t.latitude,
-      longitude: t.longitude,
-      map: t.map ?? undefined,
+  const sitesRaw = await get_country_landings_takeoffs({ id }) ?? { takeoff: [], landing: [] };
+  const sites = {
+    takeoff: sitesRaw.takeoff.map(t => ({
+      ...t,
+      map: t.map ?? "",
+      description: t.description ?? "",
     })),
-    landing: sitesRaw.landing.map((l): Landing => ({
-      id: l.id,
-      name: l.name,
-      regionId: l.regionId,
-      latitude: l.latitude,
-      longitude: l.longitude,
-      map: l.map ?? undefined,
+    landing: sitesRaw.landing.map(l => ({
+      ...l,
+      map: l.map ?? "",
+      description: l.description ?? "",
     })),
   };
 
   // --- Determină lunile active ---
-  const months: number[] = regions.flatMap(r => r.bestSeason ?? []).filter((m): m is number => m !== undefined);
-  
+  const months = Array.from(new Set(regions.flatMap(r => r.bestSeason))).sort((a, b) => a - b);
+
   // --- Sezoane afișate ---
   const displaySeason = [
     { name: "Spring", emoji: "🌱", months: [3, 4, 5] },
@@ -118,23 +106,30 @@ export default async function Country({ params }: CountryPageProps) {
       Stay tuned for updates and thank you for your support.
     </p>
   `;
-  if (!country.description) country.description = countryDescriptionFallback;
+
+  const countrySafe = {
+    ...country,
+    description: country.description ?? countryDescriptionFallback,
+    latitude: country.latitude ?? undefined,
+    longitude: country.longitude ?? undefined,
+  };
 
   return (
     <div className="space-y-10">
+
       {/* Harta */}
       <div className="h-[30vh] rounded-xl overflow-hidden shadow-md">
         <MapGenerate
-          center={country.latitude && country.longitude ? [country.latitude, country.longitude] : undefined}
+          center={countrySafe.latitude && countrySafe.longitude ? [countrySafe.latitude, countrySafe.longitude] : undefined}
         />
       </div>
 
       {/* Search */}
-      <SearchForm select={{ country, region: regions }} />
+      <SearchForm select={{ country: countrySafe, region: regions }} />
 
       {/* ViewCountry */}
       <ViewCountry
-        country={country}
+        country={countrySafe}
         regions={regions}
         sites={sites}
         months={months}
@@ -147,6 +142,7 @@ export default async function Country({ params }: CountryPageProps) {
         selectedId={id}
         selectedName={country.name}
       />
+
     </div>
   );
 }
