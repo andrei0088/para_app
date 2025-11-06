@@ -15,7 +15,7 @@ export interface Region {
   bestSeason?: number[];
   description?: string;
   map?: string | null;
-  seo?: string;
+  seo?: string | null;
   takeoffs?: Takeoff[];
   landings?: Landing[];
 }
