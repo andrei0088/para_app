@@ -44,7 +44,7 @@ export default async function Country({ params }: CountryPageProps) {
     description: r.description ?? "",
     bestSeason: r.bestSeason ?? [],
     map: r.map ?? "",
-    seo: r.seo ?? undefined,
+    seo: r.seo || null,
     takeoffs: (r.takeoffs ?? []).map((t): Takeoff => ({
       id: t.id,
       name: t.name,
