@@ -37,7 +37,7 @@ interface Region {
   description?: string;
   bestSeason?: number[];
   map?: string | null;
-  seo?: string;
+  seo?: string | null;
 }
 
 interface Country {
