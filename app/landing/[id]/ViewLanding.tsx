@@ -1,6 +1,7 @@
 import Link from "next/link";
 import MapGenerate from "@/app/components/map/MapGenerate";
 import TopView from "@/app/components/dinamic/TopView";
+import ViewLandingMap from "./ViewLandingMap";
 
 interface Landing {
   id: number;
@@ -8,6 +9,7 @@ interface Landing {
   latitude: number;
   longitude: number;
   altitude: number;
+  map: string | null;
   description: string; // garantat string
 }
 
@@ -19,6 +21,7 @@ interface Country {
 interface Region {
   id: number;
   name: string;
+  map:string;
 }
 
 interface Details {
@@ -29,11 +32,12 @@ interface Details {
 interface ViewLandingProps {
   landing: Landing;
   details: Details;
+  maps:string[];
 }
 
-export default function ViewLanding({ landing, details }: ViewLandingProps) {
+export default function ViewLanding({ landing, details, maps }: ViewLandingProps) {
   const googleMapsUrl = `https://www.google.com/maps?q=${landing.latitude},${landing.longitude}`;
-
+const sendMaps = [details.region.map, ...maps];
   return (
     <section className="max-w-6xl mx-auto bg-[#faf9f7] dark:bg-gray-900 shadow-lg rounded-2xl border border-gray-200 dark:border-gray-700 p-8">
       {/* Breadcrumb */}
@@ -86,6 +90,7 @@ export default function ViewLanding({ landing, details }: ViewLandingProps) {
 
         {/* Col 2-3 - Descriere */}
         <div className="col-span-2 prose prose-lg dark:prose-invert text-gray-700 dark:text-gray-300 leading-relaxed">
+          <ViewLandingMap map={landing.map || ""} maps={sendMaps} />
           <div dangerouslySetInnerHTML={{ __html: landing.description }} />
         </div>
       </div>

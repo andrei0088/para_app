@@ -34,14 +34,17 @@ function sanitizeRegion(data: {
   name: string;
   countryId: number;
   bestSeason?: number[] | null;
+  map?: string | null;            // <-- adaugăm aici
 }): Region {
   return {
     id: data.id,
     name: data.name,
     countryId: data.countryId,
     bestSeason: data.bestSeason ?? undefined,
+    map: data.map ?? undefined,        // <-- și aici
   };
 }
+
 
 export default async function FilterPage({ searchParams }: FilterPageProps) {
   const { country, season, month } = searchParams;

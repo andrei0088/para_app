@@ -1,10 +1,10 @@
 import Link from "next/link";
-import Image from "next/image";
-import map1 from "@/public/map1.jpeg"; // static import from public folder
 import TopView from "@/app/components/dinamic/TopView";
 import { notFound } from "next/navigation";
 import JoinView from "@/app/components/dinamic/JoinView";
 import ViewOnMap from "@/app/components/dinamic/ViewOnMap";
+import ViewRegionMap from "./ViewRegionMap";
+import SEO from "@/app/components/Seo";
 
 
 interface Takeoff {
@@ -14,6 +14,7 @@ interface Takeoff {
   longitude?: number;
   altitude?: number;
   description?: string;
+  map?:string;
   regionId?: number;
   countryId?: number;
 }
@@ -25,6 +26,7 @@ interface Landing {
   longitude?: number;
   altitude?: number;
   description?: string;
+  map?:string;
   regionId?: number;
   countryId?: number;
 }
@@ -34,7 +36,8 @@ interface Region {
   name: string;
   description?: string;
   bestSeason?: number[];
-  map?: string;
+  map?: string | null;
+  seo?: string;
 }
 
 interface Country {
@@ -49,15 +52,26 @@ interface RegionSearchProps {
   landing: Landing[];
 }
 
+
 export default function ViewRegion({ country, region, takeoff, landing }: RegionSearchProps) {
   const Month = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December",
   ];
 
+ const maps = [
+  ...(region.map ? [region.map] : []),
+  ...[...takeoff, ...landing]
+    .filter(i => i.map)
+    .map(i => i.map!)
+    .filter((m, i, self) => self.indexOf(m) === i)
+].filter(Boolean);
+
+const description = region.seo ?? `${region.name ?? "This region"} is a beautiful paragliding spot with breathtaking views and perfect conditions for your next flight adventure.`;
   return (
     <section className="max-w-6xl mx-auto my-10 p-8 bg-[#faf9f7] dark:bg-gray-900 rounded-2xl shadow-lg">
       {/* Titlu Țară și Regiune */}
+      <SEO title={`${region.name} = description`} description={description} />
       <div className="mb-8 border-b pb-4">
         <Link href={`/country/${country.id}`}>
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white hover:text-green-600 transition-colors">
@@ -136,41 +150,22 @@ export default function ViewRegion({ country, region, takeoff, landing }: Region
             <JoinView />
         <ViewOnMap country={country.id} region={region.id} name={region.name} />
           {/* Placeholder pentru imagini */}
-          <div className="bg-gray-100 dark:bg-gray-800 rounded-xl h-48 border border-dashed border-gray-300 dark:border-gray-600 relative overflow-hidden">
-            {region.map ? <Image
-  src={`/maps/${region.map}`}
-  alt="Map"
-  fill
-  sizes="(max-width: 1024px) 100vw, 1024px"
-  style={{ objectFit: "cover" }}
-  priority
-/> : 
-<Image
-  src={map1}
-  alt="Map"
-  fill
-  sizes="(max-width: 1024px) 100vw, 1024px"
-  style={{ objectFit: "cover" }}
-  priority
-/>
+          <div className="bg-gray-100 dark:bg-gray-800 rounded-xl border border-dashed border-gray-300 dark:border-gray-600 relative overflow-hidden flex flex-wrap gap-3 p-3">
+  {maps.map((m,index) => {
+    if(index != 0) return <ViewRegionMap key={index} map={m}  maps={maps}/>
+})}
+</div>
 
- }
-          </div>
         </div>
 
         {/* Col 2–3 - Descriere Regiune */}
+        
         <div className="col-span-2">
           <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm prose prose-lg dark:prose-invert text-gray-800 dark:text-gray-200 leading-relaxed">
            {region.map && (
   <div className="w-full max-w-full rounded-xl overflow-hidden">
-    <Image
-      src={`/maps/${region.map}`}
-      alt="Map"
-      width={800}   // sau dimensiunea dorită
-      height={600}  // păstrează proporțiile imaginii
-      style={{ objectFit: "contain" }}
-      priority
-    />
+    <ViewRegionMap map={region.map} maps={maps} />
+
   </div>
 )}
 

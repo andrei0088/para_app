@@ -1,3 +1,4 @@
+
 // app/region/[id]/page.tsx
 import { get_country_by_id, get_region_landings_takeoffs, get_regions_by_id } from "@/app/api/get/get_places";
 import { notFound } from "next/navigation";
@@ -12,10 +13,12 @@ interface LandingTakeoff {
   latitude: number | undefined;
   longitude: number | undefined;
   description?: string;
+  map?:string;
 }
 
 export default async function Region({ params }: { params: { id: string } }) {
-  const id = Number(params.id);
+ const paramsId = await params;
+  const id = Number(paramsId.id);
   if (isNaN(id)) return notFound();
 
   const regionRaw = await get_regions_by_id({ id });
@@ -25,7 +28,7 @@ export default async function Region({ params }: { params: { id: string } }) {
   if (!countryRaw) return notFound();
 
   const sitesRaw = await get_region_landings_takeoffs({ id });
-
+  
   // Helper: sanitize country
   const country: Country = {
     id: countryRaw.id,
@@ -40,6 +43,8 @@ export default async function Region({ params }: { params: { id: string } }) {
     id: regionRaw.id,
     name: regionRaw.name,
     countryId: regionRaw.countryId,
+    map: regionRaw.map ?? "bigmap_vujir9", // this is fine if map is string | null | undefined
+    seo: regionRaw.seo ?? undefined,
     description: regionRaw.description ?? undefined,
     bestSeason: regionRaw.bestSeason ?? undefined,
   };
@@ -63,6 +68,7 @@ export default async function Region({ params }: { params: { id: string } }) {
     latitude: t.latitude ?? undefined,
     longitude: t.longitude ?? undefined,
     description: t.description ?? undefined,
+    map: t.map ?? undefined,
   }));
 
   const landing: LandingTakeoff[] = sitesRaw.landing.map((l) => ({
@@ -72,6 +78,8 @@ export default async function Region({ params }: { params: { id: string } }) {
     latitude: l.latitude ?? undefined,
     longitude: l.longitude ?? undefined,
     description: l.description ?? undefined,
+    map: l.map ?? undefined,
+
   }));
 
   return (

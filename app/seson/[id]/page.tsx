@@ -10,6 +10,7 @@ interface Params {
 export default async function SeasonsPage({ params }: Params) {
   const seasonId = Number(params.id);
 
+  // --- Definim sezoanele ---
   const seasons = [
     { id: 1, name: "Spring", months: [3, 4, 5] },
     { id: 2, name: "Summer", months: [6, 7, 8] },
@@ -20,10 +21,10 @@ export default async function SeasonsPage({ params }: Params) {
   const season = seasons.find(s => s.id === seasonId);
   if (!season) return notFound();
 
-  // 1️⃣ Preluăm toate regiunile
+  // --- 1️⃣ Preluăm toate regiunile ---
   const regionsFromApi = await get_all_regions();
 
-  // 2️⃣ Filtrăm regiunile care au cel puțin o lună din sezon
+  // --- 2️⃣ Filtrăm regiunile care au cel puțin o lună din sezon și normalizăm tipurile ---
   const filteredRegions: Region[] = regionsFromApi
     .filter(r => r.bestSeason?.some(month => season.months.includes(month)))
     .map(r => ({
@@ -33,11 +34,13 @@ export default async function SeasonsPage({ params }: Params) {
       longitude: r.longitude ?? undefined,
       map: r.map ?? undefined,
       bestSeason: r.bestSeason ?? undefined,
+      seo: r.seo ?? undefined,
     }));
 
-  // 3️⃣ Preluăm țările asociate (fără duplicate), filtrăm null
+  // --- 3️⃣ Preluăm țările asociate (fără duplicate) ---
   const countryPromises = filteredRegions.map(r => get_country_by_id({ id: r.countryId }));
   const countriesWithNulls = await Promise.all(countryPromises);
+
   const validCountries: Country[] = countriesWithNulls
     .filter((c): c is NonNullable<typeof c> => c !== null)
     .map(c => ({
@@ -47,6 +50,7 @@ export default async function SeasonsPage({ params }: Params) {
       longitude: c.longitude ?? undefined,
     }));
 
+  // --- Eliminăm duplicatele după id ---
   const uniqueCountries = Array.from(new Map(validCountries.map(c => [c.id, c])).values());
 
   return (

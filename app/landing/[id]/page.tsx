@@ -36,6 +36,7 @@ export default async function LandingPage({ params }: PageProps) {
       id: details.region.id,
       name: details.region.name,
       bestSeason: details.region.bestSeason || [],
+      map: details.region.map ?? "",
     },
   };
 
@@ -59,11 +60,19 @@ const landingWithDescription = {
   description: landing.description ?? landingDescriptionFallback,
 };
 
+  // 6️⃣ Colectăm toate maps (fără null/undefined)
+  const maps: string[] = Array.from(
+  new Set([
+    ...sites.takeoff.map((t) => t.map).filter((m): m is string => !!m),
+    ...sites.landing.map((l) => l.map).filter((m): m is string => !!m),
+  ])
+);
+
 
   return (
     <div>
       <LandingDetails details={safeDetails} sites={sites} />
-      <ViewLanding landing={landingWithDescription} details={safeDetails} />
+      <ViewLanding landing={landingWithDescription} details={safeDetails} maps={maps} />
       <SocialComponent selectedTipe={"l"} selectedName={landing.name} selectedId={id} /> 
     </div>
   );

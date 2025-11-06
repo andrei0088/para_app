@@ -14,6 +14,8 @@ export interface Region {
   countryId: number;
   bestSeason?: number[];
   description?: string;
+  map?: string | null;
+  seo?: string;
   takeoffs?: Takeoff[];
   landings?: Landing[];
 }
@@ -24,6 +26,8 @@ export interface Takeoff {
   regionId: number;
   latitude: number;
   longitude: number;
+  map?: string;
+
 }
 
 export interface Landing {
@@ -32,6 +36,8 @@ export interface Landing {
   regionId: number;
   latitude: number;
   longitude: number;
+  map?: string;
+
 }
 
 export interface Site {

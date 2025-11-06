@@ -18,6 +18,7 @@ interface Region {
   countryId: number;
   bestSeason?: number[];
   description?: string | null;
+  map?:string | null;
 }
 
 interface Details {

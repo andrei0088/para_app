@@ -5,7 +5,6 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 // =======================================
@@ -31,6 +30,7 @@ model Region {
   country     Country         @relation(fields: [countryId], references: [id])
   bestSeason  Int[]
   description String?
+  seo         String?
   latitude    Float?
   longitude   Float?
   map         String?

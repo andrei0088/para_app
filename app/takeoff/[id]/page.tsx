@@ -8,13 +8,15 @@ interface PageProps {
   params: { id: string };
 }
 
-
 export default async function TakeoffPage({ params }: PageProps) {
   const id = Number(params.id);
+  if (isNaN(id)) {
+    return <p className="text-center text-gray-500 mt-10">Invalid takeoff ID.</p>;
+  }
 
   // 1️⃣ Preluare takeoff
-  const takeoff = await get_takeoff_by_id({ id });
-  if (!takeoff) {
+  const takeoffRaw = await get_takeoff_by_id({ id });
+  if (!takeoffRaw) {
     return <p className="text-center text-gray-500 mt-10">Takeoff not found.</p>;
   }
 
@@ -24,7 +26,32 @@ export default async function TakeoffPage({ params }: PageProps) {
     return <p className="text-center text-gray-500 mt-10">Takeoff details not found.</p>;
   }
 
-  // ⚡ Normalizare tipuri
+  // 3️⃣ Preluare site-uri
+  const sitesRaw = await get_region_landings_takeoffs({ id: rawDetail.region.id });
+
+  // 4️⃣ Fallback descriere
+  const takeoffDescriptionFallback = `
+    <p class="text-xl font-semibold">Discover this amazing takeoff spot!</p>
+    <p>Detailed information about this takeoff, its ideal flying conditions, nearby landing sites, and safety tips will be available soon.</p>
+    <p>Our goal is to help pilots and adventure seekers plan safe and unforgettable flights from this location.</p>
+    <p class="italic text-blue-700 dark:text-blue-400 font-medium">
+      Stay tuned for full updates and start preparing for your next paragliding adventure!
+    </p>
+  `;
+
+  // 5️⃣ Normalizare date pentru TS
+  const takeoff = {
+    id: takeoffRaw.id,
+    name: takeoffRaw.name,
+    latitude: takeoffRaw.latitude,
+    longitude: takeoffRaw.longitude,
+    altitude: takeoffRaw.altitude ?? 0,
+    description: takeoffRaw.description ?? takeoffDescriptionFallback,
+    map: takeoffRaw.map ?? "", // ❗ map trebuie să fie întotdeauna string
+    regionId: takeoffRaw.regionId,
+    countryId: takeoffRaw.countryId,
+  };
+
   const detail = {
     country: {
       id: rawDetail.country.id,
@@ -33,41 +60,23 @@ export default async function TakeoffPage({ params }: PageProps) {
     region: {
       id: rawDetail.region.id,
       name: rawDetail.region.name,
-      bestSeason: rawDetail.region.bestSeason ?? [],
+      map: rawDetail.region.map ?? "", 
     },
   };
 
-  // 4️⃣ Preluare site-uri
-  const sites = await get_region_landings_takeoffs({ id: rawDetail.region.id });
-
-  // 5️⃣ Fallback descriere takeoff
-  const takeoffDescriptionFallback = `
-  <p class="text-xl font-semibold">
-    Discover this amazing takeoff spot!
-  </p>
-  <p>
-    Detailed information about this takeoff, its ideal flying conditions, nearby landing sites, and safety tips will be available soon.
-  </p>
-  <p>
-    Our goal is to help pilots and adventure seekers plan safe and unforgettable flights from this location.
-  </p>
-  <p class="italic text-blue-700 dark:text-blue-400 font-medium">
-    Stay tuned for full updates and start preparing for your next paragliding adventure!
-  </p>
-`;
-
-
-  // 6️⃣ Creăm obiectul final takeoff
-  const takeoffWithDescription = {
-    ...takeoff,
-    description: takeoff.description ?? takeoffDescriptionFallback,
-  };
+  // 6️⃣ Colectăm toate maps (fără null/undefined)
+  const maps = Array.from(
+    new Set([
+      ...(sitesRaw.takeoff.map((t) => t.map).filter((m): m is string => !!m)),
+      ...(sitesRaw.landing.map((l) => l.map).filter((m): m is string => !!m)),
+    ])
+  );
 
   return (
     <div className="space-y-4">
-      <TakeoffDetails details={detail} sites={sites} />
-      <ViewTakeoff takeoff={takeoffWithDescription} details={detail} />
-      <SocialComponent selectedTipe={"t"} selectedName={takeoff.name} selectedId={id} />
+      <TakeoffDetails details={detail} sites={sitesRaw} />
+      <ViewTakeoff takeoff={takeoff} details={detail} maps={maps} />
+      <SocialComponent selectedTipe="t" selectedName={takeoff.name} selectedId={id} />
     </div>
   );
 }

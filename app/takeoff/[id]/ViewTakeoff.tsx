@@ -1,10 +1,12 @@
 import Link from "next/link";
 import MapGenerate from "@/app/components/map/MapGenerate";
 import TopView from "@/app/components/dinamic/TopView";
+import ViewTakeoffMap from "./ViewTakeoffMap";
 
 interface Takeoff {
   id: number;
   name: string;
+  map: string ;
   latitude: number;
   longitude: number;
   altitude: number;
@@ -19,6 +21,7 @@ interface Country {
 interface Region {
   id: number;
   name: string;
+  map: string;
 }
 
 interface Details {
@@ -29,11 +32,12 @@ interface Details {
 interface ViewTakeoffProps {
   takeoff: Takeoff;
   details: Details;
+  maps:string[];
 }
 
-export default function ViewTakeoff({ takeoff, details }: ViewTakeoffProps) {
+export default function ViewTakeoff({ takeoff, details , maps}: ViewTakeoffProps) {
   const googleMapsUrl = `https://www.google.com/maps?q=${takeoff.latitude},${takeoff.longitude}`;
-
+const sendMaps = [details.region.map, ... maps];
   return (
     <section className="max-w-6xl mx-auto bg-[#faf9f7] dark:bg-gray-900 shadow-lg rounded-2xl border border-gray-200 dark:border-gray-700 p-8">
       {/* Breadcrumb */}
@@ -86,6 +90,7 @@ export default function ViewTakeoff({ takeoff, details }: ViewTakeoffProps) {
 
         {/* Col 2-3 - Descriere */}
         <div className="col-span-2 prose prose-lg dark:prose-invert text-gray-700 dark:text-gray-300 leading-relaxed">
+         <ViewTakeoffMap map={takeoff.map} maps={sendMaps} />
           <div dangerouslySetInnerHTML={{ __html: takeoff.description }} />
         </div>
       </div>

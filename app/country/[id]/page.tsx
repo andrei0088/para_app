@@ -15,24 +15,47 @@ interface CountryPageProps {
 }
 export const dynamic = "force-dynamic"; // forțează Server-Side Rendering
 
-
 export default async function Country({ params }: CountryPageProps) {
   const id = Number(params.id);  
 
   // --- Obține țara ---
   const country = await get_country_by_id({ id });
-  if (!country) notFound(); // Singurul caz de 404
+  if (!country) notFound();
 
-  // --- Regiuni (dacă lipsesc → listă goală) ---
+  // --- Regiuni ---
   const regionsRaw = await get_country_regions({ id }) ?? [];
   const regions = regionsRaw.map(r => ({
     ...r,
-    description: r.description ?? undefined,
+    description: r.description ?? "",           // string garantat
     bestSeason: r.bestSeason ?? [],
+    map: r.map ?? "",                           // string garantat
+    seo: r.seo ?? undefined,                    // undefined dacă nu există
+    takeoffs: r.takeoffs?.map(t => ({
+      ...t,
+      map: t.map ?? "",                          // string garantat
+      description: t.description ?? "",         // string garantat
+    })) ?? [],
+    landings: r.landings?.map(l => ({
+      ...l,
+      map: l.map ?? "",                          // string garantat
+      description: l.description ?? "",         // string garantat
+    })) ?? [],
   }));
 
-  // --- Takeoff + Landing (dacă lipsesc → liste goale) ---
-  const sites = await get_country_landings_takeoffs({ id }) ?? { takeoff: [], landing: [] };
+  // --- Takeoff + Landing pentru țară ---
+  const sitesRaw = await get_country_landings_takeoffs({ id }) ?? { takeoff: [], landing: [] };
+  const sites = {
+    takeoff: sitesRaw.takeoff.map(t => ({
+      ...t,
+      map: t.map ?? "",
+      description: t.description ?? "",
+    })),
+    landing: sitesRaw.landing.map(l => ({
+      ...l,
+      map: l.map ?? "",
+      description: l.description ?? "",
+    })),
+  };
 
   // --- Determină lunile active ---
   const months = Array.from(new Set(regions.flatMap(r => r.bestSeason))).sort((a, b) => a - b);
@@ -44,9 +67,7 @@ export default async function Country({ params }: CountryPageProps) {
     { name: "Autumn", emoji: "🍂", months: [9, 10, 11] },
     { name: "Winter", emoji: "❄️", months: [12, 1, 2] },
   ];
-  const seasons = displaySeason.filter(s =>
-    s.months.some(m => months.includes(m))
-  );
+  const seasons = displaySeason.filter(s => s.months.some(m => months.includes(m)));
 
   // --- Fallback descriere ---
   const countryDescriptionFallback = `
@@ -85,7 +106,7 @@ export default async function Country({ params }: CountryPageProps) {
       {/* Harta */}
       <div className="h-[30vh] rounded-xl overflow-hidden shadow-md">
         <MapGenerate
-          center={countrySafe.longitude && countrySafe.latitude ? [countrySafe.latitude, countrySafe.longitude] : undefined}
+          center={countrySafe.latitude && countrySafe.longitude ? [countrySafe.latitude, countrySafe.longitude] : undefined}
         />
       </div>
 
