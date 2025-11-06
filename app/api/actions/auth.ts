@@ -71,27 +71,56 @@ export async function resend_create_mail(email: string) {
 // ===== SIGN IN =====
 
 export async function signInAction(formData: FormData) {
-  const email = (formData.get("email") as string) || "";
+   const email = (formData.get("email") as string) || "";
   const password = (formData.get("password") as string) || "";
 
   const user = await prisma.user.findFirst({
     where: { email },
-    select: { deletedAt: true },
+    select: { id: true, deletedAt: true, emailVerified: true },
   });
 
-  if (!user) throw new Error("User with this email does not exist.");
-  if (user.deletedAt)
-    throw new Error(
-      "Your account has been deactivated. Contact support if this is a mistake."
-    );
+  if (!user) {
+    return {
+      success: false,
+      text: "The email or password you entered is incorrect.",
+    };
+  }
+
+  if (user.deletedAt) {
+    return {
+      success: false,
+      text:
+        "This account has been deactivated. If you believe this is a mistake, please contact our support team.",
+    };
+  }
+
+  if (!user.emailVerified) {
+    return {
+      success: false,
+      text:
+      "Your account is not verified yet. Please check your email inbox — including the spam/junk folder — for the verification link. If you can’t find it, please contact us at contact@paragliding-high.eu.",
+    };
+  }
 
   try {
     await auth.api.signInEmail({ body: { email, password } });
     return { success: true };
   } catch (error: unknown) {
-    const errMsg =
-      error instanceof Error ? error.message : "Incorrect credentials.";
-    throw new Error(errMsg);
+    const errMsg = error instanceof Error ? error.message.toLowerCase() : "";
+
+    // Detect password mismatch (adjust if your auth provider uses different wording)
+    if (errMsg.includes("invalid") || errMsg.includes("credentials")) {
+      return {
+        success: false,
+        text: "The email or password you entered is incorrect.",
+      };
+    }
+
+    // Fallback (unknown errors)
+    return {
+      success: false,
+      text: "We couldn’t sign you in right now. Please try again later.",
+    };
   }
 }
 
@@ -112,6 +141,7 @@ interface SendEmailProps {
   to: string;
   subject: string;
   text: string;
+  
 }
 export async function sendEmail({ to, subject, text }: SendEmailProps) {
   const transporter = nodemailer.createTransport({
@@ -128,7 +158,7 @@ export async function sendEmail({ to, subject, text }: SendEmailProps) {
     from: process.env.EMAIL_FROM,
     to,
     subject,
-    text,
+    html:text,
   });
 }
 

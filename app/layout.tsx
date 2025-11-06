@@ -5,6 +5,7 @@ import RightBar from "./components/RightBar";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,7 +40,14 @@ export default function RootLayout({
           {/* Content principal */}
           <main className="flex-1 p-5 flex flex-col overflow-auto">
             <Analytics />
+            <SpeedInsights/>
             {children}
+
+{/* <!-- Google Tag Manager (noscript) --> */}
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TNFPLFK7"
+height="0" width="0" style={{display:'none',visibility:'hidden'}}></iframe></noscript>
+{/* <!-- End Google Tag Manager (noscript) --> */}
+
           </main>
 
           {/* RightBar */}

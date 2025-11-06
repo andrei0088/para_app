@@ -134,7 +134,7 @@ export default function RegisterClient() {
       </div>
     )}
 
-    <form action={formAction} method="POST" onSubmit={handleSubmit} className="space-y-4">
+    <form action={formAction} onSubmit={handleSubmit} className="space-y-4">
       
       {/* Name */}
       <div>
