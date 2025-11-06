@@ -13,7 +13,7 @@ import { notFound } from "next/navigation";
 interface CountryPageProps {
   params: { id: string };
 }
-export const dynamic = "force-dynamic"; // forțează Server-Side Rendering
+export const dynamic = "force-dynamic"; // forțează SSR
 
 export default async function Country({ params }: CountryPageProps) {
   const id = Number(params.id);  
@@ -26,10 +26,10 @@ export default async function Country({ params }: CountryPageProps) {
   const regionsRaw = await get_country_regions({ id }) ?? [];
   const regions = regionsRaw.map(r => ({
     ...r,
-    description: r.description ?? "",           // string garantat
+    description: r.description ?? "",           // garantat string
     bestSeason: r.bestSeason ?? [],
-    map: r.map ?? "",                           // string garantat
-    seo: r.seo ?? undefined,                    // undefined dacă nu există
+    map: r.map ?? "",                           // garantat string
+    seo: r.seo ?? undefined,                    // undefined dacă lipseste sau null
     takeoffs: r.takeoffs?.map(t => ({
       ...t,
       map: t.map ?? "",                          // string garantat
@@ -37,8 +37,8 @@ export default async function Country({ params }: CountryPageProps) {
     })) ?? [],
     landings: r.landings?.map(l => ({
       ...l,
-      map: l.map ?? "",                          // string garantat
-      description: l.description ?? "",         // string garantat
+      map: l.map ?? "",
+      description: l.description ?? "",
     })) ?? [],
   }));
 
@@ -92,7 +92,6 @@ export default async function Country({ params }: CountryPageProps) {
     </p>
   `;
 
-  // --- Normalizează valorile pentru TypeScript ---
   const countrySafe = {
     ...country,
     description: country.description ?? countryDescriptionFallback,
