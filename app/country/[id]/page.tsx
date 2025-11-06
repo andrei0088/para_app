@@ -25,22 +25,22 @@ export default async function Country({ params }: CountryPageProps) {
   // --- Regiuni ---
   const regionsRaw = await get_country_regions({ id }) ?? [];
   const regions = regionsRaw.map(r => ({
-    ...r,
-    description: r.description ?? "",           // garantat string
-    bestSeason: r.bestSeason ?? [],
-    map: r.map ?? "",                           // garantat string
-    seo: r.seo ?? undefined,                    // undefined dacă lipseste sau null
-    takeoffs: r.takeoffs?.map(t => ({
-      ...t,
-      map: t.map ?? "",                          // string garantat
-      description: t.description ?? "",         // string garantat
-    })) ?? [],
-    landings: r.landings?.map(l => ({
-      ...l,
-      map: l.map ?? "",
-      description: l.description ?? "",
-    })) ?? [],
-  }));
+  ...r,
+  description: r.description ?? "",  
+  bestSeason: r.bestSeason ?? [],
+  map: r.map ?? "",                 
+  takeoffs: r.takeoffs?.map(t => ({
+    ...t,
+    map: t.map ?? "",
+    description: t.description ?? "",
+  })) ?? [],
+  landings: r.landings?.map(l => ({
+    ...l,
+    map: l.map ?? "",
+    description: l.description ?? "",
+  })) ?? [],
+}));
+
 
   // --- Takeoff + Landing pentru țară ---
   const sitesRaw = await get_country_landings_takeoffs({ id }) ?? { takeoff: [], landing: [] };
