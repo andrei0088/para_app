@@ -26,11 +26,11 @@ const Page = async ({ params }: PageProps) => {
         : null, // orice alt string devine null
   } as const; // forțează TS să recunoască tipul literal
 
-  const videos = rez.data.videos ?? [];
+  // const videos = rez.data.videos ?? [];
   return (
     <div className="w-full h-full">
       <ProfileViewClient profile={profile}  />
-      <ProfileVideos videos={videos} />
+      {/* <ProfileVideos videos={videos} /> */}
     </div>
   );
 };

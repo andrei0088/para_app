@@ -31,6 +31,7 @@ interface UserResult {
   success: boolean;
   id: string | null;
   message?: string;
+  profileId?: number | null;
 }
 
 type CommentWithUser<T> = T & { user: { id: string; name: string } };
@@ -44,7 +45,19 @@ async function getUserId(): Promise<UserResult> {
   try {
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session?.user) return { success: false, message: "Not logged in", id: null };
-    return { success: true, id: session.user.id };
+
+    const userFromDB = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      include: { profile: true }
+    });
+
+    if (!userFromDB) return { success: false, message: "User not found", id: null };
+
+    return {
+      success: true,
+      id: session.user.id,
+      profileId: userFromDB.profile?.id ?? null
+    };
   } catch (error) {
     const message = error instanceof Error ? error.message : "Error retrieving session";
     return { success: false, message, id: null };
@@ -58,24 +71,24 @@ export async function add_comment(component: ComponentType, componentId: number,
   if (comment.length > 1000) return { success: false, message: "Comment is too long. Maximum 1000 characters allowed." };
 
   const user = await getUserId();
-  if (!user.success || !user.id) return { success: false, message: "You must be logged in to comment." };
+  if (!user.success || !user.id || !user.profileId) return { success: false, message: "You must be logged in and have a profile to comment." };
 
   try {
     switch (component) {
       case "c":
-        await prisma.countryComment.create({ data: { userId: user.id, countryId: componentId, comment } });
+        await prisma.countryComment.create({ data: { userId: user.id, profileId: user.profileId, countryId: componentId, comment } });
         revalidatePath(`/country/${componentId}`);
         break;
       case "r":
-        await prisma.regionComment.create({ data: { userId: user.id, regionId: componentId, comment } });
+        await prisma.regionComment.create({ data: { userId: user.id, profileId: user.profileId, regionId: componentId, comment } });
         revalidatePath(`/region/${componentId}`);
         break;
       case "t":
-        await prisma.takeoffComment.create({ data: { userId: user.id, takeoffId: componentId, comment } });
+        await prisma.takeoffComment.create({ data: { userId: user.id, profileId: user.profileId, takeoffId: componentId, comment } });
         revalidatePath(`/takeoff/${componentId}`);
         break;
       case "l":
-        await prisma.landingComment.create({ data: { userId: user.id, landingId: componentId, comment } });
+        await prisma.landingComment.create({ data: { userId: user.id, profileId: user.profileId, landingId: componentId, comment } });
         revalidatePath(`/landing/${componentId}`);
         break;
       default:
@@ -153,6 +166,7 @@ async function deleteCommentModel(component: ComponentType, id: number) {
   }
 }
 
+// ==== Update Comment ====
 export async function get_comment_update(commentId: number, text: string, tipe: ComponentType) {
   const user = await getUserId();
   const comment = await getCommentModel(tipe, commentId);
@@ -169,6 +183,7 @@ export async function get_comment_update(commentId: number, text: string, tipe: 
   return { success: true, message: "Comment updated", data: updated };
 }
 
+// ==== Delete Comment ====
 export async function get_delete_comment(commentId: number, tipe: ComponentType) {
   const user = await getUserId();
   const comment = await getCommentModel(tipe, commentId);
@@ -185,7 +200,7 @@ export async function get_delete_comment(commentId: number, tipe: ComponentType)
   return { success: true, message: "Comment deleted", data: deleted };
 }
 
-// ==== Raport comentariu ====
+// ==== Raport Comment ====
 export async function raport_comment({ id, tipe }: { id: number; tipe: ComponentType }) {
   let current;
   if (tipe === "c") current = await prisma.countryComment.findUnique({ where: { id }, select: { raport: true } });
@@ -210,7 +225,7 @@ export async function raport_comment({ id, tipe }: { id: number; tipe: Component
   return newRaport;
 }
 
-// ==== Comentarii raportate (raport > 0) ====
+// ==== Comentarii raportate ====
 export default async function raported_comment() {
   const country = await prisma.countryComment.findMany({ where: { raport: { not: 0 } } });
   const region = await prisma.regionComment.findMany({ where: { raport: { not: 0 } } });

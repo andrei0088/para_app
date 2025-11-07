@@ -18,6 +18,8 @@ async function getAuthHeaders(): Promise<Headers> {
 type SuccessResponse<T> = { success: true; data: T };
 type ErrorResponse = { success: false; message: string };
 
+
+
 export type ProfileData = {
   id: number;
   userId: string;
@@ -27,7 +29,6 @@ export type ProfileData = {
   sex: string | null;
   bio: string | null;
   bdate: Date;
-  videos: string[];
   raport: number;
   createdAt: Date;
 };
@@ -85,9 +86,6 @@ export async function change_profile(formData: FormData): Promise<SuccessRespons
     const sex = formData.get("sex");
     const publicProfile = formData.get("public");
 
-    const videosForm = formData.getAll("videos[]");
-    const videos: string[] = videosForm.filter((v): v is string => typeof v === "string" && v.trim() !== "").map(v => v.trim());
-
     const session = await auth.api.getSession({ headers: await getAuthHeaders() });
     if (!session?.user?.id) return { success: false, message: "User not logged in." };
 
@@ -97,7 +95,6 @@ export async function change_profile(formData: FormData): Promise<SuccessRespons
         bio: typeof bio === "string" ? bio : null,
         sex: typeof sex === "string" ? sex : null,
         public: publicProfile === "yes",
-        videos: videos.length > 0 ? videos : [],
       },
     });
 

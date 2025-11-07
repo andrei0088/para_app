@@ -24,7 +24,6 @@ export default async function ProfilePage() {
     public: data.public,
     sex: sanitizedSex,
     bio: data.bio ?? null,       // tipul acceptă null
-    videos: data.videos ?? undefined, // optional
   };
 
   return (

@@ -5,7 +5,7 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  // directUrl = env("DIRECT_URL")
 }
 
 // =======================================
@@ -116,6 +116,8 @@ model User {
   regionLikes  RegionLike[]
   takeoffLikes TakeoffLike[]
   landingLikes LandingLike[]
+  profileLikes ProfileLike[]
+  videoLikes   VideoLike[]
 
   countryComments CountryComment[]
   regionComments  RegionComment[]
@@ -225,12 +227,39 @@ model LandingLike {
   @@unique([userId, landingId])
 }
 
+model ProfileLike {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  profileId Int
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id])
+  profile Profile @relation(fields: [profileId], references: [id])
+
+  @@unique([userId, profileId])
+}
+
+model VideoLike {
+  id      Int      @id @default(autoincrement())
+  userId  String
+  videoId Int
+  createdAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id])
+  video Video @relation(fields: [videoId], references: [id])
+
+  @@unique([userId, videoId])
+}
+
+
+
 // =======================================
 // Comment Section
 // =======================================
 model CountryComment {
   id        Int       @id @default(autoincrement())
   userId    String
+  profileId Int
   countryId Int
   comment   String
   raport    Int       @default(0)
@@ -244,6 +273,7 @@ model CountryComment {
 model RegionComment {
   id        Int       @id @default(autoincrement())
   userId    String
+  profileId Int
   regionId  Int
   comment   String
   raport    Int       @default(0)
@@ -258,6 +288,7 @@ model RegionComment {
 model TakeoffComment {
   id        Int       @id @default(autoincrement())
   userId    String
+  profileId Int
   takeoffId Int
   comment   String
   raport    Int       @default(0)
@@ -272,6 +303,7 @@ model TakeoffComment {
 model LandingComment {
   id        Int       @id @default(autoincrement())
   userId    String
+  profileId Int
   landingId Int
   comment   String
   raport    Int       @default(0)
@@ -296,13 +328,24 @@ model Profile {
   bdate     DateTime
   bio       String?
   image     String? @unique
-  videos    String[]  @default([]) // array de stringuri pentru link-uri YouTube
-
-  
   
   createdAt DateTime  @default(now())
-  
 
   user      User      @relation(fields: [userId], references: [id])
+  videos    Video[]   // relație 1:N către Video
+  like      ProfileLike[]
   
+}
+
+model Video {
+  id        Int       @id @default(autoincrement())
+  profileId Int
+  userId    String
+  url       String    @unique
+  reported  Int       @default(0)
+  createdAt DateTime  @default(now())
+  deleted   Boolean   @default(false)
+
+  profile   Profile   @relation(fields: [profileId], references: [id])
+  likes     VideoLike[]
 }

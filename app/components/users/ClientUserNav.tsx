@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { signOutAction } from "@/app/api/actions/auth";
 import blankPhoto from "@/public/blank-profile.png";
+import { CldImage } from "next-cloudinary";
+
 
 type Session = {
   user: {
@@ -55,15 +57,28 @@ export default function UserNav({ session }: { session: Session }) {
       </span>
 
       {/* Avatar */}
+      {session.user.image ? (
+        <CldImage
+              src={session.user.image}               
+              width={36}              
+              height={36}
+              crop="fill"             
+              gravity="auto"           
+              alt="Profile picture"
+              quality="auto"            
+              radius="max"             
+              style={{ objectFit: "cover", cursor: "pointer" }}
+            />
+      ) :(
       <Image
-        src={session.user.image ?? blankPhoto}
+        src={blankPhoto}
         alt="Profile"
         width={36}
         height={36}
         className="rounded-full border border-gray-300 cursor-pointer hover:scale-105 transition-transform duration-200"
         onClick={() => setOpen(!open)}
       />
-
+)}
       {/* Dropdown Arrow */}
       <button
         className="text-gray-500 dark:text-gray-400 focus:outline-none"

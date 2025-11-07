@@ -1,13 +1,11 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { useDropzone } from "react-dropzone";
-import Image from "next/image";
-import blankProfile from "@/public/blank-profile.png";
+import { useState } from "react";
 import change_password from "./change-password";
 import delete_user from "./delete/delete";
 import change_name from "./change_name";
 import { useRouter } from "next/navigation";
+import UpdateImage from "./UpdateImage";
 
 interface UserClientProps {
   initialUser: { name: string; email: string; image?: string } | null;
@@ -18,7 +16,6 @@ export default function UserClient({ initialUser }: UserClientProps) {
   const [user, setUser] = useState(initialUser);
   const [editing, setEditing] = useState(false);
   const [newName, setNewName] = useState(initialUser?.name || "");
-  const [profileImage, setProfileImage] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [pwMessage, setPwMessage] = useState("");
@@ -36,16 +33,7 @@ export default function UserClient({ initialUser }: UserClientProps) {
       .join(" ");
 
 
-  // Upload imagine
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles.length > 0) setProfileImage(acceptedFiles[0]);
-  }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: { "image/*": [] },
-    maxFiles: 1,
-  });
+  
 
   // Handle save
   const handleSave = async () => {
@@ -126,24 +114,7 @@ export default function UserClient({ initialUser }: UserClientProps) {
   <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white text-center sm:text-left">Your Profile</h1>
 
   {/* PROFILE IMAGE */}
-  <div
-    {...getRootProps()}
-    className={`w-36 h-36 mx-auto mb-6 flex flex-col items-center justify-center rounded-full border-2 border-dashed cursor-pointer overflow-hidden transition-all duration-300
-      ${isDragActive ? "border-blue-500 bg-blue-50 dark:bg-blue-900" : "border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-gray-700"}`}
-  >
-    <input {...getInputProps()} />
-
-    {profileImage ? (
-      <Image src={URL.createObjectURL(profileImage)} alt="Preview" width={144} height={144} className="object-cover rounded-full" />
-    ) : user.image ? (
-      <Image src={user.image} alt="Profile" width={144} height={144} className="object-cover rounded-full" />
-    ) : (
-      <div className="flex flex-col items-center text-gray-400">
-        <Image src={blankProfile} alt="Blank profile" width={64} height={64} className="mb-2" />
-        <span className="text-sm">Drag a picture here</span>
-      </div>
-    )}
-  </div>
+  <UpdateImage currentImage={user.image}/>
 
   {/* NAME + EMAIL */}
   <div className="mb-8 space-y-4">
