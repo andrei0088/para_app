@@ -28,7 +28,7 @@ export default function ViewRegionMap({ map, maps }: MapProps) {
     <>
       <CldImage
         src={map}
-        width={800}
+        width={500}
         height={500}
         crop="fill"
         gravity="auto"

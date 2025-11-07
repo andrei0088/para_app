@@ -295,6 +295,7 @@ model Profile {
   url       String @unique
   bdate     DateTime
   bio       String?
+  image     String? @unique
   videos    String[]  @default([]) // array de stringuri pentru link-uri YouTube
 
   

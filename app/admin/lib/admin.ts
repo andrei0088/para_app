@@ -1,0 +1,58 @@
+"use server"
+import { prisma } from "@/app/api/prisma";
+
+export async function get_country_region_all()
+{
+    try{
+        const country = await prisma.country.findMany({
+            select:{
+                id: true,
+                name : true,
+            }
+        });
+        const region = await prisma.region.findMany({
+            select:{
+                id: true,
+                name : true,
+                countryId:true,
+            }
+        });
+       return {succes: true , rez : {country: country , region: region}}; 
+    }catch(e){ return {success: false , error: e};
+    }
+}
+
+export async function add_country(name: string) {
+  if (!name) return { success: false, error: "Country name is required" };
+
+  try {
+    const rez = await prisma.country.create({ data: { name } });
+
+    return { success: true, rez: rez.id };
+  } catch (e: unknown) {
+    if (e instanceof Error && e.message.includes("Unique constraint failed")) {
+      return { success: false, error: "Country already exists" };
+    }
+
+    return { success: false, error: (e as Error).message || "Unknown error" };
+  }
+}
+
+export async function add_region(name:string, country: number)
+{
+    console.log(name + " si id : "+ country )
+     if (!name && !country) return { success: false, error: "Region name and country selection are required" };
+const countryId = Number(country);
+  try {
+    const rez = await prisma.region.create({ data: { name, countryId} });
+
+    return { success: true, rez: rez.id };
+  } catch (e: unknown) {
+    if (e instanceof Error && e.message.includes("Unique constraint failed")) {
+      return { success: false, error: "Region already exists" };
+    }
+
+    return { success: false, error: (e as Error).message || "Unknown error" };
+  }
+
+}

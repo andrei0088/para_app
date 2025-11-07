@@ -1,9 +1,8 @@
 import AddNewPlace from "./AddNewPlace";
-import { get_all_country, get_all_regions } from "@/app/api/get/get_places";
+import { get_country_region_all } from "./lib/admin";
 
 export default async function AddPlacePage() {
-  const countries = await get_all_country();
-  const regions = await get_all_regions();
-
-  return <AddNewPlace countries={countries} regions={regions} />;
+  const data = await get_country_region_all()
+  if(data.succes)  return <AddNewPlace countries={data.rez.country} regions={data.rez.region} />;
+  return "Database error !";
 }

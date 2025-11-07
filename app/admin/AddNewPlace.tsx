@@ -1,11 +1,11 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { addPlace } from "@/app/api/actions/update_places";
-import type { PlaceType } from "@/app/types";
+import React, { useState, FormEvent } from "react";
+import { Country, Region } from "../types";
+import { add_country, add_region } from "./lib/admin";
+import { capitalizeFirstLetter } from "better-auth";
 
-type Country = { id: number; name: string };
-type Region = { id: number; name: string; countryId: number };
+type PlaceType = "country" | "region" | "takeoff" | "landing";
 
 interface AddPlaceUserProps {
   countries: Country[];
@@ -13,147 +13,120 @@ interface AddPlaceUserProps {
 }
 
 export default function AddPlaceUser({ countries, regions }: AddPlaceUserProps) {
-  const [type, setType] = useState<PlaceType | "">("");
-  const [countryId, setCountryId] = useState<number | null>(null);
-  const [regionId, setRegionId] = useState<number | null>(null);
-  const [loading, setLoading] = useState(false);
+    const [type, setType] = useState<PlaceType | "">('');
+    const [country, setCountry] = useState('');
+    const [region, setRegion] = useState('');
+    const [name, setName] = useState('');
+    const [message, setMessage] = useState("");
 
-  const filteredRegions = countryId
-    ? regions.filter(r => r.countryId === countryId)
-    : [];
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
 
-  const handleCreate = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!type) return alert("Select a type first.");
+        // Validation
+        if (!type) return setMessage("Please select what you want to add.");
+        if (!name.trim()) return setMessage("Please enter a valid name.");
 
-    setLoading(true);
+        // Add country
+        if (type === "country") {
+            const result = await add_country(name.trim());
+            if (result.success) setMessage(`Country "${name}" has been added with ID ${result.rez}.`);
+            else setMessage(`Error: ${result.error}`);
+        }
 
-    const formData = new FormData(e.currentTarget);
-    const rawName = formData.get("name") as string;
-    const name = rawName.trim().charAt(0).toUpperCase() + rawName.trim().slice(1);
+        // Add region
+        if (type === "region") {
+            if (!country) return setMessage("Please select a country first.");
+            const result = await add_region(name.trim(), Number(country));
+            if (result.success) setMessage(`Region "${name}" has been added with ID ${result.rez}.`);
+            else setMessage(`Error: ${result.error}`);
+        }
 
-    let options = {};
-
-    // BUILD OPTIONS ONLY WHEN NEEDED
-    if (type === "region") {
-      if (!countryId) return alert("Select a country.");
-      options = { countryId };
+        // Placeholder for future features
+        if (type === "takeoff") setMessage("Takeoff feature not implemented yet.");
+        if (type === "landing") setMessage("Landing feature not implemented yet.");
     }
 
-    if (type === "takeoff" || type === "landing") {
-      if (!countryId || !regionId)
-        return alert("Select both country and region for takeoff/landing");
+    return (
+        <div className="max-w-md mx-auto p-4">
+            {message && <p className="mb-2 text-blue-700">{message}</p>}
 
-      const latitude = Number(formData.get("latitude"));
-      const longitude = Number(formData.get("longitude"));
-      const altitude = Number(formData.get("altitude"));
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+                {/* Select Type */}
+                <label htmlFor="type">Select item type:</label>
+                <select
+                    id="type"
+                    value={type}
+                    onChange={(e) => { setType(e.target.value as PlaceType); setCountry(''); setRegion(''); }}
+                    className="w-full border p-2 rounded-md"
+                    required
+                >
+                    <option value="">-- Choose type --</option>
+                    <option value="country">Country</option>
+                    <option value="region">Region</option>
+                    <option value="takeoff">Takeoff</option>
+                    <option value="landing">Landing</option>
+                </select>
 
-      if (Number.isNaN(latitude) || Number.isNaN(longitude) || Number.isNaN(altitude))
-        return alert("Latitude, longitude, and altitude are required and must be numbers.");
+                {/* Select Country for Region/Takeoff/Landing */}
+                {(type && type !== "country") && (
+                    <>
+                        <label htmlFor="country">Select a country:</label>
+                        <select
+                            id="country"
+                            value={country}
+                            onChange={(e) => setCountry(e.target.value)}
+                            className="w-full border p-2 rounded-md"
+                            required
+                        >
+                            <option value="">-- Choose a country --</option>
+                            {countries.map(c => (
+                                <option value={c.id} key={`country-${c.id}`}>{c.name}</option>
+                            ))}
+                        </select>
+                    </>
+                )}
 
-      options = { countryId, regionId, latitude, longitude, altitude };
-    }
+                {/* Select Region for Takeoff/Landing */}
+                {(type && type !== "country" && type !== "region") && (
+                    <>
+                        <label htmlFor="region">Select a region:</label>
+                        <select
+                            id="region"
+                            value={region}
+                            onChange={(e) => setRegion(e.target.value)}
+                            className="w-full border p-2 rounded-md"
+                            required
+                        >
+                            <option value="">-- Choose a region --</option>
+                            {regions.map(r => {
+                                if (!country || Number(country) === r.countryId) {
+                                    return <option value={r.id} key={`region-${r.id}`}>{r.name}</option>
+                                }
+                                return null;
+                            })}
+                        </select>
+                    </>
+                )}
 
-    const rez = await addPlace(type as PlaceType, name, options);
+                {/* Name Input */}
+                <label htmlFor="name">Enter Name:</label>
+                <input
+                    id="name"
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(capitalizeFirstLetter(e.target.value))}
+                    placeholder="Type the name here"
+                    className="border p-2 rounded-md"
+                    required
+                />
 
-    setLoading(false);
-
-    if (!rez.success) return alert("❌ " + rez.message);
-
-    window.location.href = `/admin/editplace?type=${type}&id=${rez.id}`;
-  };
-
-  return (
-    <div className="w-1/2 mx-auto p-6 bg-white rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-4">Add New Place</h2>
-
-      <form onSubmit={handleCreate} className="space-y-4">
-        {/* TYPE */}
-        <div>
-          <label className="block font-medium mb-1">Type:</label>
-          <select
-            value={type}
-            onChange={(e) => {
-              setType(e.target.value as PlaceType);
-              setCountryId(null);
-              setRegionId(null);
-            }}
-            className="w-full border p-2 rounded-md"
-            required
-          >
-            <option value="">Select type</option>
-            <option value="country">Country</option>
-            <option value="region">Region</option>
-            <option value="takeoff">Takeoff</option>
-            <option value="landing">Landing</option>
-          </select>
+                <button
+                    type="submit"
+                    className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition"
+                >
+                    Add
+                </button>
+            </form>
         </div>
-
-        {/* COUNTRY */}
-        {(type === "region" || type === "takeoff" || type === "landing") && (
-          <div>
-            <label className="block font-medium mb-1">Country:</label>
-            <select
-              value={countryId ?? ""}
-              onChange={(e) => setCountryId(Number(e.target.value))}
-              className="w-full border p-2 rounded-md"
-              required
-            >
-              <option value="">Select country</option>
-              {countries.map(c => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
-            </select>
-          </div>
-        )}
-
-        {/* REGION */}
-        {(type === "takeoff" || type === "landing") && countryId && (
-          <div>
-            <label className="block font-medium mb-1">Region:</label>
-            <select
-              value={regionId ?? ""}
-              onChange={(e) => setRegionId(Number(e.target.value))}
-              className="w-full border p-2 rounded-md"
-              required
-            >
-              <option value="">Select region</option>
-              {filteredRegions.map(r => (
-                <option key={r.id} value={r.id}>{r.name}</option>
-              ))}
-            </select>
-          </div>
-        )}
-
-        {/* NAME */}
-        <div>
-          <label className="block font-medium mb-1">Name:</label>
-          <input
-            type="text"
-            name="name"
-            className="w-full border p-2 rounded-md"
-            required
-          />
-        </div>
-
-        {/* LAT / LNG / ALT only for takeoff + landing */}
-        {(type === "takeoff" || type === "landing") && (
-          <>
-            <input type="number" step="0.0001" name="latitude" placeholder="Latitude" className="w-full border p-2 rounded-md" required />
-            <input type="number" step="0.0001" name="longitude" placeholder="Longitude" className="w-full border p-2 rounded-md" required />
-            <input type="number" name="altitude" placeholder="Altitude" className="w-full border p-2 rounded-md" required />
-          </>
-        )}
-
-        {/* SUBMIT */}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
-        >
-          {loading ? "Creating..." : "Create"}
-        </button>
-      </form>
-    </div>
-  );
+    );
 }

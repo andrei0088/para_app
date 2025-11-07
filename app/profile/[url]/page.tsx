@@ -9,7 +9,8 @@ interface PageProps {
 }
 
 const Page = async ({ params }: PageProps) => {
-  const url = params.url;
+   const paramsUrl = await params;
+  const url = paramsUrl.url;
   const rez = await getProfileByUrl(url);
 
   if (!rez.success || !rez.data) notFound();
@@ -26,10 +27,9 @@ const Page = async ({ params }: PageProps) => {
   } as const; // forțează TS să recunoască tipul literal
 
   const videos = rez.data.videos ?? [];
-
   return (
     <div className="w-full h-full">
-      <ProfileViewClient profile={profile} />
+      <ProfileViewClient profile={profile}  />
       <ProfileVideos videos={videos} />
     </div>
   );
