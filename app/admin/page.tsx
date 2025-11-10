@@ -1,8 +1,12 @@
-import { get_all_country, get_all_landing, get_all_regions, get_all_takeoff } from "../api/get/get_places";
+import {
+  get_all_country,
+  get_all_landing,
+  get_all_regions,
+  get_all_takeoff,
+} from "../api/get/get_places";
 import ViewPlacesEdit from "./ViewPlacesEdit";
 import AddPlace from "./AddPlace";
 import Raported from "./Raported";
-import raported_comment from "../api/get/get_comments";
 import { revalidateAllCache } from "./revalidateCache";
 
 // ===== Tipuri =====
@@ -52,11 +56,11 @@ export default async function AdminPage() {
   const regionData = await get_all_regions();
   const takeoffData = await get_all_takeoff();
   const landingData = await get_all_landing();
-  const commentsData = await raported_comment();
+  const commentsData = undefined;
 
   // Mapare comentarii brute în Comment tipat
   const mapComments = (arr: RawComment[] | null): Comment[] =>
-    arr?.map(c => ({
+    arr?.map((c) => ({
       id: c.id,
       comment: c.comment,
       userId: c.userId,
@@ -64,15 +68,15 @@ export default async function AdminPage() {
       deletedAt: c.deletedAt,
       createdAt: c.createdAt,
       updatedAt: c.updatedAt ?? c.createdAt,
-      user: { id: c.userId, name: c.userName ?? "Unknown" }
+      user: { id: c.userId, name: c.userName ?? "Unknown" },
     })) ?? [];
 
-  const mappedComments: RaportedProps = {
-    country: mapComments(commentsData.country),
-    region: mapComments(commentsData.region),
-    takeoff: mapComments(commentsData.takeoff),
-    landing: mapComments(commentsData.landing)
-  };
+  // const mappedComments: RaportedProps = {
+  //   country: mapComments(commentsData.country),
+  //   region: mapComments(commentsData.region),
+  //   takeoff: mapComments(commentsData.takeoff),
+  //   landing: mapComments(commentsData.landing),
+  // };
 
   return (
     <div className="p-6 space-y-6">
@@ -87,7 +91,7 @@ export default async function AdminPage() {
       </div>
 
       {/* Comentarii raportate */}
-      <Raported comments={mappedComments} />
+      {/* <Raported comments={mappedComments} /> */}
 
       {/* Vizualizare și editare locuri */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
