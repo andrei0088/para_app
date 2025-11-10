@@ -31,15 +31,28 @@ export default async function SocialComponent({
   selectedId,
   selectedName,
 }: SocialComponentProps) {
-  // Preia comentariile
   let rez: CommentsResponse;
+
   if (selectedTipe === "c")
-    rez = await get_country_comments({ id: selectedId });
+    rez = (await get_country_comments({ id: selectedId })) ?? {
+      userID: null,
+      comments: [],
+    };
   else if (selectedTipe === "r")
-    rez = await get_region_comments({ id: selectedId });
+    rez = (await get_region_comments({ id: selectedId })) ?? {
+      userID: null,
+      comments: [],
+    };
   else if (selectedTipe === "t")
-    rez = await get_takeoff_comments({ id: selectedId });
-  else rez = await get_landing_comments({ id: selectedId });
+    rez = (await get_takeoff_comments({ id: selectedId })) ?? {
+      userID: null,
+      comments: [],
+    };
+  else
+    rez = (await get_landing_comments({ id: selectedId })) ?? {
+      userID: null,
+      comments: [],
+    };
 
   // Extrage profileId-uri unice
   const list: number[] = Array.from(
