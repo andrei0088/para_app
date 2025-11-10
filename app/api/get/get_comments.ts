@@ -43,9 +43,9 @@ type ComponentType = "c" | "r" | "t" | "l";
 
 interface UserResult {
   success: boolean;
-  id: string | null;
-  message?: string;
-  profileId?: number | null;
+  id: string; // fallback: "" dacă nu există user
+  profileId: number; // fallback: 0 dacă nu există profile
+  message: string;
 }
 
 type CommentWithUser<T> = T & { user: { id: string; name: string } };
@@ -59,7 +59,7 @@ async function getUserId(): Promise<UserResult> {
   try {
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session?.user)
-      return { success: false, message: "Not logged in", id: null };
+      return { success: false, message: "Not logged in", id: "", profileId: 0 };
 
     const userFromDB = await prisma.user.findUnique({
       where: { id: session.user.id },
@@ -67,17 +67,23 @@ async function getUserId(): Promise<UserResult> {
     });
 
     if (!userFromDB)
-      return { success: false, message: "User not found", id: null };
+      return {
+        success: false,
+        message: "User not found",
+        id: "",
+        profileId: 0,
+      };
 
     return {
       success: true,
       id: session.user.id,
-      profileId: userFromDB.profile?.id,
+      profileId: userFromDB.profile?.id ?? 0,
+      message: "User found",
     };
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Error retrieving session";
-    return { success: false, message, id: null };
+    return { success: false, message, id: "", profileId: 0 };
   }
 }
 
@@ -98,7 +104,7 @@ export async function add_comment(
     };
 
   const user = await getUserId();
-  if (!user.success || !user.id || !user.profileId)
+  if (!user.success || user.id === "" || user.profileId === 0)
     return {
       success: false,
       message: "You must be logged in and have a profile to comment.",
@@ -164,6 +170,7 @@ export async function add_comment(
 // ==== Obține comentarii ====
 export async function get_country_comments({ id }: { id: number }) {
   const user = await getUserId();
+  if (!user.success) return;
   const comments: CommentWithUser<CountryComment>[] =
     await prisma.countryComment.findMany({
       where: { countryId: id, deletedAt: null, raport: { lt: 7 } },
@@ -174,6 +181,7 @@ export async function get_country_comments({ id }: { id: number }) {
 
 export async function get_region_comments({ id }: { id: number }) {
   const user = await getUserId();
+  if (!user.success) return;
   const comments: CommentWithUser<RegionComment>[] =
     await prisma.regionComment.findMany({
       where: { regionId: id, deletedAt: null, raport: { lt: 7 } },
@@ -184,6 +192,7 @@ export async function get_region_comments({ id }: { id: number }) {
 
 export async function get_takeoff_comments({ id }: { id: number }) {
   const user = await getUserId();
+  if (!user.success) return;
   const comments: CommentWithUser<TakeoffComment>[] =
     await prisma.takeoffComment.findMany({
       where: { takeoffId: id, deletedAt: null, raport: { lt: 7 } },
@@ -194,6 +203,7 @@ export async function get_takeoff_comments({ id }: { id: number }) {
 
 export async function get_landing_comments({ id }: { id: number }) {
   const user = await getUserId();
+  if (!user.success) return;
   const comments: CommentWithUser<LandingComment>[] =
     await prisma.landingComment.findMany({
       where: { landingId: id, deletedAt: null, raport: { lt: 7 } },
@@ -277,6 +287,8 @@ export async function get_comment_update(
   tipe: ComponentType
 ) {
   const user = await getUserId();
+  if (!user.success) return;
+
   const comment = await getCommentModel(tipe, commentId);
   if (!comment) return { success: false, message: "Comment not found" };
   if (comment.userId !== user.id)
@@ -302,6 +314,8 @@ export async function get_delete_comment(
   tipe: ComponentType
 ) {
   const user = await getUserId();
+  if (!user.success) return;
+
   const comment = await getCommentModel(tipe, commentId);
   if (!comment) return { success: false, message: "Comment not found" };
   if (comment.userId !== user.id)

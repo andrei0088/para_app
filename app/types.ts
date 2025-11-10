@@ -93,12 +93,14 @@ export interface Select {
 export type CommentUser = {
   id: string;
   name: string;
+  profileId: number;
 };
 
 export type CommentItem = {
   id: number;
   comment: string;
   raport: number;
+  profileId: number;
 
   createdAt: Date;
   userId: string;
@@ -109,6 +111,7 @@ export type Comment = {
   id: number;
   userId: string;
   comment: string;
+  profileId: number;
   raport: number;
   createdAt: Date;
   deletedAt: Date | null;

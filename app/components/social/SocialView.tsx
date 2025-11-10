@@ -120,7 +120,7 @@ export default function SocialView({
 
     const rez = await get_comment_update(editId, editText, selectedTipe);
 
-    if (rez.success) {
+    if (rez?.success) {
       setCommentList((prev) =>
         prev.map((c) => (c.id === editId ? { ...c, comment: editText } : c))
       );
@@ -129,7 +129,7 @@ export default function SocialView({
       setEditId(null);
     } else {
       setMessageType("error");
-      setMessage(rez.message || "Failed to update comment");
+      setMessage(rez?.message || "Failed to update comment");
     }
   }
 
@@ -141,13 +141,13 @@ export default function SocialView({
 
     const rez = await get_delete_comment(id, selectedTipe);
 
-    if (rez.success) {
+    if (rez?.success) {
       setCommentList((prev) => prev.filter((c) => c.id !== id));
       setMessageType("success");
       setMessage(rez.message);
     } else {
       setMessageType("error");
-      setMessage(rez.message || "Failed to delete comment");
+      setMessage(rez?.message || "Failed to delete comment");
     }
   }
 
