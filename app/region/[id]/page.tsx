@@ -1,9 +1,16 @@
-import { get_country_by_id, get_region_landings_takeoffs, get_regions_by_id } from "@/app/api/get/get_places";
+import {
+  get_country_by_id,
+  get_region_landings_takeoffs,
+  get_regions_by_id,
+} from "@/app/api/get/get_places";
 import { notFound } from "next/navigation";
 import SearchForm from "@/app/search/SearchForm";
 import ViewRegion from "./ViewRegion";
 import SocialComponent from "@/app/components/social/SocialComponent";
 import type { Country, Region, Takeoff, Landing } from "@/app/types";
+import LeftRegion from "./LeftRegion";
+import SEO from "@/app/components/Seo";
+import Link from "next/link";
 
 // Tipuri brute API pentru regiune
 interface RegionRaw {
@@ -45,17 +52,18 @@ interface LandingRaw {
 interface LandingTakeoff {
   id: number;
   name: string;
-  latitude?: number;
-  longitude?: number;
-  altitude?: number;
+  latitude: number;
+  longitude: number;
+  altitude: number;
   description?: string;
   map?: string;
-  regionId?: number;
-  countryId?: number;
+  regionId: number;
+  countryId: number;
 }
 
 export default async function Region({ params }: { params: { id: string } }) {
-  const id = Number(params.id);
+  const paramId = await params;
+  const id = Number(paramId.id);
   if (isNaN(id)) return notFound();
 
   const regionRaw: RegionRaw | null = await get_regions_by_id({ id });
@@ -64,7 +72,10 @@ export default async function Region({ params }: { params: { id: string } }) {
   const countryRaw = await get_country_by_id({ id: regionRaw.countryId });
   if (!countryRaw) return notFound();
 
-  const sitesRaw = await get_region_landings_takeoffs({ id }) ?? { takeoff: [], landing: [] };
+  const sitesRaw = (await get_region_landings_takeoffs({ id })) ?? {
+    takeoff: [],
+    landing: [],
+  };
 
   // Normalizează țara
   const country: Country = {
@@ -83,49 +94,57 @@ export default async function Region({ params }: { params: { id: string } }) {
     map: regionRaw.map ?? undefined,
     seo: regionRaw.seo ?? undefined,
     description: regionRaw.description ?? undefined,
-    bestSeason: regionRaw.bestSeason ?? undefined,
-    takeoffs: (regionRaw.takeoffs ?? []).map((t: TakeoffRaw): Takeoff => ({
-      id: t.id,
-      name: t.name,
-      regionId: t.regionId,
-      latitude: t.latitude,
-      longitude: t.longitude,
-      map: t.map ?? undefined,
-    })),
-    landings: (regionRaw.landings ?? []).map((l: LandingRaw): Landing => ({
-      id: l.id,
-      name: l.name,
-      regionId: l.regionId,
-      latitude: l.latitude,
-      longitude: l.longitude,
-      map: l.map ?? undefined,
-    })),
+    bestSeason: regionRaw.bestSeason ?? [],
+    takeoffs: (regionRaw.takeoffs ?? []).map(
+      (t: TakeoffRaw): Takeoff => ({
+        id: t.id,
+        name: t.name,
+        regionId: t.regionId,
+        latitude: t.latitude,
+        longitude: t.longitude,
+        map: t.map ?? undefined,
+      })
+    ),
+    landings: (regionRaw.landings ?? []).map(
+      (l: LandingRaw): Landing => ({
+        id: l.id,
+        name: l.name,
+        regionId: l.regionId,
+        latitude: l.latitude,
+        longitude: l.longitude,
+        map: l.map ?? undefined,
+      })
+    ),
   };
 
   // Normalizează site-urile de tip takeoff/landing
-  const takeoff: LandingTakeoff[] = (sitesRaw.takeoff ?? []).map((t: TakeoffRaw) => ({
-    id: t.id,
-    name: t.name,
-    altitude: t.altitude,
-    latitude: t.latitude ?? undefined,
-    longitude: t.longitude ?? undefined,
-    description: t.description ?? undefined,
-    map: t.map ?? undefined,
-    regionId: t.regionId,
-    countryId: t.countryId,
-  }));
+  const takeoff: LandingTakeoff[] = (sitesRaw.takeoff ?? []).map(
+    (t: TakeoffRaw) => ({
+      id: t.id,
+      name: t.name,
+      altitude: t.altitude,
+      latitude: t.latitude ?? undefined,
+      longitude: t.longitude ?? undefined,
+      description: t.description ?? undefined,
+      map: t.map ?? undefined,
+      regionId: t.regionId,
+      countryId: t.countryId,
+    })
+  );
 
-  const landing: LandingTakeoff[] = (sitesRaw.landing ?? []).map((l: LandingRaw) => ({
-    id: l.id,
-    name: l.name,
-    altitude: l.altitude,
-    latitude: l.latitude ?? undefined,
-    longitude: l.longitude ?? undefined,
-    description: l.description ?? undefined,
-    map: l.map ?? undefined,
-    regionId: l.regionId,
-    countryId: l.countryId,
-  }));
+  const landing: LandingTakeoff[] = (sitesRaw.landing ?? []).map(
+    (l: LandingRaw) => ({
+      id: l.id,
+      name: l.name,
+      altitude: l.altitude,
+      latitude: l.latitude ?? undefined,
+      longitude: l.longitude ?? undefined,
+      description: l.description ?? undefined,
+      map: l.map ?? undefined,
+      regionId: l.regionId,
+      countryId: l.countryId,
+    })
+  );
 
   const fallbackDescription = `
     <p class="text-xl font-semibold">Explore this amazing region!</p>
@@ -138,15 +157,45 @@ export default async function Region({ params }: { params: { id: string } }) {
   `;
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="mb-2">
+      <SEO title={region.name} description={region.seo} />
       <SearchForm select={{ country, region: [region] }} />
-      <ViewRegion
-        country={country}
-        region={{ ...region, description: region.description ?? fallbackDescription }}
-        takeoff={takeoff}
-        landing={landing}
-      />
-      <SocialComponent selectedTipe="r" selectedName={region.name} selectedId={id} />
+      <div className="w-full xl:max-w-7xl mx-auto bg-gray-50 rounded-2xl shadow-lg mt-2 pt-2">
+        <h1 className="text-xl md:text-2xl font-extrabold text-gray-900 mb-6 border-b border-gray-300 pb-3 px-6 tracking-wide leading-snug">
+          <Link
+            href={`/country/${country.id}`}
+            className="hover:text-green-900 transition-colors duration-300"
+          >
+            {country.name}
+          </Link>{" "}
+          /{" "}
+          <Link
+            href={`/country/${region.id}`}
+            className="hover:text-green-900 transition-colors duration-300"
+          >
+            {region.name}
+          </Link>
+        </h1>
+
+        <div className="flex md:flex-row flex-col-reverse gap-4 ">
+          <LeftRegion region={region} takeoff={takeoff} landing={landing} />
+          <ViewRegion
+            country={country}
+            region={{
+              ...region,
+              description: region.description ?? fallbackDescription,
+            }}
+            takeoff={takeoff}
+            landing={landing}
+          />
+        </div>
+        <div className="w-full h-1 rounded-full bg-gradient-to-r from-cyan-50 via-black to-cyan-50 blur-[0.3px]" />
+        <SocialComponent
+          selectedTipe="r"
+          selectedName={region.name}
+          selectedId={id}
+        />
+      </div>
     </div>
   );
 }

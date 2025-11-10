@@ -28,27 +28,30 @@ export default function UpdateImage({ currentImage }: UpdateImageProps) {
   });
 
   async function handleSubmit() {
-  if (!selectedFile) return;
+    if (!selectedFile) return;
 
-  try {
-    // Trimitem arrayBuffer direct către funcția server
-    const arrayBuffer = await selectedFile.arrayBuffer();
-    const filename = selectedFile.name.split(".")[0];
+    try {
+      // Trimitem arrayBuffer direct către funcția server
+      const arrayBuffer = await selectedFile.arrayBuffer();
+      const filename = selectedFile.name.split(".")[0];
 
-    const rez = await add_picture(arrayBuffer, filename, preview || undefined);
+      const rez = await add_picture(
+        arrayBuffer,
+        filename,
+        preview || undefined
+      );
 
-    if (rez.success) {
-      setPreview(rez.url || null);
-      setSelectedFile(null);
-      setMsg("Profile picture updated successfully");
-       window.location.reload();
+      if (rez.success) {
+        setPreview(rez.url || null);
+        setSelectedFile(null);
+        setMsg("Profile picture updated successfully");
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error("Upload failed:", err);
+      setMsg("Failed to update profile picture");
     }
-  } catch (err) {
-    console.error("Upload failed:", err);
-    setMsg("Failed to update profile picture");
   }
-}
-
 
   async function handleDelete() {
     const confirmed = window.confirm(
@@ -75,7 +78,11 @@ export default function UpdateImage({ currentImage }: UpdateImageProps) {
       <div
         {...getRootProps()}
         className={`w-36 h-36 mx-auto mb-6 flex flex-col items-center justify-center rounded-full border-2 border-dashed cursor-pointer overflow-hidden transition-all duration-300
-          ${isDragActive ? "border-blue-500 bg-blue-50 dark:bg-blue-900" : "border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-gray-700"}`}
+          ${
+            isDragActive
+              ? "border-blue-500 bg-blue-50 "
+              : "border-gray-300 bg-gray-50 "
+          }`}
       >
         <input {...getInputProps()} />
 

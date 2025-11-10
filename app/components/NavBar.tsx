@@ -4,63 +4,78 @@ import NavBarClient from "./NavBarClient";
 
 export default function NavBarServer() {
   return (
-    <nav className="w-full bg-white dark:bg-gray-900 shadow-md">
+    <nav className="w-full bg-gray-50  shadow-md h-16">
       {/* Desktop */}
-      <div className="hidden md:flex max-w-7xl mx-auto px-2  justify-between items-center">
-        {/* Meniu principal */}
-        <ul className="flex gap-8">
-          <li>
-            <Link
-              href="/"
-              className="text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors duration-200"
-            >
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/explore"
-              className="text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors duration-200"
-            >
-              Explore Sites
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/map"
-              className="text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors duration-200"
-            >
-              Map Sites
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/wing-up"
-              className="text-gray-700 dark:text-gray-300 hover:text-green-500 dark:hover:text-green-400 transition-colors duration-200"
-            >
-              User Area
-            </Link>
-          </li>
-        </ul>
+      <div className="hidden md:flex max-w-full mx-auto pl-4 justify-between items-center h-full">
+        {/* Logo + Menu */}
+        <div className="flex items-center gap-10 h-full ml-5">
+          <ul className="flex gap-8 text-gray-700 ">
+            <li>
+              <Link
+                href="/"
+                className="hover:text-green-500  transition-colors duration-200"
+              >
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/explore"
+                className="hover:text-green-500  transition-colors duration-200"
+              >
+                Explore Sites
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/map"
+                className="hover:text-green-500  transition-colors duration-200"
+              >
+                Map Sites
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/contact"
+                className="hover:text-green-500  transition-colors duration-200"
+              >
+                Contact
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/wing-up"
+                className="hover:text-green-500  transition-colors duration-200"
+              >
+                User Area
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/about"
+                className="hover:text-green-500  transition-colors duration-200"
+              >
+                About
+              </Link>
+            </li>
+          </ul>
+        </div>
 
         {/* UserNav */}
         <UserNav />
       </div>
 
-     {/* Mobile */}
-{/* Mobile */}
-<div className="relative md:hidden bg-white dark:bg-gray-900 shadow-md px-4 py-2 flex items-center justify-between">
+      {/* Mobile */}
+      {/* Mobile */}
+      <div className="relative md:hidden bg-white  shadow-md px-4 py-2 flex items-center justify-between">
+        {/* Burger menu / NavBarClient */}
+        <NavBarClient />
 
-  {/* Burger menu / NavBarClient */}
-  <NavBarClient />
-
-  {/* UserNav în colț dreapta sus */}
-  <div className="absolute right-4 top-2">
-    <UserNav />
-  </div>
-
-</div>
-
+        {/* UserNav în colț dreapta sus */}
+        <div className="absolute right-4 top-2">
+          <UserNav />
+        </div>
+      </div>
     </nav>
   );
 }

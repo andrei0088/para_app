@@ -1,36 +1,46 @@
 import React from "react";
-import getProfileByUrl from "./get_profil";
+import getProfileByUrl, { get_profile_video } from "./get_profil";
 import { notFound } from "next/navigation";
 import ProfileViewClient from "./ProfileViewClient";
 import ProfileVideos from "./ProfileVideos";
+import ProfileLike from "./ProfileLike";
+import ProfileBio from "./ProfileBio";
 
 interface PageProps {
   params: { url: string };
 }
 
 const Page = async ({ params }: PageProps) => {
-   const paramsUrl = await params;
+  const paramsUrl = await params;
   const url = paramsUrl.url;
   const rez = await getProfileByUrl(url);
-
   if (!rez.success || !rez.data) notFound();
 
   // ✅ Mapare strictă a sex-ului
   const profile = {
     ...rez.data,
-    sex:
-      rez.data.sex === "m"
-        ? "m"
-        : rez.data.sex === "f"
-        ? "f"
-        : null, // orice alt string devine null
-  } as const; // forțează TS să recunoască tipul literal
-
-  // const videos = rez.data.videos ?? [];
+    id: Number(rez.data.id),
+    sex: rez.data.sex === "m" ? "m" : rez.data.sex === "f" ? "f" : null,
+    showAge: rez.data.showAge,
+  } as const;
+  const videos = await get_profile_video(rez.data.id);
   return (
     <div className="w-full h-full">
-      <ProfileViewClient profile={profile}  />
-      {/* <ProfileVideos videos={videos} /> */}
+      <div className="bg-white    rounded-2xl shadow-lg p-6 sm:p-8 space-y-6 max-w-full w-full mx-auto transition-colors duration-300">
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between w-full gap-4">
+          <ProfileViewClient profile={profile} />
+
+          <ProfileLike profileId={profile.id} />
+        </div>
+
+        <ProfileBio bio={profile.bio} />
+      </div>
+      <div className="w-full h-0.5 bg-gradient-to-r from-gray-300 via-cyan-500 to-gray-300  rounded-full"></div>
+      {videos.success ? (
+        <ProfileVideos videos={videos.data} />
+      ) : (
+        "No videos available"
+      )}
     </div>
   );
 };

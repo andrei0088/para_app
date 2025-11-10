@@ -1,49 +1,53 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { auth } from "@/app/lib/auth";
 
-interface ResendEmailClientProps {
+type Rezult = {
+  succes: boolean;
+  message?: string;
+};
+
+export default function ResendEmailClient({
+  rez,
+  email,
+}: {
+  rez: Rezult;
   email: string;
-}
+}) {
+  const [sending, setSending] = useState(true);
+  const [msg, setMsg] = useState("");
 
-export default function ResendEmailClient({ email }: ResendEmailClientProps) {
-  const [message, setMessage] = useState<string>("");
-
+  // Rulează o singură dată după render
   useEffect(() => {
-    if (!email) return;
-
-    const resendEmail = async () => {
-      try {
-        await auth.api.sendVerificationEmail({
-          body: { email, callbackURL: "/" },
-        });
-
-        setMessage("✅ Verification email sent successfully!");
-      } catch (error: unknown) {
-        let errorMessage = "❌ Error sending verification email";
-        if (error instanceof Error) {
-          errorMessage += `: ${error.message}`;
-        }
-        setMessage(errorMessage);
-      }
-    };
-
-    resendEmail();
-  }, [email]);
+    setSending(false);
+    if (rez.succes) {
+      setMsg(
+        "✅ Verification email sent! Please check your inbox & spam folder."
+      );
+    } else {
+      setMsg(rez.message || "❌ Something went wrong. Please try again.");
+    }
+  }, [rez]);
 
   return (
-    <div className="max-w-xl mx-auto p-6 mt-10 bg-white rounded shadow text-center">
-      <h1 className="text-2xl font-bold mb-4">Resending Verification Email</h1>
-      {email ? (
-        <>
-          <p>Verification email is being sent to:</p>
-          <p className="font-semibold">{email}</p>
-        </>
-      ) : (
-        <p className="text-red-600">No email provided.</p>
-      )}
-      {message && <p className="mt-4">{message}</p>}
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800 p-6">
+      <div className="max-w-md w-full bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 text-center">
+        {sending ? (
+          <p className="text-gray-700 dark:text-gray-300">
+            ⏳ Sending verification email to <strong>{email}</strong>...
+          </p>
+        ) : (
+          <p
+            className={`p-4 rounded-md text-sm ${
+              msg.startsWith("✅")
+                ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
+                : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+            }`}
+          >
+            {msg}
+          </p>
+        )}
+      </div>
     </div>
   );
 }

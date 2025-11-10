@@ -20,22 +20,26 @@ export default function MapPageClient({
   initialCenter,
   defaultSelected,
 }: MapPageClientProps) {
-  const [selected, setSelected] = useState<{ countryId: number | null; regionId: number | null }>({
+  const [selected, setSelected] = useState<{
+    countryId: number | null;
+    regionId: number | null;
+  }>({
     countryId: defaultSelected?.countryId ?? null,
     regionId: defaultSelected?.regionId ?? null,
   });
 
   // funcție stabilă care nu se recreează la fiecare render
   const handleSelect = (countryId: number | null, regionId: number | null) => {
-    setSelected(prev => {
+    setSelected((prev) => {
       // actualizează doar dacă s-a schimbat ceva
-      if (prev.countryId === countryId && prev.regionId === regionId) return prev;
+      if (prev.countryId === countryId && prev.regionId === regionId)
+        return prev;
       return { countryId, regionId };
     });
   };
 
   return (
-    <div className="flex flex-col h-screen w-full">
+    <div className="flex flex-col h-[80vh] w-full text-gray-800 mt-5 z-40 ">
       <SearchMapComp
         countries={countries}
         regions={regions}

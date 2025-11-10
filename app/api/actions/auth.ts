@@ -14,7 +14,10 @@ interface SignUpResult {
 }
 
 // ===== SIGN UP =====
-export async function signUpAction(prevState: SignUpResult, formData: FormData): Promise<SignUpResult> {
+export async function signUpAction(
+  prevState: SignUpResult,
+  formData: FormData
+): Promise<SignUpResult> {
   const userData = Object.fromEntries(formData);
   const name = (formData.get("name") as string)?.trim() || "";
   const email = (formData.get("email") as string)?.trim().toLowerCase() || "";
@@ -26,16 +29,40 @@ export async function signUpAction(prevState: SignUpResult, formData: FormData):
   // VALIDARE
   if (!name) return { text: "Name is required.", user: userData };
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!email || !emailRegex.test(email)) return { text: "A valid email is required.", user: userData };
-  if (password !== ckpassword) return { text: "Passwords do not match.", user: userData };
+  if (!email || !emailRegex.test(email))
+    return { text: "A valid email is required.", user: userData };
+  if (password !== ckpassword)
+    return { text: "Passwords do not match.", user: userData };
   const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
-  if (!passRegex.test(password)) return { text: "Password must be ≥ 6 chars, include upper, lower & digit.", user: userData };
-  const age = Math.floor((Date.now() - new Date(bdate).getTime()) / 31557600000);
-  if (age < 18) return { text: "You must be at least 18 years old.", user: userData };
-  if (!agree) return { text: "You must agree to the Terms & Conditions.", user: userData };
+  if (!passRegex.test(password))
+    return {
+      text: "Password must be ≥ 6 chars, include upper, lower & digit.",
+      user: userData,
+    };
+  const age = Math.floor(
+    (Date.now() - new Date(bdate).getTime()) / 31557600000
+  );
+  if (age < 18)
+    return { text: "You must be at least 18 years old.", user: userData };
+  if (age > 90) {
+    return {
+      text: "Hmm… that birth date seems unusual. Please enter a valid birth date.",
+      user: userData,
+    };
+  }
+
+  if (!agree)
+    return {
+      text: "You must agree to the Terms & Conditions.",
+      user: userData,
+    };
+  const userRet = await prisma.user.findFirst({ where: { email: email } });
+  if (userRet) redirect(`/user/register/return?name=${name}`);
 
   try {
-    const result = await auth.api.signUpEmail({ body: { email, password, name } });
+    const result = await auth.api.signUpEmail({
+      body: { email, password, name },
+    });
     if (!result.user?.id) throw new Error("User ID not found");
 
     const baseUrl = name.trim().toLowerCase().replace(/\s+/g, "-");
@@ -53,7 +80,8 @@ export async function signUpAction(prevState: SignUpResult, formData: FormData):
 
     return { success: true, email };
   } catch (error: unknown) {
-    const errMsg = error instanceof Error ? error.message : "Error during signup.";
+    const errMsg =
+      error instanceof Error ? error.message : "Error during signup.";
     return { text: errMsg, user: userData };
   }
 }
@@ -71,7 +99,7 @@ export async function resend_create_mail(email: string) {
 // ===== SIGN IN =====
 
 export async function signInAction(formData: FormData) {
-   const email = (formData.get("email") as string) || "";
+  const email = (formData.get("email") as string) || "";
   const password = (formData.get("password") as string) || "";
 
   const user = await prisma.user.findFirst({
@@ -89,16 +117,14 @@ export async function signInAction(formData: FormData) {
   if (user.deletedAt) {
     return {
       success: false,
-      text:
-        "This account has been deactivated. If you believe this is a mistake, please contact our support team.",
+      text: "This account has been deactivated. If you believe this is a mistake, please contact our support team.",
     };
   }
 
   if (!user.emailVerified) {
     return {
       success: false,
-      text:
-      "Your account is not verified yet. Please check your email inbox — including the spam/junk folder — for the verification link. If you can’t find it, please contact us at contact@paragliding-high.eu.",
+      text: "validation",
     };
   }
 
@@ -124,7 +150,6 @@ export async function signInAction(formData: FormData) {
   }
 }
 
-
 // ===== SIGN OUT =====
 export async function signOutAction() {
   await auth.api.signOut({ headers: await headers() });
@@ -141,7 +166,6 @@ interface SendEmailProps {
   to: string;
   subject: string;
   text: string;
-  
 }
 export async function sendEmail({ to, subject, text }: SendEmailProps) {
   const transporter = nodemailer.createTransport({
@@ -158,8 +182,6 @@ export async function sendEmail({ to, subject, text }: SendEmailProps) {
     from: process.env.EMAIL_FROM,
     to,
     subject,
-    html:text,
+    html: text,
   });
 }
-
-

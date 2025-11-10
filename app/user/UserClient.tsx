@@ -32,9 +32,6 @@ export default function UserClient({ initialUser }: UserClientProps) {
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
       .join(" ");
 
-
-  
-
   // Handle save
   const handleSave = async () => {
     const formattedName = formatName(newName);
@@ -54,7 +51,8 @@ export default function UserClient({ initialUser }: UserClientProps) {
         setMessage(`❌ ${result.message || "Error updating name."}`);
       }
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "Unexpected error occurred";
+      const errorMessage =
+        error instanceof Error ? error.message : "Unexpected error occurred";
       setMessage(`❌ ${errorMessage}`);
     } finally {
       setLoading(false);
@@ -90,7 +88,8 @@ export default function UserClient({ initialUser }: UserClientProps) {
         setMessage(errorMsg);
       }
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "Unexpected error occurred";
+      const errorMessage =
+        error instanceof Error ? error.message : "Unexpected error occurred";
       setMessage(errorMessage);
     } finally {
       setLoading(false);
@@ -110,118 +109,139 @@ export default function UserClient({ initialUser }: UserClientProps) {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto mt-10 p-8 bg-white dark:bg-gray-800 shadow-lg rounded-2xl border border-gray-200 dark:border-gray-700 transition-colors duration-300">
-  <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white text-center sm:text-left">Your Profile</h1>
+    <div className="w-full max-w-4xl mx-auto mt-10 p-8 bg-white dark:text-gray-800 shadow-lg rounded-2xl border border-gray-200  transition-colors duration-300">
+      <h1 className="text-3xl font-bold mb-6 text-gray-900  text-center sm:text-left">
+        Your Profile
+      </h1>
 
-  {/* PROFILE IMAGE */}
-  <UpdateImage currentImage={user.image}/>
+      {/* PROFILE IMAGE */}
+      <UpdateImage currentImage={user.image} />
 
-  {/* NAME + EMAIL */}
-  <div className="mb-8 space-y-4">
-    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-      <span className="font-semibold text-gray-700 dark:text-gray-300 w-32">Name:</span>
-      {editing ? (
-        <input
-          type="text"
-          value={newName}
-          onChange={(e) => setNewName(e.target.value)}
-          className="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 dark:bg-gray-700 dark:text-white dark:border-gray-600"
-        />
-      ) : (
-        <span className="flex-1 text-gray-900 dark:text-gray-100">{user.name}</span>
-      )}
+      {/* NAME + EMAIL */}
+      <div className="mb-8 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          <span className="font-semibold text-gray-700  w-32">Name:</span>
+          {editing ? (
+            <input
+              type="text"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              className="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 "
+            />
+          ) : (
+            <span className="flex-1 text-gray-900 ">{user.name}</span>
+          )}
 
-      <div className="flex gap-2 mt-2 sm:mt-0">
-        {editing ? (
-          <>
-            <button
-              onClick={handleSave}
-              disabled={loading}
-              className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg transition"
-            >
-              Save
-            </button>
-            <button
-              onClick={handleCancel}
-              className="bg-gray-300 hover:bg-gray-400 text-gray-900 px-3 py-1 rounded-lg transition"
-            >
-              Cancel
-            </button>
-          </>
-        ) : (
-          <button
-            onClick={() => setEditing(true)}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg transition"
-          >
-            Edit
+          <div className="flex gap-2 mt-2 sm:mt-0">
+            {editing ? (
+              <>
+                <button
+                  onClick={handleSave}
+                  disabled={loading}
+                  className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg transition"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={handleCancel}
+                  className="bg-gray-300 hover:bg-gray-400 text-gray-900 px-3 py-1 rounded-lg transition"
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => setEditing(true)}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg transition"
+              >
+                Edit
+              </button>
+            )}
+          </div>
+        </div>
+
+        <p className="text-gray-700 ">
+          <span className="font-semibold">Email:</span> {user.email}
+        </p>
+      </div>
+
+      {/* RESET PASSWORD */}
+      <div className="mb-8">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-900 ">
+          Reset Password
+        </h2>
+
+        <form
+          action={async (formData: FormData) => {
+            const result = await change_password(formData);
+            setPwMessage(result.message);
+          }}
+          className="space-y-4"
+        >
+          {pwMessage && (
+            <p className="mt-2 text-center text-sm text-blue-600">
+              {pwMessage}
+            </p>
+          )}
+
+          <input
+            type="password"
+            name="oldPassword"
+            placeholder="Current password"
+            required
+            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400"
+          />
+
+          <input
+            type="password"
+            name="newPassword"
+            placeholder="New password"
+            required
+            onChange={(e) => {
+              setNewPassword(e.target.value);
+              evaluateStrength(e.target.value);
+            }}
+            className="w-full px-3 py-2 border rounded-lg  focus:ring-2 focus:ring-blue-400"
+          />
+
+          <div className="h-2 w-full bg-gray-200  rounded">
+            <div
+              className={[
+                "h-full rounded transition-all duration-300",
+                passwordStrength === 1 && "w-1/4 bg-red-500",
+                passwordStrength === 2 && "w-1/2 bg-orange-500",
+                passwordStrength === 3 && "w-3/4 bg-yellow-500",
+                passwordStrength === 4 && "w-full bg-green-500",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            ></div>
+          </div>
+
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="Confirm new password"
+            required
+            className="w-full px-3 py-2 border rounded-lg  focus:ring-2 focus:ring-blue-400"
+          />
+
+          <button className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition">
+            Change Password
           </button>
-        )}
+        </form>
       </div>
+
+      {/* DELETE ACCOUNT */}
+      <button
+        onClick={handleDeleteAccount}
+        disabled={loading}
+        className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg disabled:opacity-50 transition"
+      >
+        {loading ? "Deleting..." : "Delete Account"}
+      </button>
+
+      {message && <p className="mt-2 text-center text-red-600">{message}</p>}
     </div>
-
-    <p className="text-gray-700 dark:text-gray-300">
-      <span className="font-semibold">Email:</span> {user.email}
-    </p>
-  </div>
-
-  {/* RESET PASSWORD */}
-  <div className="mb-8">
-    <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">Reset Password</h2>
-
-    <form
-      action={async (formData: FormData) => {
-        const result = await change_password(formData);
-        setPwMessage(result.message);
-      }}
-      className="space-y-4"
-    >
-      {pwMessage && <p className="mt-2 text-center text-sm text-blue-600">{pwMessage}</p>}
-
-      <input type="password" name="oldPassword" placeholder="Current password" required className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-2 focus:ring-blue-400" />
-
-      <input
-        type="password"
-        name="newPassword"
-        placeholder="New password"
-        required
-        onChange={(e) => {
-          setNewPassword(e.target.value);
-          evaluateStrength(e.target.value);
-        }}
-        className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-2 focus:ring-blue-400"
-      />
-
-      <div className="h-2 w-full bg-gray-200 dark:bg-gray-600 rounded">
-        <div
-          className={[
-            "h-full rounded transition-all duration-300",
-            passwordStrength === 1 && "w-1/4 bg-red-500",
-            passwordStrength === 2 && "w-1/2 bg-orange-500",
-            passwordStrength === 3 && "w-3/4 bg-yellow-500",
-            passwordStrength === 4 && "w-full bg-green-500",
-          ]
-            .filter(Boolean)
-            .join(" ")}
-        ></div>
-      </div>
-
-      <input type="password" name="confirmPassword" placeholder="Confirm new password" required className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 focus:ring-2 focus:ring-blue-400" />
-
-      <button className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition">Change Password</button>
-    </form>
-  </div>
-
-  {/* DELETE ACCOUNT */}
-  <button
-    onClick={handleDeleteAccount}
-    disabled={loading}
-    className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg disabled:opacity-50 transition"
-  >
-    {loading ? "Deleting..." : "Delete Account"}
-  </button>
-
-  {message && <p className="mt-2 text-center text-red-600">{message}</p>}
-</div>
-
   );
 }

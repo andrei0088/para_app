@@ -2,8 +2,18 @@ import Link from "next/link";
 import { get_all_country, get_all_regions } from "../api/get/get_places";
 
 const MonthNames = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 const displaySeason = [
@@ -18,7 +28,7 @@ export default async function Explore() {
   const regions = await get_all_regions();
 
   return (
-    <div className="max-w-6xl mx-auto my-10 p-6 space-y-6">
+    <div className="max-w-6xl mx-auto my-10 p-6 space-y-6 dark:text-gray-800">
       <h1 className="text-3xl font-bold">What do you want to search?</h1>
 
       {/* Select a Country */}

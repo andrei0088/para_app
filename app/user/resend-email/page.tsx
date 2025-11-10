@@ -1,11 +1,20 @@
+import resendValidationEmail from "./action";
 import ResendEmailClient from "./ResendEmailClient";
+import { redirect } from "next/navigation";
 
-interface PageProps {
+export default async function ResendEmailPage({
+  searchParams,
+}: {
   searchParams: { email?: string };
-}
+}) {
+  const param = await searchParams;
+  const email = param.email ?? null;
 
-export default function ResendEmailPage({ searchParams }: PageProps) {
-  const email = searchParams.email ?? "";
+  if (!email) {
+    return redirect("/");
+  }
 
-  return <ResendEmailClient email={email} />;
+  const rez = await resendValidationEmail(email);
+
+  return <ResendEmailClient rez={rez} email={email} />;
 }

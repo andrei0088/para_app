@@ -7,6 +7,10 @@ export interface Country {
   latitude?: number;
   longitude?: number;
 }
+export interface CountryShort {
+  id: number;
+  name: string;
+}
 
 export interface Region {
   id: number;
@@ -20,6 +24,12 @@ export interface Region {
   landings?: Landing[];
 }
 
+export interface RegionShort {
+  id: number;
+  name: string;
+  countryId: number;
+}
+
 export interface Takeoff {
   id: number;
   name: string;
@@ -28,7 +38,7 @@ export interface Takeoff {
   longitude: number;
   map?: string | null;
   seo?: string | null;
-
+  altitude?: number;
 }
 
 export interface Landing {
@@ -39,8 +49,7 @@ export interface Landing {
   longitude: number;
   map?: string | null;
   seo?: string | null;
-
-
+  altitude?: number;
 }
 
 export interface Site {
@@ -89,7 +98,7 @@ export type CommentUser = {
 export type CommentItem = {
   id: number;
   comment: string;
-    raport: number;
+  raport: number;
 
   createdAt: Date;
   userId: string;

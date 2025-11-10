@@ -1,8 +1,18 @@
 import Link from "next/link";
 
 const MonthNames = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 const displaySeason = [
@@ -31,7 +41,6 @@ interface Region {
   landings?: Spot[];
 }
 
-
 interface SeasonType {
   id: number;
   name: string;
@@ -45,11 +54,18 @@ interface MonthViewProps {
   regions?: Region[];
 }
 
-export default function MonthView({ month, season, countrys = [], regions = [] }: MonthViewProps) {
-  const sortedCountries = [...countrys].sort((a, b) => a.name.localeCompare(b.name));
+export default function MonthView({
+  month,
+  season,
+  countrys = [],
+  regions = [],
+}: MonthViewProps) {
+  const sortedCountries = [...countrys].sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
 
   return (
-    <section className="max-w-6xl mx-auto my-10 p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-lg">
+    <section className="w-full mx-3 p-3 my-2 bg-white dark:bg-gray-900 rounded-2xl shadow-lg">
       {/* Header Sezoane + Lunile */}
       <div className="mb-6 border-b pb-2">
         {/* Sezoanele */}
@@ -98,7 +114,8 @@ export default function MonthView({ month, season, countrys = [], regions = [] }
       {/* Lista țări */}
       {sortedCountries.length === 0 ? (
         <p className="text-gray-600 dark:text-gray-400 italic">
-          Echipa noastră se ocupă de colectarea datelor pentru această lună. Reveniti mai târziu!
+          Echipa noastră se ocupă de colectarea datelor pentru această lună.
+          Reveniti mai târziu!
         </p>
       ) : (
         <div className="flex flex-wrap mb-5 gap-2 overflow-x-auto whitespace-nowrap">
@@ -117,7 +134,7 @@ export default function MonthView({ month, season, countrys = [], regions = [] }
       {/* Liste țări și regiuni */}
       {sortedCountries.map((country) => {
         const countryRegions = regions
-          .filter(r => r.countryId === country.id)
+          .filter((r) => r.countryId === country.id)
           .sort((a, b) => a.name.localeCompare(b.name));
 
         if (!countryRegions.length) return null;
@@ -127,23 +144,28 @@ export default function MonthView({ month, season, countrys = [], regions = [] }
             key={country.id}
             className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700"
           >
-            <h2 className="text-2xl font-semibold text-green-600 mb-4">{country.name}</h2>
+            <h2 className="text-2xl font-semibold text-green-600 mb-4">
+              {country.name}
+            </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
-              {countryRegions.map(region => (
+              {countryRegions.map((region) => (
                 <div
                   key={region.id}
                   className="bg-gray-100 dark:bg-gray-700 p-2 rounded-lg border border-gray-200 dark:border-gray-600 text-sm"
                 >
                   <h3 className="font-medium mb-1">
-                    <Link href={`/region/${region.id}`} className="hover:underline">
+                    <Link
+                      href={`/region/${region.id}`}
+                      className="hover:underline"
+                    >
                       {region.name}
                     </Link>
                   </h3>
 
                   {region.bestSeason && (
                     <div className="flex flex-wrap gap-1 mb-1 text-xs">
-                      {region.bestSeason.map(m => (
+                      {region.bestSeason.map((m) => (
                         <span
                           key={m}
                           className={`px-1 py-0.5 rounded-full ${
@@ -159,7 +181,8 @@ export default function MonthView({ month, season, countrys = [], regions = [] }
                   )}
 
                   <p className="text-xs text-gray-700 dark:text-gray-300">
-                    Takeoffs: {region.takeoffs?.length ?? 0} | Landings: {region.landings?.length ?? 0}
+                    Takeoffs: {region.takeoffs?.length ?? 0} | Landings:{" "}
+                    {region.landings?.length ?? 0}
                   </p>
                 </div>
               ))}

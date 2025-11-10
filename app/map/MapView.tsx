@@ -12,8 +12,6 @@ interface Site {
   type: "takeoff" | "landing";
 }
 
-
-
 // Icon-uri custom
 const takeoffIcon = new L.Icon({
   iconUrl: "/icons/takeoff.png",
@@ -29,8 +27,6 @@ const landingIcon = new L.Icon({
   popupAnchor: [0, -32],
 });
 
-
-
 // Component pentru a recentra harta când center se schimbă
 function MapAutoCenter({ center }: { center: [number, number] }) {
   const map = useMap();
@@ -43,10 +39,14 @@ interface MapViewProps {
   center: [number, number];
 }
 
-
 export default function MapView({ allSites, center }: MapViewProps) {
   return (
-    <MapContainer center={center} zoom={10} scrollWheelZoom style={{ height: "100%", width: "100%" }}>
+    <MapContainer
+      center={center}
+      zoom={10}
+      scrollWheelZoom
+      style={{ height: "100%", width: "100%" }}
+    >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution="&copy; OpenStreetMap contributors"
@@ -56,12 +56,21 @@ export default function MapView({ allSites, center }: MapViewProps) {
 
       {allSites.map((site) => {
         const icon = site.type === "takeoff" ? takeoffIcon : landingIcon;
-        const link = site.type === "takeoff" ? `/takeoff/${site.id}` : `/landing/${site.id}`;
+        const link =
+          site.type === "takeoff"
+            ? `/takeoff/${site.id}`
+            : `/landing/${site.id}`;
 
         return (
-          <Marker key={`${site.type}=${site.id}`} position={[site.latitude, site.longitude]} icon={icon}>
+          <Marker
+            key={`${site.type}=${site.id}`}
+            position={[site.latitude, site.longitude]}
+            icon={icon}
+          >
             <Popup>
-              <a href={link} className="text-blue-600 underline">{site.name}</a>
+              <a href={link} className="text-blue-600 underline">
+                {site.name}
+              </a>
             </Popup>
           </Marker>
         );

@@ -7,17 +7,22 @@ interface ResetPasswordClientProps {
   token: string;
 }
 
-export default function ResetPasswordClient({ token }: ResetPasswordClientProps) {
+export default function ResetPasswordClient({
+  token,
+}: ResetPasswordClientProps) {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     if (password !== confirm) {
       setError("Passwords do not match.");
+      setLoading(false);
       return;
     }
 
@@ -28,7 +33,9 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
     const res = await change_password(formData);
     if (res.message === "success") {
       window.location.href = "/user/login"; // ✅ client redirect
+      setLoading(false);
     } else {
+      setLoading(false);
       setError(res.message);
     }
   };
@@ -58,9 +65,11 @@ export default function ResetPasswordClient({ token }: ResetPasswordClientProps)
           />
 
           <button
+            disabled={loading}
             type="submit"
-            className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700"
+            className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 disabled:bg-green-400 disabled:cursor-not-allowed"
           >
+            {loading ? "Changeing Password" : "Change Password"}
             Change Password
           </button>
         </form>

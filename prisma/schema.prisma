@@ -8,9 +8,6 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-// =======================================
-// Country, Region, Takeoff, Landing
-// =======================================
 model Country {
   id          Int              @id @default(autoincrement())
   name        String           @unique
@@ -18,28 +15,28 @@ model Country {
   latitude    Float?
   longitude   Float?
   seo         String?
+  comments    CountryComment[]
+  likes       CountryLike[]
+  landings    Landing[]
   regions     Region[]
   takeoffs    Takeoff[]
-  landings    Landing[]
-  likes       CountryLike[]
-  comments    CountryComment[]
 }
 
 model Region {
   id          Int             @id @default(autoincrement())
   name        String
   countryId   Int
-  country     Country         @relation(fields: [countryId], references: [id])
   bestSeason  Int[]
   description String?
-  seo         String?
   latitude    Float?
   longitude   Float?
   map         String?
-  takeoffs    Takeoff[]       @relation("TakeoffRegion")
+  seo         String?
   landings    Landing[]       @relation("LandingRegion")
-  likes       RegionLike[]
+  country     Country         @relation(fields: [countryId], references: [id])
   comments    RegionComment[]
+  likes       RegionLike[]
+  takeoffs    Takeoff[]       @relation("TakeoffRegion")
 }
 
 model Takeoff {
@@ -53,12 +50,10 @@ model Takeoff {
   countryId   Int
   map         String?
   seo         String?
-
-
-  region      Region           @relation("TakeoffRegion", fields: [regionId], references: [id])
   country     Country          @relation(fields: [countryId], references: [id])
-  likes       TakeoffLike[]
+  region      Region           @relation("TakeoffRegion", fields: [regionId], references: [id])
   comments    TakeoffComment[]
+  likes       TakeoffLike[]
 }
 
 model Landing {
@@ -72,70 +67,55 @@ model Landing {
   countryId   Int
   map         String?
   seo         String?
-
-
-  region      Region           @relation("LandingRegion", fields: [regionId], references: [id])
   country     Country          @relation(fields: [countryId], references: [id])
-  likes       LandingLike[]
+  region      Region           @relation("LandingRegion", fields: [regionId], references: [id])
   comments    LandingComment[]
-}
-
-// =======================================
-// User Section
-// =======================================
-enum UserType {
-  Admin
-  Pilot
+  likes       LandingLike[]
 }
 
 model PasswordResetToken {
   id        String   @id @default(cuid())
   token     String   @unique
   userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id            String    @id
-  name          String
-  email         String
-  emailVerified Boolean   @default(false)
-  userType      UserType  @default(Pilot)
+  id                  String              @id
+  name                String
+  email               String              @unique
+  emailVerified       Boolean             @default(false)
+  image               String?
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @default(now()) @updatedAt
+  bdate               DateTime?
+  userType            UserType            @default(Pilot)
+  deletedAt           DateTime?
+  countryComments     CountryComment[]
+  countryLikes        CountryLike[]
+  landingComments     LandingComment[]
+  landingLikes        LandingLike[]
+  passwordResetTokens PasswordResetToken?
+  profile             Profile?
+  profileLikes        ProfileLike[]
+  regionComments      RegionComment[]
+  regionLikes         RegionLike[]
+  takeoffComments     TakeoffComment[]
+  takeoffLikes        TakeoffLike[]
+  videoLikes          VideoLike[]
+  accounts            Account[]
+  sessions            Session[]
+  commentLikes        CommentLike[]
+  videoComments       VideoComment[]
 
-  image         String?
-  bdate         DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now()) @updatedAt
-  deletedAt     DateTime? // soft delete
-
-
-  sessions Session[]
-  accounts Account[]
-
-  countryLikes CountryLike[]
-  regionLikes  RegionLike[]
-  takeoffLikes TakeoffLike[]
-  landingLikes LandingLike[]
-  profileLikes ProfileLike[]
-  videoLikes   VideoLike[]
-
-  countryComments CountryComment[]
-  regionComments  RegionComment[]
-  takeoffComments TakeoffComment[]
-  landingComments LandingComment[]
-
-  passwordResetTokens PasswordResetToken? // 👈 ADĂUGAT
-  profile     Profile? 
-
-  @@unique([email])
   @@map("user")
 }
 
 model Session {
   id        String   @id
   expiresAt DateTime
-  token     String
+  token     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   ipAddress String?
@@ -143,7 +123,6 @@ model Session {
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([token])
   @@map("session")
 }
 
@@ -152,7 +131,6 @@ model Account {
   accountId             String
   providerId            String
   userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   accessToken           String?
   refreshToken          String?
   idToken               String?
@@ -162,6 +140,7 @@ model Account {
   password              String?
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("account")
 }
@@ -177,17 +156,13 @@ model Verification {
   @@map("verification")
 }
 
-// =======================================
-// Likes Section
-// =======================================
 model CountryLike {
   id        Int      @id @default(autoincrement())
   userId    String
   countryId Int
   createdAt DateTime @default(now())
-
-  user    User    @relation(fields: [userId], references: [id])
-  country Country @relation(fields: [countryId], references: [id])
+  country   Country  @relation(fields: [countryId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@unique([userId, countryId])
 }
@@ -197,9 +172,8 @@ model RegionLike {
   userId    String
   regionId  Int
   createdAt DateTime @default(now())
-
-  user   User   @relation(fields: [userId], references: [id])
-  region Region @relation(fields: [regionId], references: [id])
+  region    Region   @relation(fields: [regionId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@unique([userId, regionId])
 }
@@ -209,9 +183,8 @@ model TakeoffLike {
   userId    String
   takeoffId Int
   createdAt DateTime @default(now())
-
-  user    User    @relation(fields: [userId], references: [id])
-  takeoff Takeoff @relation(fields: [takeoffId], references: [id])
+  takeoff   Takeoff  @relation(fields: [takeoffId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@unique([userId, takeoffId])
 }
@@ -221,9 +194,8 @@ model LandingLike {
   userId    String
   landingId Int
   createdAt DateTime @default(now())
-
-  user    User    @relation(fields: [userId], references: [id])
-  landing Landing @relation(fields: [landingId], references: [id])
+  landing   Landing  @relation(fields: [landingId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@unique([userId, landingId])
 }
@@ -233,120 +205,143 @@ model ProfileLike {
   userId    String
   profileId Int
   createdAt DateTime @default(now())
-
-  user    User    @relation(fields: [userId], references: [id])
-  profile Profile @relation(fields: [profileId], references: [id])
+  profile   Profile  @relation(fields: [profileId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
 
   @@unique([userId, profileId])
 }
 
 model VideoLike {
-  id      Int      @id @default(autoincrement())
-  userId  String
-  videoId Int
+  id        Int      @id @default(autoincrement())
+  userId    String
+  videoId   Int
   createdAt DateTime @default(now())
-
-  user  User  @relation(fields: [userId], references: [id])
-  video Video @relation(fields: [videoId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  video     Video    @relation(fields: [videoId], references: [id])
 
   @@unique([userId, videoId])
 }
 
-
-
-// =======================================
-// Comment Section
-// =======================================
 model CountryComment {
   id        Int       @id @default(autoincrement())
   userId    String
-  profileId Int
   countryId Int
   comment   String
-  raport    Int       @default(0)
   createdAt DateTime  @default(now())
   deletedAt DateTime?
-
-  user    User    @relation(fields: [userId], references: [id])
-  country Country @relation(fields: [countryId], references: [id])
+  raport    Int       @default(0)
+  profileId Int
+  country   Country   @relation(fields: [countryId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
 }
 
 model RegionComment {
   id        Int       @id @default(autoincrement())
   userId    String
-  profileId Int
   regionId  Int
   comment   String
-  raport    Int       @default(0)
-
   createdAt DateTime  @default(now())
   deletedAt DateTime?
-
-  user   User   @relation(fields: [userId], references: [id])
-  region Region @relation(fields: [regionId], references: [id])
+  raport    Int       @default(0)
+  profileId Int
+  region    Region    @relation(fields: [regionId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
 }
 
 model TakeoffComment {
   id        Int       @id @default(autoincrement())
   userId    String
-  profileId Int
   takeoffId Int
   comment   String
-  raport    Int       @default(0)
-
   createdAt DateTime  @default(now())
   deletedAt DateTime?
-
-  user    User    @relation(fields: [userId], references: [id])
-  takeoff Takeoff @relation(fields: [takeoffId], references: [id])
+  raport    Int       @default(0)
+  profileId Int
+  takeoff   Takeoff   @relation(fields: [takeoffId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
 }
 
 model LandingComment {
   id        Int       @id @default(autoincrement())
   userId    String
-  profileId Int
   landingId Int
   comment   String
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
   raport    Int       @default(0)
+  profileId Int
+  landing   Landing   @relation(fields: [landingId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
+}
 
+model Profile {
+  id             Int            @id @default(autoincrement())
+  userId         String         @unique
+  public         Boolean        @default(false)
+  raport         Int            @default(0)
+  name           String
+  sex            String?
+  url            String         @unique
+  bdate          DateTime
+  bio            String?
+  createdAt      DateTime       @default(now())
+  image          String?        @unique
+  showAge        Boolean        @default(true)
+  user           User           @relation(fields: [userId], references: [id])
+  like           ProfileLike[]
+  videos         Video[]
+  videosComments VideoComment[]
+}
+
+model Video {
+  id        Int            @id @default(autoincrement())
+  profileId Int
+  userId    String
+  url       String         @unique
+  reported  Int            @default(0)
+  createdAt DateTime       @default(now())
+  deleted   DateTime?      @db.Timestamptz(6)
+  name      String
+  profile   Profile        @relation(fields: [profileId], references: [id])
+  likes     VideoLike[]
+  comments  VideoComment[]
+}
+
+enum UserType {
+  Admin
+  Pilot
+}
+
+model CommentLike {
+  id        Int         @id @default(autoincrement())
+  userId    String
+  commentId Int
+  type      CommentType
+  createdAt DateTime    @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, commentId, type])
+}
+
+enum CommentType {
+  Country
+  Region
+  Takeoff
+  Landing
+}
+
+model VideoComment {
+  id        Int       @id @default(autoincrement())
+  userId    String
+  profileId Int
+  videoId   Int
+  comment   String
+  raport    Int       @default(0)
   createdAt DateTime  @default(now())
   deletedAt DateTime?
 
   user    User    @relation(fields: [userId], references: [id])
-  landing Landing @relation(fields: [landingId], references: [id])
-}
-
-
-model Profile {
-  id        Int       @id @default(autoincrement())
-  userId    String  @unique
-  public    Boolean @default(false)
-  raport    Int       @default(0)
-
-  name      String 
-  sex       String?
-  url       String @unique
-  bdate     DateTime
-  bio       String?
-  image     String? @unique
-  
-  createdAt DateTime  @default(now())
-
-  user      User      @relation(fields: [userId], references: [id])
-  videos    Video[]   // relație 1:N către Video
-  like      ProfileLike[]
-  
-}
-
-model Video {
-  id        Int       @id @default(autoincrement())
-  profileId Int
-  userId    String
-  url       String    @unique
-  reported  Int       @default(0)
-  createdAt DateTime  @default(now())
-  deleted   Boolean   @default(false)
-
-  profile   Profile   @relation(fields: [profileId], references: [id])
-  likes     VideoLike[]
+  profile Profile @relation(fields: [profileId], references: [id])
+  video   Video   @relation(fields: [videoId], references: [id])
 }
