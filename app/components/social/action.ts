@@ -42,13 +42,13 @@ export async function get_like_comment({
     const userId = await getSessionUserId();
 
     const likeCount = await prisma.commentLike.count({
-      where: { commentId, type: prismaType },
+      where: { id: commentId, type: prismaType },
     });
 
     let userLiked = false;
     if (userId) {
       const found = await prisma.commentLike.findFirst({
-        where: { commentId, type: prismaType, userId },
+        where: { id: commentId, type: prismaType, userId },
       });
       userLiked = Boolean(found);
     }
