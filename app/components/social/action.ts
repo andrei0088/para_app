@@ -33,6 +33,7 @@ export async function get_like_comment({
     return { success: false, message: "Need an id and a type" };
   }
 
+  console.log("in functie : " + commentId);
   const prismaType = getPrismaType(type);
   if (!prismaType) {
     return { success: false, message: "Invalid comment type" };
@@ -42,13 +43,13 @@ export async function get_like_comment({
     const userId = await getSessionUserId();
 
     const likeCount = await prisma.commentLike.count({
-      where: { id: commentId, type: prismaType },
+      where: { commentId, type: prismaType },
     });
 
     let userLiked = false;
     if (userId) {
       const found = await prisma.commentLike.findFirst({
-        where: { id: commentId, type: prismaType, userId },
+        where: { commentId, type: prismaType, userId },
       });
       userLiked = Boolean(found);
     }

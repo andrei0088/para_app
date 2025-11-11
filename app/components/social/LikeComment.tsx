@@ -11,6 +11,7 @@ type LikeCommentProps = {
 };
 
 export default function LikeComment({ commentId, type }: LikeCommentProps) {
+  console.log(commentId);
   const [like, setLike] = useState(0);
   const [userLiked, setUserLiked] = useState(false);
   const [logd, setLogd] = useState(false);
