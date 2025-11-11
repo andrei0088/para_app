@@ -6,49 +6,9 @@ import {
 } from "../api/get/get_places";
 import ViewPlacesEdit from "./ViewPlacesEdit";
 import AddPlace from "./AddPlace";
-import Raported from "./Raported";
 import { revalidateAllCache } from "./revalidateCache";
 
-// ===== Tipuri =====
-
-// Tipul brut venit din API
-type RawComment = {
-  id: number;
-  userId: string;
-  userName?: string; // opțional, poate lipsi
-  comment: string;
-  raport: number;
-  createdAt: Date;
-  updatedAt?: Date;
-  deletedAt: Date | null;
-  countryId?: number;
-  regionId?: number;
-  takeoffId?: number;
-  landingId?: number;
-};
-
-// Tipul folosit în componentă
-type Comment = {
-  id: number;
-  comment: string;
-  userId: string;
-  raport: number;
-  deletedAt: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
-  user: {
-    id: string;
-    name: string;
-  };
-};
-
 // Props pentru Raported
-type RaportedProps = {
-  country: Comment[];
-  region: Comment[];
-  takeoff: Comment[];
-  landing: Comment[];
-};
 
 export default async function AdminPage() {
   // Preluare date
@@ -56,27 +16,8 @@ export default async function AdminPage() {
   const regionData = await get_all_regions();
   const takeoffData = await get_all_takeoff();
   const landingData = await get_all_landing();
-  const commentsData = undefined;
 
   // Mapare comentarii brute în Comment tipat
-  const mapComments = (arr: RawComment[] | null): Comment[] =>
-    arr?.map((c) => ({
-      id: c.id,
-      comment: c.comment,
-      userId: c.userId,
-      raport: c.raport,
-      deletedAt: c.deletedAt,
-      createdAt: c.createdAt,
-      updatedAt: c.updatedAt ?? c.createdAt,
-      user: { id: c.userId, name: c.userName ?? "Unknown" },
-    })) ?? [];
-
-  // const mappedComments: RaportedProps = {
-  //   country: mapComments(commentsData.country),
-  //   region: mapComments(commentsData.region),
-  //   takeoff: mapComments(commentsData.takeoff),
-  //   landing: mapComments(commentsData.landing),
-  // };
 
   return (
     <div className="p-6 space-y-6">

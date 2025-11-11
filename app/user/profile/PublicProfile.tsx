@@ -13,7 +13,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ isPublic }) => {
     >
       <label
         htmlFor="public"
-        className="font-medium text-gray-700 whitespace-nowrap flex-shrink-0"
+        className="font-medium text-gray-700 whitespace-nowrap shrink-0"
       >
         Make your profile public? {isPublic ? "🟢" : "🔴"}
       </label>
@@ -30,7 +30,7 @@ const PublicProfile: React.FC<PublicProfileProps> = ({ isPublic }) => {
 
       <button
         type="submit"
-        className="flex-shrink-0 px-4 py-2 border border-gray-300 rounded-md font-medium text-gray-900 hover:bg-gray-100 transition"
+        className="shrink-0 px-4 py-2 border border-gray-300 rounded-md font-medium text-gray-900 hover:bg-gray-100 transition"
       >
         Change
       </button>

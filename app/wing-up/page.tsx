@@ -46,7 +46,7 @@ export default function Join() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-blue-50 px-4 py-16">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-b from-white to-blue-50 px-4 py-16">
       <div className="w-full max-w-2xl bg-white shadow-lg rounded-2xl border border-gray-200 p-8 md:p-10 space-y-8 animate-fadeIn">
         <div className="space-y-3 text-center">
           <h1 className="text-4xl font-extrabold text-blue-700 tracking-tight">

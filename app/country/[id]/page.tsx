@@ -7,10 +7,10 @@ import {
 import ViewCountry from "./ViewCountry";
 import MapGenerate from "@/app/components/map/MapGenerate";
 import SearchForm from "@/app/search/SearchForm";
-import SocialComponent from "@/app/components/social/SocialComponent";
 import { notFound } from "next/navigation";
 import LeftCountry from "./LeftCountry";
 import SEO from "@/app/components/Seo";
+import SocialComponent from "@/app/components/social/SocialComponent";
 
 interface CountryPageProps {
   params: { id: string };
@@ -157,7 +157,7 @@ export default async function Country({ params }: CountryPageProps) {
           {/* ViewCountry pe dreapta pe desktop */}
           <ViewCountry country={countrySafe} />
         </div>
-        <div className="w-full h-1 rounded-full bg-gradient-to-r from-cyan-50 via-black to-cyan-50 blur-[0.3px]" />
+        <div className="w-full h-1 rounded-full bg-linear-to-r from-cyan-50 via-black to-cyan-50 blur-[0.3px]" />
 
         {/* Social */}
         <SocialComponent

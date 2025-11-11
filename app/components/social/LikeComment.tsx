@@ -15,7 +15,6 @@ export default function LikeComment({ commentId, type }: LikeCommentProps) {
   const [userLiked, setUserLiked] = useState(false);
   const [logd, setLogd] = useState(false);
   const [error, setError] = useState("");
-
   useEffect(() => {
     async function fetchLikes() {
       try {

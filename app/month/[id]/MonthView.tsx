@@ -123,7 +123,7 @@ export default function MonthView({
             <Link
               key={c.id}
               href={`/filter?country=${c.id}&month=${month}`}
-              className="px-3 py-1 rounded-lg bg-gray-100 font-medium hover:bg-gray-300 transition-colors flex-shrink-0"
+              className="px-3 py-1 rounded-lg bg-gray-100 font-medium hover:bg-gray-300 transition-colors shrink-0"
             >
               {c.name}
             </Link>

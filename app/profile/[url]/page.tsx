@@ -35,7 +35,7 @@ const Page = async ({ params }: PageProps) => {
 
         <ProfileBio bio={profile.bio} />
       </div>
-      <div className="w-full h-0.5 bg-gradient-to-r from-gray-300 via-cyan-500 to-gray-300  rounded-full"></div>
+      <div className="w-full h-0.5 bg-linear-to-r from-gray-300 via-cyan-500 to-gray-300  rounded-full"></div>
       {videos.success ? (
         <ProfileVideos videos={videos.data} />
       ) : (

@@ -60,7 +60,7 @@ export default function RootLayout({
           </main>
 
           {/* RightBar */}
-          <aside className="w-full lg:w-64 mt-4 lg:mt-0 lg:flex-shrink-0 lg:flex lg:flex-col">
+          <aside className="w-full lg:w-64 mt-4 lg:mt-0 lg:shrink-0 lg:flex lg:flex-col">
             <RightBar />
           </aside>
         </div>

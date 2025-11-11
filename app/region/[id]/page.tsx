@@ -189,7 +189,7 @@ export default async function Region({ params }: { params: { id: string } }) {
             landing={landing}
           />
         </div>
-        <div className="w-full h-1 rounded-full bg-gradient-to-r from-cyan-50 via-black to-cyan-50 blur-[0.3px]" />
+        <div className="w-full h-1 rounded-full bg-linear-to-r from-cyan-50 via-black to-cyan-50 blur-[0.3px]" />
         <SocialComponent
           selectedTipe="r"
           selectedName={region.name}

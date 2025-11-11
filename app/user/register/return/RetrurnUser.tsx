@@ -60,12 +60,12 @@ export default function ReturnUser({ name }: ReturnUserProps) {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white dark:bg-gray-900 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
-      <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white  rounded-xl shadow-md border border-gray-200 ">
+      <h2 className="text-xl font-semibold mb-4 text-gray-900 ">
         Welcome back, {name}!
       </h2>
 
-      <p className="mb-4 text-gray-700 dark:text-gray-300">
+      <p className="mb-4 text-gray-700 ">
         To reactivate your account, please enter your email below. If you need
         help, contact our support team.
       </p>
@@ -74,8 +74,8 @@ export default function ReturnUser({ name }: ReturnUserProps) {
         <div
           className={`mb-4 p-3 rounded-md text-sm ${
             msg.startsWith("✅")
-              ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400"
-              : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+              ? "bg-green-100 text-green-800 "
+              : "bg-red-100 text-red-700 "
           }`}
         >
           {msg}
@@ -83,7 +83,7 @@ export default function ReturnUser({ name }: ReturnUserProps) {
       )}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <label htmlFor="email" className="text-gray-700 dark:text-gray-300">
+        <label htmlFor="email" className="text-gray-700 ">
           Your Email
         </label>
         <input
@@ -93,7 +93,7 @@ export default function ReturnUser({ name }: ReturnUserProps) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
-          className="w-full p-2 border rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full p-2 border rounded-md border-gray-300  text-gray-900  focus:outline-none focus:ring-2 focus:ring-green-500"
         />
 
         <button

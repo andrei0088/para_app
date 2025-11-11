@@ -2,7 +2,7 @@ import React from "react";
 
 const AboutPage = () => {
   return (
-    <section className="min-h-screen bg-gradient-to-b from-white to-blue-50 px-6 py-20">
+    <section className="min-h-screen bg-linear-to-b from-white to-blue-50 px-6 py-20">
       <div className="max-w-4xl mx-auto space-y-10">
         <h1 className="text-4xl md:text-5xl font-extrabold text-blue-700 text-center tracking-tight">
           About Our Paragliding Community
