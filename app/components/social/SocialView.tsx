@@ -19,6 +19,7 @@ type CommentItem = {
   createdAt: string | Date;
   userId: string;
   user: CommentUser;
+  temp?: boolean;
 };
 
 type SocialViewProps = {
@@ -46,7 +47,6 @@ export default function SocialView({
   const [messageType, setMessageType] = useState<"success" | "error" | null>(
     null
   );
-
   // Pagination
   const [page, setPage] = useState(0);
   const pageSize = 7;
@@ -88,6 +88,7 @@ export default function SocialView({
         createdAt: new Date(),
         userId: user || "",
         user: { id: user || "", name: "You" },
+        temp: true,
       };
       setCommentList((prev) => [...prev, newCommentObj]);
       setNewComment("");
@@ -177,7 +178,7 @@ export default function SocialView({
                   on {new Date(c.createdAt).toLocaleDateString()}
                 </span>
               </h3>
-              <LikeComment commentId={c.id} type={selectedTipe} />
+              {!c.temp && <LikeComment commentId={c.id} type={selectedTipe} />}
               {c.userId != user && (
                 <button
                   className="text-sm px-3 py-1 rounded-md border border-red-500 text-orange-500 hover:bg-red-200 dark:hover:bg-gray-800"

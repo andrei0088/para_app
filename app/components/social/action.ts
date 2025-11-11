@@ -33,7 +33,6 @@ export async function get_like_comment({
     return { success: false, message: "Need an id and a type" };
   }
 
-  console.log("in functie : " + commentId);
   const prismaType = getPrismaType(type);
   if (!prismaType) {
     return { success: false, message: "Invalid comment type" };

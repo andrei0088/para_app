@@ -11,7 +11,6 @@ type LikeCommentProps = {
 };
 
 export default function LikeComment({ commentId, type }: LikeCommentProps) {
-  console.log(commentId);
   const [like, setLike] = useState(0);
   const [userLiked, setUserLiked] = useState(false);
   const [logd, setLogd] = useState(false);
@@ -20,7 +19,6 @@ export default function LikeComment({ commentId, type }: LikeCommentProps) {
     async function fetchLikes() {
       try {
         const rez = await get_like_comment({ commentId, type });
-        console.log({ rez });
 
         if (rez.success) {
           setLike(rez.data ?? 0);
