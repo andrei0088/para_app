@@ -171,7 +171,8 @@ export default function SocialView({
                   <span className="italic text-gray-400 mr-1">You</span>
                 ) : (
                   c.user.name
-                )}
+                )}{" "}
+                {c.id}
                 <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">
                   on {new Date(c.createdAt).toLocaleDateString()}
                 </span>
