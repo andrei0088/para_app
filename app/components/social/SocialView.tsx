@@ -42,6 +42,7 @@ export default function SocialView({
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(false);
   const [commentList, setCommentList] = useState<CommentItem[]>([...comments]);
+  const [raportedIds, setRaportedIds] = useState<Set<number>>(new Set());
 
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<"success" | "error" | null>(
@@ -180,12 +181,17 @@ export default function SocialView({
               {!c.temp && <LikeComment commentId={c.id} type={selectedTipe} />}
               {c.userId != user && (
                 <button
-                  className="text-sm px-3 py-1 rounded-md border border-red-500 text-orange-500 hover:bg-red-200 dark:hover:bg-gray-800"
-                  onClick={() =>
-                    raport_comment({ id: c.id, tipe: selectedTipe })
-                  }
+                  className={`text-sm px-3 py-1 rounded-md border ${
+                    raportedIds.has(c.id)
+                      ? "text-red-500 bg-red-100"
+                      : "text-yellow-500"
+                  } hover:bg-gray-200 dark:hover:bg-gray-800`}
+                  onClick={async () => {
+                    await raport_comment({ id: c.id, tipe: selectedTipe });
+                    setRaportedIds((prev) => new Set(prev).add(c.id));
+                  }}
                 >
-                  !RAPORT!
+                  {!raportedIds.has(c.id) ? "!RAPORT!" : "!RAPORT!"}
                 </button>
               )}
 

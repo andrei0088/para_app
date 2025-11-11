@@ -34,7 +34,7 @@ export default function ProfileViewClient({ profile }: Props) {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6">
+    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 w-fit">
       <div className="w-24 h-24 relative rounded-full overflow-hidden border-2 border-gray-300  shadow-sm">
         {image ? (
           <CldImage
@@ -61,11 +61,9 @@ export default function ProfileViewClient({ profile }: Props) {
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 ">
           {name}
         </h1>
-
         <p className="text-gray-600  text-sm mt-1">
           Age: {showAge ? calculateAge(bdate) : "Is just a number"}
         </p>
-
         <p className="text-gray-600  text-sm mt-1">
           Sex:{" "}
           {sex === "m" ? "♂ Man" : sex === "f" ? "♀ Woman" : "⚧ Not specified"}

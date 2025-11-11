@@ -323,56 +323,57 @@ export async function raport_comment({
   id: number;
   tipe: ComponentType;
 }) {
-  const rez = await getUserId();
-  if (!rez.success) return true;
+  const user = await getUserId();
+  if (!user.id) return null; // dacă nu e logat, nu raportăm
+  const userId = user.id;
+
   let current;
   if (tipe === "c")
     current = await prisma.countryComment.findUnique({
       where: { id },
-      select: { raport: true },
+      select: { reportedBy: true },
     });
   if (tipe === "r")
     current = await prisma.regionComment.findUnique({
       where: { id },
-      select: { raport: true },
+      select: { reportedBy: true },
     });
   if (tipe === "t")
     current = await prisma.takeoffComment.findUnique({
       where: { id },
-      select: { raport: true },
+      select: { reportedBy: true },
     });
   if (tipe === "l")
     current = await prisma.landingComment.findUnique({
       where: { id },
-      select: { raport: true },
+      select: { reportedBy: true },
     });
 
   if (!current) return null;
 
-  const newRaport = (current.raport ?? 0) + 1;
+  // verificăm dacă userul a raportat deja
+  if (current.reportedBy.includes(userId)) {
+    return current.reportedBy.length; // nu facem nimic, doar returnăm numărul de raportări
+  }
 
+  const newReportedBy = [...current.reportedBy, userId];
+  const updateData = {
+    reportedBy: newReportedBy,
+    raport: newReportedBy.length,
+  };
+
+  // facem update-ul în baza de date
   if (tipe === "c")
-    await prisma.countryComment.update({
-      where: { id },
-      data: { raport: newRaport },
-    });
+    await prisma.countryComment.update({ where: { id }, data: updateData });
   if (tipe === "r")
-    await prisma.regionComment.update({
-      where: { id },
-      data: { raport: newRaport },
-    });
+    await prisma.regionComment.update({ where: { id }, data: updateData });
   if (tipe === "t")
-    await prisma.takeoffComment.update({
-      where: { id },
-      data: { raport: newRaport },
-    });
+    await prisma.takeoffComment.update({ where: { id }, data: updateData });
   if (tipe === "l")
-    await prisma.landingComment.update({
-      where: { id },
-      data: { raport: newRaport },
-    });
+    await prisma.landingComment.update({ where: { id }, data: updateData });
 
-  if (newRaport > 5) {
+  // revalidare path dacă numărul raportărilor > 5
+  if (newReportedBy.length > 5) {
     const pathMap: Record<ComponentType, string> = {
       c: "/country",
       r: "/region",
@@ -382,7 +383,7 @@ export async function raport_comment({
     revalidatePath(pathMap[tipe]);
   }
 
-  return newRaport;
+  return newReportedBy.length; // returnăm numărul actual de raportări
 }
 
 // ==== Comentarii raportate (raport > 0) ====

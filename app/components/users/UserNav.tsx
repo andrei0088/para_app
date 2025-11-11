@@ -7,9 +7,5 @@ export default async function Header() {
     headers: await headers(),
   });
 
-  return (
-    <div className="flex justify-end p-5 bg-gray-50  shadow-sm h-full">
-      <ClientUserNav session={session} />
-    </div>
-  );
+  return <ClientUserNav session={session} />;
 }

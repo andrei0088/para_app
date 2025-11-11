@@ -32,7 +32,7 @@ export default function UserNav({ session }: { session: Session }) {
 
   if (!session)
     return (
-      <div className="flex gap-3 items-center ">
+      <div className="gap-3 items-center flex justify-end p-5 bg-gray-50  shadow-sm h-full">
         <Link
           href="/user/login"
           className="px-3 py-1 border border-gray-300 text-gray-700 rounded  hover:bg-gray-100 transition-colors duration-200"
@@ -49,7 +49,12 @@ export default function UserNav({ session }: { session: Session }) {
     );
 
   return (
-    <div className="relative flex items-center gap-2 " ref={menuRef}>
+    <div
+      className="relative flex items-center gap-2   justify-end p-5  h-full  bg-gray-50  
+                  border-b border-l border-r border-gray-200 shadow-lg "
+      ref={menuRef}
+      onClick={() => setOpen(!open)}
+    >
       {/* User Name */}
       <span className="text-sm font-medium text-gray-800 ">
         {session.user.name}
@@ -67,6 +72,7 @@ export default function UserNav({ session }: { session: Session }) {
           quality="auto"
           radius="max"
           style={{ objectFit: "cover", cursor: "pointer" }}
+          onClick={() => setOpen(!open)}
         />
       ) : (
         <Image
@@ -88,7 +94,10 @@ export default function UserNav({ session }: { session: Session }) {
 
       {/* Dropdown Menu */}
       {open && (
-        <div className="absolute -right-2 top-full mt-4 w-44 bg-gray-50  rounded-md shadow-lg py-1 z-9999 ring-1 ring-gray-200 ">
+        <div
+          className="absolute left-0 top-full w-full bg-gray-50 rounded-b-2xl 
+                  border-b border-l border-r border-gray-200 shadow-lg z-50"
+        >
           <Link
             href="/user/profile"
             className="block px-4 py-2 hover:bg-gray-100  text-sm text-gray-700  transition-colors duration-150"

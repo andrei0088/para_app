@@ -5,6 +5,7 @@ import ProfileViewClient from "./ProfileViewClient";
 import ProfileVideos from "./ProfileVideos";
 import ProfileLike from "./ProfileLike";
 import ProfileBio from "./ProfileBio";
+import PMUser from "./PMUser";
 
 interface PageProps {
   params: { url: string };
@@ -28,12 +29,17 @@ const Page = async ({ params }: PageProps) => {
     <div className="w-full h-full">
       <div className="bg-white    rounded-2xl shadow-lg p-6 sm:p-8 space-y-6 max-w-full w-full mx-auto transition-colors duration-300">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between w-full gap-4">
-          <ProfileViewClient profile={profile} />
+          <div>
+            <ProfileViewClient profile={profile} />
+            {profile.canPM && (
+              <PMUser userId={profile.userId} userName={profile.name} />
+            )}
+          </div>
+
+          <ProfileBio bio={profile.bio} />
 
           <ProfileLike profileId={profile.id} />
         </div>
-
-        <ProfileBio bio={profile.bio} />
       </div>
       <div className="w-full h-0.5 bg-linear-to-r from-gray-300 via-cyan-500 to-gray-300  rounded-full"></div>
       {videos.success ? (

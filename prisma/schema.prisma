@@ -290,7 +290,8 @@ model Profile {
   bio            String?
   createdAt      DateTime       @default(now())
   image          String?        @unique
-  showAge        Boolean        @default(true)
+  showAge        Boolean        @default(false)
+  canPM          Boolean        @default(false)
   user           User           @relation(fields: [userId], references: [id])
   like           ProfileLike[]
   videos         Video[]
