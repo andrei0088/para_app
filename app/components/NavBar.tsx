@@ -67,12 +67,12 @@ export default function NavBarServer() {
 
       {/* Mobile */}
       {/* Mobile */}
-      <div className="relative md:hidden bg-white  shadow-md px-4 py-2 flex items-center justify-between">
+      <div className="relative md:hidden bg-white  shadow-md flex items-center justify-between h-full">
         {/* Burger menu / NavBarClient */}
         <NavBarClient />
 
         {/* UserNav în colț dreapta sus */}
-        <div className="absolute right-4 top-2">
+        <div className="absolute right-0 top-0">
           <UserNav />
         </div>
       </div>

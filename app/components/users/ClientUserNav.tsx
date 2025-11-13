@@ -32,7 +32,7 @@ export default function UserNav({ session }: { session: Session }) {
 
   if (!session)
     return (
-      <div className="gap-3 items-center flex justify-end p-5 bg-gray-50  shadow-sm h-full">
+      <div className="gap-3 items-center flex justify-end p-5 bg-gray-50  shadow-sm h-full w-fit">
         <Link
           href="/user/login"
           className="px-3 py-1 border border-gray-300 text-gray-700 rounded  hover:bg-gray-100 transition-colors duration-200"
@@ -50,8 +50,8 @@ export default function UserNav({ session }: { session: Session }) {
 
   return (
     <div
-      className="relative flex items-center gap-2   justify-end p-5  h-full  bg-gray-50  
-                  border-b border-l border-r border-gray-200 shadow-lg "
+      className="relative flex items-center gap-2   justify-end  md:p-5 p-3  h-full  bg-gray-50  
+                  border-b border-l border-r border-gray-200 shadow-lg w-fit "
       ref={menuRef}
       onClick={() => setOpen(!open)}
     >
@@ -95,7 +95,7 @@ export default function UserNav({ session }: { session: Session }) {
       {/* Dropdown Menu */}
       {open && (
         <div
-          className="absolute left-0 top-full w-full bg-gray-50 rounded-b-2xl 
+          className="absolute left-0 md:top-full top-full w-full bg-gray-50 rounded-b-2xl 
                   border-b border-l border-r border-gray-200 shadow-lg z-50"
         >
           <Link

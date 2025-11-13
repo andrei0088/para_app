@@ -41,7 +41,6 @@ const Page = async ({ params }: PageProps) => {
           <ProfileLike profileId={profile.id} />
         </div>
       </div>
-      <div className="w-full h-0.5 bg-linear-to-r from-gray-300 via-cyan-500 to-gray-300  rounded-full"></div>
       {videos.success ? (
         <ProfileVideos videos={videos.data} />
       ) : (
