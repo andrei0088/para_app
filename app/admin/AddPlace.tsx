@@ -1,8 +1,14 @@
+import { Country, Region } from "@prisma/client";
 import AddNewPlace from "./AddNewPlace";
-import { get_country_region_all } from "./lib/admin";
 
-export default async function AddPlacePage() {
-  const data = await get_country_region_all()
-  if(data.succes)  return <AddNewPlace countries={data.rez.country} regions={data.rez.region} />;
-  return "Database error !";
+interface AddPlacePageProps {
+  country: Country[]; // sau ce tip are country în realitate
+  region: Region[]; // sau ce tip are region
+}
+
+export default async function AddPlacePage({
+  country,
+  region,
+}: AddPlacePageProps) {
+  return <AddNewPlace countries={country} regions={region} />;
 }

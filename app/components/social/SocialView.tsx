@@ -145,8 +145,8 @@ export default function SocialView({
   }
 
   return (
-    <section className="max-w-6xl mx-auto mt-12 px-8 py-6 bg-gray-50 dark:bg-[#1b1c1f] rounded-3xl shadow-md">
-      <h2 className="text-3xl font-serif text-center mb-5 text-gray-900 dark:text-gray-200">
+    <section className="max-w-6xl mx-auto mt-12 px-8 py-6 bg-gray-50  rounded-3xl shadow-md">
+      <h2 className="text-3xl font-serif text-center mb-5 text-gray-900 ">
         What others say about{" "}
         <span className="font-semibold">{selectedName}</span>
       </h2>
@@ -163,18 +163,15 @@ export default function SocialView({
 
       <div className="space-y-3">
         {visibleComments.map((c) => (
-          <article
-            key={c.id}
-            className="p-4 rounded-2xl border bg-white dark:bg-[#141417] dark:border-[#2c2d31]"
-          >
+          <article key={c.id} className="p-4 rounded-2xl border bg-white ">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-gray-200">
+              <h3 className="text-lg font-medium text-gray-900 ">
                 {c.userId === user ? (
                   <span className="italic text-gray-400 mr-1">You</span>
                 ) : (
                   c.user.name
                 )}
-                <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">
+                <span className="ml-2 text-sm text-gray-500 ">
                   on {new Date(c.createdAt).toLocaleDateString()}
                 </span>
               </h3>
@@ -185,7 +182,7 @@ export default function SocialView({
                     raportedIds.has(c.id)
                       ? "text-red-500 bg-red-100"
                       : "text-yellow-500"
-                  } hover:bg-gray-200 dark:hover:bg-gray-800`}
+                  } hover:bg-gray-200 `}
                   onClick={async () => {
                     await raport_comment({ id: c.id, tipe: selectedTipe });
                     setRaportedIds((prev) => new Set(prev).add(c.id));
@@ -197,7 +194,7 @@ export default function SocialView({
 
               {c.userId === user && editId !== c.id && (
                 <button
-                  className="text-sm px-3 py-1 rounded-md border hover:bg-gray-200 dark:hover:bg-gray-800"
+                  className="text-sm px-3 py-1 rounded-md border hover:bg-gray-200 "
                   onClick={() => startEdit(c)}
                 >
                   Edit
@@ -239,7 +236,7 @@ export default function SocialView({
                 </div>
               </form>
             ) : (
-              <p className="mt-3 text-gray-700 dark:text-gray-300 leading-relaxed">
+              <p className="mt-3 text-gray-700  leading-relaxed">
                 “{c.comment}”
               </p>
             )}
@@ -252,14 +249,14 @@ export default function SocialView({
           <button
             onClick={() => setPage(page + 1)}
             disabled={page + 1 >= totalPages}
-            className="px-3 py-1 rounded-full bg-gray-200 dark:bg-gray-700 disabled:opacity-40"
+            className="px-3 py-1 rounded-full bg-gray-200  disabled:opacity-40"
           >
             ↑ Older
           </button>
           <button
             onClick={() => setPage(page - 1)}
             disabled={page === 0}
-            className="px-3 py-1 rounded-full bg-gray-200 dark:bg-gray-700 disabled:opacity-40"
+            className="px-3 py-1 rounded-full bg-gray-200  disabled:opacity-40"
           >
             ↓ Newer
           </button>

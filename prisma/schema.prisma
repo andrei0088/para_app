@@ -45,6 +45,7 @@ model Takeoff {
   latitude    Float
   longitude   Float
   altitude    Float
+  wind        String?
   description String?
   regionId    Int
   countryId   Int

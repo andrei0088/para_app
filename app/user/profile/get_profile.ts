@@ -4,6 +4,35 @@ import { prisma } from "@/app/api/prisma";
 import { auth } from "@/app/lib/auth";
 import { headers as nextHeaders } from "next/headers";
 import { revalidatePath } from "next/cache";
+import * as leoProfanity from "leo-profanity";
+leoProfanity.loadDictionary("en");
+leoProfanity.loadDictionary("fr");
+leoProfanity.loadDictionary("ru");
+
+const romanianBadWords = [
+  "pula",
+  "pule",
+  "pizda",
+  "muie",
+  "fut",
+  "cur",
+  "bou",
+  "prost",
+];
+const frenchBadWords = ["merde", "putain", "connard", "salope"];
+const italianBadWords = ["cazzo", "stronzo", "merda", "puttana"];
+const spanishBadWords = ["mierda", "puta", "gilipollas", "coño"];
+const germanBadWords = ["scheiße", "arschloch", "ficken", "fotze"];
+
+leoProfanity.add(romanianBadWords);
+leoProfanity.add(frenchBadWords);
+leoProfanity.add(italianBadWords);
+leoProfanity.add(spanishBadWords);
+leoProfanity.add(germanBadWords);
+
+function validateWords(comment: string): boolean {
+  return !leoProfanity.check(comment);
+}
 
 // Convert ReadonlyHeaders → Headers pentru better-auth
 async function getAuthHeaders(): Promise<Headers> {
@@ -229,6 +258,8 @@ export async function add_video(url: string, profileId: number, name: string) {
   }
   if (!name) return { success: false, message: "Need a name" };
 
+  // verific numele
+  if (!validateWords(name)) return { success: false, message: "Wrong name " };
   const session = await auth.api.getSession({
     headers: await getAuthHeaders(),
   });

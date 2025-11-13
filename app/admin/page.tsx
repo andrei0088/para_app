@@ -42,7 +42,7 @@ export default async function AdminPage() {
           takeoffs={takeoffData}
           landings={landingData}
         />
-        <AddPlace />
+        <AddPlace country={countryData} region={regionData} />
       </div>
     </div>
   );

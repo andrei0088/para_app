@@ -1,5 +1,7 @@
 // app/types.ts
 
+import { RegionMinimal } from "./filter/page";
+
 export interface Country {
   id: number;
   name: string;
@@ -61,7 +63,7 @@ export interface Site {
   regionId?: number;
   map?: string | null;
   seo?: string | null;
-
+  altitude: number;
   type: "takeoff" | "landing";
 }
 
@@ -87,7 +89,9 @@ export interface Sites {
 
 export interface Select {
   country: Country;
-  region?: Region[];
+  region?: RegionMinimal[];
+  season?: number | "";
+  month?: number | "";
 }
 
 export type CommentUser = {
@@ -126,4 +130,22 @@ export interface SignUpResult {
   text?: string;
   email?: string;
   user?: Record<string, unknown>;
+}
+
+export interface SelectedLocation {
+  id: number | null;
+  lat: number | null;
+  lng: number | null;
+}
+
+export interface LandingTakeoff {
+  id: number;
+  name: string;
+  latitude?: number;
+  longitude?: number;
+  altitude: number;
+  description?: string;
+  map?: string;
+  regionId: number;
+  countryId: number;
 }

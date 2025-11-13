@@ -6,11 +6,12 @@ import ViewTakeoffMap from "./ViewTakeoffMap";
 interface Takeoff {
   id: number;
   name: string;
-  map: string ;
+  map: string;
   latitude: number;
   longitude: number;
   altitude: number;
-  description: string; // întotdeauna string
+  description: string;
+  wind?: string;
 }
 
 interface Country {
@@ -32,66 +33,78 @@ interface Details {
 interface ViewTakeoffProps {
   takeoff: Takeoff;
   details: Details;
-  maps:string[];
+  maps: string[];
 }
 
-export default function ViewTakeoff({ takeoff, details , maps}: ViewTakeoffProps) {
+export default function ViewTakeoff({
+  takeoff,
+  details,
+  maps,
+}: ViewTakeoffProps) {
   const googleMapsUrl = `https://www.google.com/maps?q=${takeoff.latitude},${takeoff.longitude}`;
-const sendMaps = [details.region.map, ... maps];
+  const sendMaps = [details.region.map, ...maps];
+
   return (
-    <section className="max-w-6xl mx-auto bg-[#faf9f7] dark:bg-gray-900 shadow-lg rounded-2xl border border-gray-200 dark:border-gray-700 p-8">
+    <section className="max-w-6xl mx-auto bg-white/70 dark:bg-gray-900/70 backdrop-blur-md rounded-2xl shadow-md border border-gray-200 dark:border-gray-700 p-6 mb-6 transition-colors">
       {/* Breadcrumb */}
-      <div className="mb-6 text-gray-600 dark:text-gray-400 text-sm">
+      <div className="mb-4 text-gray-600 dark:text-gray-400 text-sm">
         <Link
           href={`/country/${details.country.id}`}
-          className="hover:underline text-green-700 dark:text-green-400"
+          className="hover:underline text-blue-700 dark:text-glue-400"
         >
           {details.country.name}
         </Link>{" "}
         →{" "}
         <Link
           href={`/region/${details.region.id}`}
-          className="hover:underline text-green-700 dark:text-green-400"
+          className="hover:underline text-blue-700 dark:text-blue-400"
         >
           {details.region.name}
         </Link>{" "}
-        → <span className="font-medium text-gray-900 dark:text-gray-100">{takeoff.name}</span>
+        → <span className="font-medium text-gray-900">{takeoff.name}</span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Col 1 - Info + Harta */}
         <div className="flex flex-col space-y-4 col-span-1">
-          <h1 className="text-3xl font-bold text-green-700 dark:text-green-400">
-            {takeoff.name}
+          <h1 className="text-3xl font-bold text-blue-700 dark:text-blue-400">
+            {takeoff.name} ({takeoff.wind})
           </h1>
 
-          <TopView component={'t'} id={takeoff.id} />
+          <TopView component="t" id={takeoff.id} />
 
-          <p className="text-gray-700 dark:text-gray-300">
-            <span className="font-semibold">🗻 Altitude:</span> {takeoff.altitude} m
+          <p className="text-gray-700 ">
+            <span className="font-semibold">🗻 Altitude:</span>{" "}
+            {takeoff.altitude} m
           </p>
 
-          <p className="text-gray-700 dark:text-gray-300">
+          <p className="text-gray-700 ">
             <span className="font-semibold">📍 Coordinates:</span>{" "}
             <a
               href={googleMapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-green-600 dark:text-green-400 underline hover:text-green-800 dark:hover:text-green-300"
+              className="text-blue-600  underline hover:text-blue-800 "
             >
               {takeoff.latitude.toFixed(6)}, {takeoff.longitude.toFixed(6)}
             </a>
           </p>
 
-          <div className="mt-2 h-[40vh] rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm">
-            <MapGenerate center={[takeoff.latitude, takeoff.longitude]} zoom={11} />
+          <div className="mt-2 h-[40vh] rounded-xl overflow-hidden border border-gray-200  shadow-sm">
+            <MapGenerate
+              center={[takeoff.latitude, takeoff.longitude]}
+              zoom={11}
+            />
           </div>
         </div>
 
-        {/* Col 2-3 - Descriere */}
-        <div className="col-span-2 prose prose-lg dark:prose-invert text-gray-700 dark:text-gray-300 leading-relaxed">
-         <ViewTakeoffMap map={takeoff.map} maps={sendMaps} />
-          <div dangerouslySetInnerHTML={{ __html: takeoff.description }} />
+        {/* Col 2-3 - Descriere + Map */}
+        <div className="col-span-2 flex flex-col gap-4">
+          <ViewTakeoffMap map={takeoff.map} maps={sendMaps} />
+          <div
+            className="prose prose-lg  text-gray-700  leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: takeoff.description }}
+          />
         </div>
       </div>
     </section>

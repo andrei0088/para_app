@@ -19,8 +19,12 @@ export default function SearchElement({
 
   const [selectedCountryId, setSelectedCountryId] = useState(select.country.id);
   const [selectedRegionId, setSelectedRegionId] = useState<number | "">("");
-  const [selectedSeason, setSelectedSeason] = useState<number | "">("");
-  const [selectedMonth, setSelectedMonth] = useState<number | "">("");
+  const [selectedSeason, setSelectedSeason] = useState<number | "">(
+    select.season ?? ""
+  );
+  const [selectedMonth, setSelectedMonth] = useState<number | "">(
+    select.month ?? ""
+  );
 
   const [availableSeasons, setAvailableSeasons] = useState<number[]>([]);
   const [availableMonths, setAvailableMonths] = useState<number[]>([]);
@@ -142,7 +146,7 @@ export default function SearchElement({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-wrap items-end gap-3 md:gap-4 bg-gray-50  p-3 md:p-4 rounded-xl shadow-md max-w-full  dark:text-gray-800"
+      className="flex flex-wrap items-end gap-3 md:gap-4 bg-gray-50  p-3 md:p-4 rounded-xl shadow-md max-w-full  "
     >
       {/* Country */}
       <div className="flex flex-col flex-1 min-w-[140px]">

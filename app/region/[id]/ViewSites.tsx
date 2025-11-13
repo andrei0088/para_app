@@ -7,7 +7,6 @@ interface ViewSitesProps {
 }
 
 const ViewSites = ({ takeoff, landing }: ViewSitesProps) => {
-  console.log({ takeoff });
   return (
     <div>
       <div className="bg-gray-50  rounded-xl p-4 border border-gray-200  shadow-sm">

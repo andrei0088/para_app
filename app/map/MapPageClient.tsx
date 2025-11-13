@@ -3,55 +3,45 @@
 import { useState } from "react";
 import SearchMapComp from "./SearchMapComp";
 import MapClientWrapper from "./MapClientWrapper";
-import { Site, Country, Region } from "@/app/types";
+import { Country, Region, Takeoff, Landing } from "@prisma/client";
+import { Site } from "../types";
 
-interface MapPageClientProps {
+interface Props {
   countries: Country[];
   regions: Region[];
+  takeoffs: Takeoff[];
+  landings: Landing[];
   initialSites: Site[];
-  initialCenter: [number, number];
-  defaultSelected?: { countryId: number | null; regionId: number | null };
 }
 
 export default function MapPageClient({
   countries,
   regions,
+  takeoffs,
+  landings,
   initialSites,
-  initialCenter,
-  defaultSelected,
-}: MapPageClientProps) {
-  const [selected, setSelected] = useState<{
-    countryId: number | null;
-    regionId: number | null;
-  }>({
-    countryId: defaultSelected?.countryId ?? null,
-    regionId: defaultSelected?.regionId ?? null,
-  });
+}: Props) {
+  const [selectedLatLng, setSelectedLatLng] = useState<{
+    lat: number | null;
+    lng: number | null;
+  }>({ lat: null, lng: null });
 
-  // funcție stabilă care nu se recreează la fiecare render
-  const handleSelect = (countryId: number | null, regionId: number | null) => {
-    setSelected((prev) => {
-      // actualizează doar dacă s-a schimbat ceva
-      if (prev.countryId === countryId && prev.regionId === regionId)
-        return prev;
-      return { countryId, regionId };
-    });
+  const handleSelect = (lat: number | null, lng: number | null) => {
+    console.log({ lat, lng });
+    setSelectedLatLng({ lat, lng });
   };
 
   return (
-    <div className="flex flex-col h-[80vh] w-full text-gray-800 mt-5 z-40 ">
+    <div className="flex flex-col h-[80vh] w-full text-gray-800 mt-5 z-40">
       <SearchMapComp
         countries={countries}
         regions={regions}
-        selected={selected}
-        onSelect={handleSelect} // folosim funcția stabilă
+        takeoffs={takeoffs}
+        landings={landings}
+        onSelect={handleSelect}
       />
       <div className="flex-1">
-        <MapClientWrapper
-          allSites={initialSites}
-          initialCenter={initialCenter}
-          selected={selected}
-        />
+        <MapClientWrapper allSites={initialSites} selected={selectedLatLng} />
       </div>
     </div>
   );

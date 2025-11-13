@@ -1,10 +1,12 @@
 "use client";
-
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface Option {
   id: number;
   name: string;
+  countryId?: number;
+  regionId?: number;
 }
 
 interface ViewPlacesEditProps {
@@ -20,52 +22,72 @@ export default function ViewPlacesEdit({
   takeoffs,
   landings,
 }: ViewPlacesEditProps) {
-  // Starea pentru selectul activ
-  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [selectedCountry, setSelectedCountry] = useState<number | "">("");
+  const [selectedRegion, setSelectedRegion] = useState<number | "">("");
+
+  const [selectedType, setSelectedType] = useState<
+    "c" | "r" | "t" | "l" | null
+  >(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
-  const handleChange = (type: string, id: number | "") => {
-    if (id === "") {
-      setSelectedType(null);
-      setSelectedId(null);
-      return;
-    }
+  const resetSelection = () => {
+    setSelectedType(null);
+    setSelectedId(null);
+  };
+  const router = useRouter();
+
+  const handleSelect = (type: "c" | "r" | "t" | "l", id: number) => {
     setSelectedType(type);
     setSelectedId(id);
-
-    // Resetează toate celelalte selecte
-    document.querySelectorAll("select").forEach((el) => {
-      const selectEl = el as HTMLSelectElement;
-      if (selectEl.name !== type) selectEl.value = "";
-    });
   };
 
- const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault();
-  if (!selectedType || !selectedId) {
-    alert("Selectează o singură opțiune pentru update!");
-    return;
-  }
+  // Afișare nume selectat
+  const getSelectedName = () => {
+    if (!selectedType || !selectedId) return "";
 
-  // Redirecționăm către /admin/editplace cu query
-  window.location.href = `/admin/editplace?type=${selectedType}&id=${selectedId}`;
-};
+    if (selectedType === "c")
+      return countrys.find((c) => c.id === selectedId)?.name ?? "";
+
+    if (selectedType === "r")
+      return regions.find((r) => r.id === selectedId)?.name ?? "";
+
+    if (selectedType === "t")
+      return takeoffs.find((t) => t.id === selectedId)?.name ?? "";
+
+    if (selectedType === "l")
+      return landings.find((l) => l.id === selectedId)?.name ?? "";
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedType || !selectedId) return;
+
+    const path = `/admin/edit?type=${selectedType}&id=${selectedId}`;
+    router.push(path); // ✅ Navigăm la pagina de editare
+  };
 
   const selectClass =
     "border border-gray-300 rounded p-2 w-full mb-4 hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400";
 
   return (
-    <div className="w-1/2 mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div className="w-full mx-auto p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-xl font-bold mb-4 text-center">Edit Places</h2>
+
       <form onSubmit={handleSubmit}>
-        {/* Country */}
+        {/* Select Country */}
         <label className="block mb-2 font-semibold">Country</label>
         <select
           className={selectClass}
-          name="country"
-          onChange={(e) => handleChange("country", Number(e.target.value))}
+          value={selectedCountry}
+          onChange={(e) => {
+            const val = e.target.value === "" ? "" : Number(e.target.value);
+            setSelectedCountry(val);
+            setSelectedRegion("");
+            resetSelection();
+            if (val !== "") handleSelect("c", val);
+          }}
         >
-          <option value="">Select a country</option>
+          <option value="">All countries</option>
           {countrys.map((c) => (
             <option key={c.id} value={c.id}>
               {c.name}
@@ -73,62 +95,91 @@ export default function ViewPlacesEdit({
           ))}
         </select>
 
-        {/* Region */}
+        {/* Select Region */}
         <label className="block mb-2 font-semibold">Region</label>
         <select
           className={selectClass}
-          name="region"
-          onChange={(e) => handleChange("region", Number(e.target.value))}
+          value={selectedRegion}
+          onChange={(e) => {
+            const val = e.target.value === "" ? "" : Number(e.target.value);
+            setSelectedRegion(val);
+            resetSelection();
+            if (val !== "") handleSelect("r", val);
+          }}
         >
-          <option value="">Select a region</option>
-          {regions.map((r) => (
-            <option key={r.id} value={r.id}>
-              {r.name}
-            </option>
-          ))}
+          <option value="">All regions</option>
+          {regions
+            .filter(
+              (r) => selectedCountry === "" || r.countryId === selectedCountry
+            )
+            .map((r) => (
+              <option key={r.id} value={r.id}>
+                {r.name}
+              </option>
+            ))}
         </select>
 
-        {/* Takeoff */}
+        {/* Select Takeoff */}
         <label className="block mb-2 font-semibold">Takeoff</label>
         <select
           className={selectClass}
-          name="takeoff"
-          onChange={(e) => handleChange("takeoff", Number(e.target.value))}
+          onChange={(e) => {
+            const val = e.target.value === "" ? "" : Number(e.target.value);
+            resetSelection();
+            if (val !== "") handleSelect("t", val);
+          }}
         >
-          <option value="">Select a takeoff</option>
-          {takeoffs.map((t) => (
-            <option key={t.id} value={t.id}>
-              {t.name}
-            </option>
-          ))}
+          <option value="">Select takeoff</option>
+          {takeoffs
+            .filter(
+              (t) =>
+                (selectedCountry === "" || t.countryId === selectedCountry) &&
+                (selectedRegion === "" || t.regionId === selectedRegion)
+            )
+            .map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name}
+              </option>
+            ))}
         </select>
 
-        {/* Landing */}
+        {/* Select Landing */}
         <label className="block mb-2 font-semibold">Landing</label>
         <select
           className={selectClass}
-          name="landing"
-          onChange={(e) => handleChange("landing", Number(e.target.value))}
+          onChange={(e) => {
+            const val = e.target.value === "" ? "" : Number(e.target.value);
+            resetSelection();
+            if (val !== "") handleSelect("l", val);
+          }}
         >
-          <option value="">Select a landing</option>
-          {landings.map((l) => (
-            <option key={l.id} value={l.id}>
-              {l.name}
-            </option>
-          ))}
+          <option value="">Select landing</option>
+          {landings
+            .filter(
+              (l) =>
+                (selectedCountry === "" || l.countryId === selectedCountry) &&
+                (selectedRegion === "" || l.regionId === selectedRegion)
+            )
+            .map((l) => (
+              <option key={l.id} value={l.id}>
+                {l.name}
+              </option>
+            ))}
         </select>
 
         <button
           type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors w-full"
+          disabled={!selectedType || !selectedId}
+          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors w-full disabled:bg-gray-300 disabled:hover:bg-gray-300"
         >
-          Update
+          Edit selected
         </button>
       </form>
 
       {selectedType && selectedId && (
         <p className="mt-4 text-center text-green-600">
-          Selected {selectedType} with ID: {selectedId}
+          Selected → <b>{getSelectedName()}</b> ({selectedType.toUpperCase()})
+          [ID: {selectedId}]
         </p>
       )}
     </div>

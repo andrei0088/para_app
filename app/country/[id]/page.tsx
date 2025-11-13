@@ -15,18 +15,22 @@ import SocialComponent from "@/app/components/social/SocialComponent";
 interface CountryPageProps {
   params: { id: string };
 }
-export const dynamic = "force-dynamic"; // forțează SSR
+export const dynamic = "auto"; // default behavior
 
 export default async function Country({ params }: CountryPageProps) {
   const paramsId = await params;
   const id = Number(paramsId.id);
 
+  const [country, regionsRaw, sitesRaw] = await Promise.all([
+    get_country_by_id({ id }),
+    get_country_regions({ id }),
+    get_country_landings_takeoffs({ id }),
+  ]);
+
   // --- Obține țara ---
-  const country = await get_country_by_id({ id });
   if (!country) notFound();
 
   // --- Regiuni ---
-  const regionsRaw = (await get_country_regions({ id })) ?? [];
   const regions = regionsRaw.map((r) => ({
     id: r.id,
     name: r.name,
@@ -59,10 +63,6 @@ export default async function Country({ params }: CountryPageProps) {
   }));
 
   // --- Takeoff + Landing pentru țară ---
-  const sitesRaw = (await get_country_landings_takeoffs({ id })) ?? {
-    takeoff: [],
-    landing: [],
-  };
   const sites = {
     takeoff: sitesRaw.takeoff.map((t) => ({
       ...t,

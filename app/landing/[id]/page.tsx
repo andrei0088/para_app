@@ -1,4 +1,7 @@
-import { get_landing_by_id, get_region_landings_takeoffs } from "@/app/api/get/get_places";
+import {
+  get_landing_by_id,
+  get_region_landings_takeoffs,
+} from "@/app/api/get/get_places";
 import { get_landing_details } from "@/app/api/get/get_details";
 import ViewLanding from "./ViewLanding";
 import LandingDetails from "./LandingDetails";
@@ -10,70 +13,90 @@ interface PageProps {
 
 export default async function LandingPage({ params }: PageProps) {
   const id = Number(params.id);
-
-  // Preluăm landing
-  const landing = await get_landing_by_id({ id });
-  if (!landing) {
-    return <p className="text-center text-gray-500 mt-10">Landing not found.</p>;
+  if (isNaN(id)) {
+    return (
+      <p className="text-center text-gray-500 mt-10">Invalid landing ID.</p>
+    );
   }
 
-  // Preluăm detalii
-  const details = await get_landing_details({ id });
-  if (!details || !details.country || !details.region) {
-    return <p className="text-center text-gray-500 mt-10">Landing details not found.</p>;
+  // 1️⃣ Preluăm landing
+  const landingRaw = await get_landing_by_id({ id });
+  if (!landingRaw) {
+    return (
+      <p className="text-center text-gray-500 mt-10">Landing not found.</p>
+    );
   }
 
-  // Preluăm takeoff/landing pentru regiune
-  const sites = await get_region_landings_takeoffs({ id: details.region.id });
+  // 2️⃣ Preluăm detalii
+  const rawDetail = await get_landing_details({ id });
+  if (!rawDetail || !rawDetail.country || !rawDetail.region) {
+    return (
+      <p className="text-center text-gray-500 mt-10">
+        Landing details not found.
+      </p>
+    );
+  }
 
-  // Construim un obiect sigur de tip Details
-  const safeDetails = {
+  // 3️⃣ Preluăm site-uri din regiune
+  const sitesRaw = await get_region_landings_takeoffs({
+    id: rawDetail.region.id,
+  });
+
+  // 4️⃣ Fallback descriere
+  const landingDescriptionFallback = `
+    <p class="text-xl font-semibold">Discover this landing spot!</p>
+    <p>Detailed info about this landing site, nearby takeoffs, safety tips, and best seasons will be available soon.</p>
+    <p class="italic text-blue-700  font-medium">
+      Stay tuned for full updates and start preparing for your next paragliding adventure!
+    </p>
+  `;
+
+  // 5️⃣ Normalizare date landing
+  const landing = {
+    ...landingRaw,
+    description:
+      landingRaw.description && landingRaw.description.trim() !== ""
+        ? landingRaw.description
+        : landingDescriptionFallback,
+    map: landingRaw.map ?? "",
+  };
+
+  // 6️⃣ Normalizare detalii
+  const details = {
     country: {
-      id: details.country.id,
-      name: details.country.name,
+      id: rawDetail.country.id,
+      name: rawDetail.country.name,
     },
     region: {
-      id: details.region.id,
-      name: details.region.name,
-      bestSeason: details.region.bestSeason || [],
-      map: details.region.map ?? "",
+      id: rawDetail.region.id,
+      name: rawDetail.region.name,
+      map: rawDetail.region.map ?? "",
+      bestSeason: rawDetail.region.bestSeason ?? [],
     },
   };
 
-const landingDescriptionFallback = `
-  <p class="text-xl font-semibold">
-    Discover this landing spot!
-  </p>
-  <p>
-    Detailed information about this landing site, nearby takeoffs, safety tips, and best seasons will be available soon.
-  </p>
-  <p>
-    Our goal is to help pilots and adventure seekers plan safe and scenic flights ending at this location.
-  </p>
-  <p class="italic text-blue-700 dark:text-blue-400 font-medium">
-    Stay tuned for full updates and start preparing for your next paragliding adventure!
-  </p>
-`;
-
-const landingWithDescription = {
-  ...landing,
-  description: landing.description ?? landingDescriptionFallback,
-};
-
-  // 6️⃣ Colectăm toate maps (fără null/undefined)
+  // 7️⃣ Colectăm toate hărțile disponibile (fără null/undefined)
   const maps: string[] = Array.from(
-  new Set([
-    ...sites.takeoff.map((t) => t.map).filter((m): m is string => !!m),
-    ...sites.landing.map((l) => l.map).filter((m): m is string => !!m),
-  ])
-);
-
+    new Set([
+      ...sitesRaw.takeoff.map((t) => t.map).filter((m): m is string => !!m),
+      ...sitesRaw.landing.map((l) => l.map).filter((m): m is string => !!m),
+    ])
+  );
 
   return (
-    <div>
-      <LandingDetails details={safeDetails} sites={sites} />
-      <ViewLanding landing={landingWithDescription} details={safeDetails} maps={maps} />
-      <SocialComponent selectedTipe={"l"} selectedName={landing.name} selectedId={id} /> 
+    <div className="space-y-6">
+      {/* Detalii landing + regiune */}
+      <LandingDetails details={details} sites={sitesRaw} />
+
+      {/* Vizualizare landing + hărți */}
+      <ViewLanding landing={landing} details={details} maps={maps} />
+
+      {/* Social sharing */}
+      <SocialComponent
+        selectedTipe="l"
+        selectedName={landing.name}
+        selectedId={id}
+      />
     </div>
   );
 }

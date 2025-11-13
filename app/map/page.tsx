@@ -4,98 +4,86 @@ import {
   get_all_takeoff,
   get_all_landing,
 } from "@/app/api/get/get_places";
-import calculateGPSCenter from "@/app/components/map/functions/calculateGPSCenter";
+
 import MapPageClient from "./MapPageClient";
-import { Site, Country, Region } from "../types";
+import { Country, Region, Takeoff, Landing } from "@prisma/client";
+import { Site } from "../types";
 
-// sanitize helper
-function sanitizeCountry(c: {
-  id: number;
-  name: string;
-  description: string | null;
-  latitude: number | null;
-  longitude: number | null;
-}): Country {
-  return {
-    id: c.id,
-    name: c.name,
-    description: c.description ?? undefined,
-  };
-}
-
-function sanitizeRegion(r: {
-  id: number;
-  name: string;
-  countryId: number;
-  description: string | null;
-  latitude: number | null;
-  longitude: number | null;
-  bestSeason?: number[] | null;
-}): Region {
-  return {
-    id: r.id,
-    name: r.name,
-    countryId: r.countryId,
-    description: r.description ?? undefined,
-    bestSeason: r.bestSeason ?? undefined,
-  };
-}
-
-export default async function MapRutePage({
-  searchParams,
-}: {
-  searchParams?: { country?: string; region?: string };
-}) {
+export default async function MapRutePage() {
   const countriesRaw = await get_all_country();
   const regionsRaw = await get_all_regions();
-  const takeoffs = await get_all_takeoff();
-  const landings = await get_all_landing();
+  const takeoffsRaw = await get_all_takeoff();
+  const landingsRaw = await get_all_landing();
 
-  const countries: Country[] = countriesRaw.map(sanitizeCountry);
-  const regions: Region[] = regionsRaw.map(sanitizeRegion);
-
-  const takeoffSites: Site[] = takeoffs.map((t) => ({
-    id: t.id,
-    name: t.name,
-    latitude: t.latitude,
-    longitude: t.longitude,
-    countryId:
-      t.countryId ?? regions.find((r) => r.id === t.regionId)?.countryId ?? 0,
-    regionId: t.regionId,
-    type: "takeoff",
+  // map null -> null (nu undefined)
+  const countries: Country[] = countriesRaw.map((c) => ({
+    ...c,
+    description: c.description ?? null,
+    latitude: c.latitude ?? null,
+    longitude: c.longitude ?? null,
+    seo: c.seo ?? null,
   }));
 
-  const landingSites: Site[] = landings.map((l) => ({
-    id: l.id,
-    name: l.name,
-    latitude: l.latitude,
-    longitude: l.longitude,
-    countryId:
-      l.countryId ?? regions.find((r) => r.id === l.regionId)?.countryId ?? 0,
-    regionId: l.regionId,
-    type: "landing",
+  const regions: Region[] = regionsRaw.map((r) => ({
+    ...r,
+    description: r.description ?? null,
+    latitude: r.latitude ?? null,
+    longitude: r.longitude ?? null,
+    map: r.map ?? null,
+    seo: r.seo ?? null,
+    bestSeason: r.bestSeason ?? [],
   }));
 
-  const initialSites: Site[] = [...takeoffSites, ...landingSites];
-  const initialCenter = calculateGPSCenter(initialSites);
+  const takeoffs: Takeoff[] = takeoffsRaw.map((t) => ({
+    ...t,
+    description: t.description ?? null,
+    wind: t.wind ?? null,
+    map: t.map ?? null,
+    seo: t.seo ?? null,
+  }));
 
-  const selectedCountryId = searchParams?.country
-    ? parseInt(searchParams.country)
-    : null;
-  const selectedRegionId = searchParams?.region
-    ? parseInt(searchParams.region)
-    : null;
+  const landings: Landing[] = landingsRaw.map((l) => ({
+    ...l,
+    description: l.description ?? null,
+    map: l.map ?? null,
+    seo: l.seo ?? null,
+  }));
+
+  const initialSites: Site[] = [
+    ...takeoffs.map((t) => ({
+      id: t.id,
+      name: t.name,
+      latitude: t.latitude,
+      longitude: t.longitude,
+      countryId: t.countryId,
+      regionId: t.regionId,
+      type: "takeoff" as const,
+      map: t.map,
+      seo: t.seo,
+      wind: t.wind,
+      altitude: t.altitude,
+    })),
+    ...landings.map((l) => ({
+      id: l.id,
+      name: l.name,
+      latitude: l.latitude,
+      longitude: l.longitude,
+      countryId: l.countryId,
+      regionId: l.regionId,
+      type: "landing" as const,
+      map: l.map,
+      seo: l.seo,
+      altitude: l.altitude,
+    })),
+  ];
 
   return (
     <MapPageClient
       countries={countries}
       regions={regions}
+      takeoffs={takeoffs}
+      landings={landings}
       initialSites={initialSites}
-      initialCenter={initialCenter}
-      defaultSelected={{
-        countryId: selectedCountryId,
-        regionId: selectedRegionId,
-      }}
     />
   );
 }

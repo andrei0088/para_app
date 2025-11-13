@@ -86,6 +86,7 @@ export default function LoginClient({ succes = false }: Succes) {
           <input
             type="email"
             name="email"
+            autoComplete="username"
             required
             placeholder="Email"
             value={formState.email}
@@ -97,6 +98,7 @@ export default function LoginClient({ succes = false }: Succes) {
             type="password"
             name="password"
             required
+            autoComplete="current-password"
             placeholder="Password"
             value={formState.password}
             onChange={handleChange}

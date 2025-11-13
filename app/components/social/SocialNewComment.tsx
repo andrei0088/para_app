@@ -28,7 +28,7 @@ export default function SocialNewComment({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex gap-4 items-start bg-white dark:bg-[#141417] border dark:border-[#2c2d31] rounded-2xl p-4"
+      className="flex gap-4 items-start bg-white  border  rounded-2xl p-4"
     >
       {/* Avatar */}
       {avatar ? (
@@ -44,7 +44,7 @@ export default function SocialNewComment({
           alt="Your profile picture"
         />
       ) : (
-        <div className="w-12 h-12 rounded-full bg-gray-300 dark:bg-gray-600" />
+        <div className="w-12 h-12 rounded-full bg-gray-300 " />
       )}
 
       {/* Input zone */}
@@ -54,12 +54,12 @@ export default function SocialNewComment({
           onChange={(e) => setText(e.target.value)}
           placeholder="Share your experience..."
           maxLength={maxLength}
-          className="w-full p-3 border dark:border-[#2c2d31] rounded-xl bg-gray-50 dark:bg-[#1b1c1f] text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+          className="w-full p-3 border  rounded-xl bg-gray-50  text-gray-800  focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
           rows={3}
         />
 
         <div className="flex justify-between items-center mt-2">
-          <span className="text-xs text-gray-500 dark:text-gray-400">
+          <span className="text-xs text-gray-500 ">
             {text.length}/{maxLength} characters
           </span>
 

@@ -1,4 +1,7 @@
-import { get_takeoff_by_id, get_region_landings_takeoffs } from "@/app/api/get/get_places";
+import {
+  get_takeoff_by_id,
+  get_region_landings_takeoffs,
+} from "@/app/api/get/get_places";
 import { get_takoff_details } from "@/app/api/get/get_details";
 import ViewTakeoff from "./ViewTakeoff";
 import TakeoffDetails from "./TakeoffDetails";
@@ -11,47 +14,62 @@ interface PageProps {
 export default async function TakeoffPage({ params }: PageProps) {
   const id = Number(params.id);
   if (isNaN(id)) {
-    return <p className="text-center text-gray-500 mt-10">Invalid takeoff ID.</p>;
+    return (
+      <p className="text-center text-gray-500 mt-10">Invalid takeoff ID.</p>
+    );
   }
 
   // 1️⃣ Preluare takeoff
   const takeoffRaw = await get_takeoff_by_id({ id });
   if (!takeoffRaw) {
-    return <p className="text-center text-gray-500 mt-10">Takeoff not found.</p>;
+    return (
+      <p className="text-center text-gray-500 mt-10">Takeoff not found.</p>
+    );
   }
 
   // 2️⃣ Preluare detalii
   const rawDetail = await get_takoff_details({ id });
   if (!rawDetail || !rawDetail.region || !rawDetail.country) {
-    return <p className="text-center text-gray-500 mt-10">Takeoff details not found.</p>;
+    return (
+      <p className="text-center text-gray-500 mt-10">
+        Takeoff details not found.
+      </p>
+    );
   }
 
-  // 3️⃣ Preluare site-uri
-  const sitesRaw = await get_region_landings_takeoffs({ id: rawDetail.region.id });
+  // 3️⃣ Preluare site-uri (landing/takeoff)
+  const sitesRaw = await get_region_landings_takeoffs({
+    id: rawDetail.region.id,
+  });
 
   // 4️⃣ Fallback descriere
   const takeoffDescriptionFallback = `
     <p class="text-xl font-semibold">Discover this amazing takeoff spot!</p>
-    <p>Detailed information about this takeoff, its ideal flying conditions, nearby landing sites, and safety tips will be available soon.</p>
-    <p>Our goal is to help pilots and adventure seekers plan safe and unforgettable flights from this location.</p>
-    <p class="italic text-blue-700 dark:text-blue-400 font-medium">
+    <p>Detailed info about this takeoff, ideal flying conditions, nearby landing sites, and safety tips will be available soon.</p>
+    <p class="italic text-blue-700  font-medium">
       Stay tuned for full updates and start preparing for your next paragliding adventure!
     </p>
   `;
 
-  // 5️⃣ Normalizare date pentru TS
+  // 5️⃣ Normalizare date pentru TypeScript
   const takeoff = {
     id: takeoffRaw.id,
     name: takeoffRaw.name,
     latitude: takeoffRaw.latitude,
     longitude: takeoffRaw.longitude,
     altitude: takeoffRaw.altitude ?? 0,
-    description: takeoffRaw.description ?? takeoffDescriptionFallback,
-    map: takeoffRaw.map ?? "", // ❗ map trebuie să fie întotdeauna string
+    wind: takeoffRaw.wind ?? undefined,
+    description:
+      takeoffRaw.description && takeoffRaw.description.trim() !== ""
+        ? takeoffRaw.description
+        : takeoffDescriptionFallback,
+    map: takeoffRaw.map ?? "",
+    seo: takeoffRaw.seo ?? undefined,
     regionId: takeoffRaw.regionId,
     countryId: takeoffRaw.countryId,
   };
-
+  console.log({ takeoffRaw });
+  console.log({ takeoff });
   const detail = {
     country: {
       id: rawDetail.country.id,
@@ -60,23 +78,32 @@ export default async function TakeoffPage({ params }: PageProps) {
     region: {
       id: rawDetail.region.id,
       name: rawDetail.region.name,
-      map: rawDetail.region.map ?? "", 
+      map: rawDetail.region.map ?? "",
     },
   };
 
-  // 6️⃣ Colectăm toate maps (fără null/undefined)
+  // 6️⃣ Colectăm toate hărțile disponibile (fără null/undefined)
   const maps = Array.from(
     new Set([
-      ...(sitesRaw.takeoff.map((t) => t.map).filter((m): m is string => !!m)),
-      ...(sitesRaw.landing.map((l) => l.map).filter((m): m is string => !!m)),
+      ...sitesRaw.takeoff.map((t) => t.map).filter((m): m is string => !!m),
+      ...sitesRaw.landing.map((l) => l.map).filter((m): m is string => !!m),
     ])
   );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
+      {/* Detalii takeoff + regiune */}
       <TakeoffDetails details={detail} sites={sitesRaw} />
+
+      {/* Vizualizare takeoff + hărți */}
       <ViewTakeoff takeoff={takeoff} details={detail} maps={maps} />
-      <SocialComponent selectedTipe="t" selectedName={takeoff.name} selectedId={id} />
+
+      {/* Social sharing */}
+      <SocialComponent
+        selectedTipe="t"
+        selectedName={takeoff.name}
+        selectedId={id}
+      />
     </div>
   );
 }

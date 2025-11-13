@@ -2,15 +2,25 @@ import Link from "next/link";
 import type { Country, Region, Takeoff, Landing } from "@/app/types";
 
 const MonthNames = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
-const displaySeason = [
-  { name: "Spring", emoji: "🌱", months: [3, 4, 5] },
-  { name: "Summer", emoji: "☀️", months: [6, 7, 8] },
-  { name: "Autumn", emoji: "🍂", months: [9, 10, 11] },
-  { name: "Winter", emoji: "❄️", months: [12, 1, 2] },
+const seasons = [
+  { id: 1, name: "Spring", months: [3, 4, 5] },
+  { id: 2, name: "Summer", months: [6, 7, 8] },
+  { id: 3, name: "Autumn", months: [9, 10, 11] },
+  { id: 4, name: "Winter", months: [12, 1, 2] },
 ];
 
 interface SeasonViewProps {
@@ -22,71 +32,65 @@ interface SeasonViewProps {
   })[];
 }
 
-export default function SeasonView({ season, countrys = [], regions = [] }: SeasonViewProps) {
-  const currentSeason = displaySeason[season - 1];
-  const sortedCountries = [...countrys].sort((a, b) => a.name.localeCompare(b.name));
+export default function SeasonView({
+  season,
+  countrys = [],
+  regions = [],
+}: SeasonViewProps) {
+  const currentSeason = seasons.find((s) => s.id === season);
+  if (!currentSeason) return null;
+
+  const sortedCountries = [...countrys].sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
 
   return (
-    <section className="max-w-6xl mx-auto my-10 p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-lg">
+    <section className="w-full my-10 px-4 sm:px-6 lg:px-8">
+      {/* --- Header full width --- */}
+      <header className="w-full mb-8 border-b pb-4">
+        <h1 className="text-3xl font-semibold text-gray-800 dark:text-gray-100">
+          Season: {currentSeason.name}
+        </h1>
+        <p className="text-gray-600 dark:text-gray-400 mt-1 text-sm">
+          Explore the countries and regions ideal for {currentSeason.name}.
+        </p>
 
-      {/* Header Sezon + Lunile */}
-      <div className="mb-6 border-b pb-2">
-
-        {/* Sezoane */}
-        <div className="flex flex-wrap gap-2 mb-2">
-          {displaySeason.map((s, idx) => {
-            const isActiveSeason = idx + 1 === season;
-            return (
-              <Link
-                key={s.name}
-                href={`/seson/${idx + 1}`}
-                className={`flex items-center gap-1 px-3 py-1 rounded-full transition-colors ${
-                  isActiveSeason
-                    ? "bg-green-600 text-white dark:bg-green-500 font-bold"
-                    : "bg-gray-200 text-gray-700 hover:bg-yellow-200 hover:text-yellow-900"
-                }`}
-              >
-                <span>{s.emoji}</span>
-                <span>{s.name}</span>
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* Lunile */}
-        <div className="flex flex-wrap gap-2">
-          {MonthNames.map((m, idx) => {
+        {/* Lunile din sezon */}
+        <div className="flex flex-wrap gap-2 mt-4">
+          {MonthNames.map((month, idx) => {
             const monthNumber = idx + 1;
             const isInSeason = currentSeason.months.includes(monthNumber);
+
             return (
               <Link
-                key={m}
+                key={monthNumber}
                 href={`/month/${monthNumber}`}
-                className={`px-2 py-1 rounded-md transition-colors ${
+                className={`px-3 py-1 rounded-full text-sm transition-colors ${
                   isInSeason
-                    ? "bg-green-600 text-white dark:bg-green-500 font-bold"
-                    : "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                    ? "bg-gray-800 text-white dark:bg-gray-200 dark:text-gray-900 font-semibold"
+                    : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
                 }`}
               >
-                {m}
+                {month}
               </Link>
             );
           })}
         </div>
-      </div>
+      </header>
 
-      {/* Lista țări */}
+      {/* --- Lista țărilor pentru filtrare --- */}
       {sortedCountries.length === 0 ? (
         <p className="text-gray-600 dark:text-gray-400 italic">
-          Echipa noastră se ocupă de colectarea datelor pentru acest sezon. Reveniti mai târziu!
+          We are currently collecting data for this season. Please check back
+          later.
         </p>
       ) : (
-        <div className="flex flex-wrap mb-5 gap-2 overflow-x-auto whitespace-nowrap">
+        <div className="flex flex-wrap gap-2 mb-8">
           {sortedCountries.map((c) => (
             <Link
               key={c.id}
               href={`/filter?country=${c.id}&season=${season}`}
-              className="px-3 py-1 rounded-lg bg-gray-100 font-medium hover:bg-gray-300 transition-colors shrink-0"
+              className="px-4 py-1 rounded-lg bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition"
             >
               {c.name}
             </Link>
@@ -94,7 +98,7 @@ export default function SeasonView({ season, countrys = [], regions = [] }: Seas
         </div>
       )}
 
-      {/* Liste țări și regiuni */}
+      {/* --- Listele regiunilor pe țări --- */}
       {sortedCountries.map((country) => {
         const countryRegions = regions
           .filter((r) => r.countryId === country.id)
@@ -105,32 +109,33 @@ export default function SeasonView({ season, countrys = [], regions = [] }: Seas
         return (
           <div
             key={country.id}
-            className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 mb-6"
+            className="mb-10 p-6 bg-gray-50 dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700"
           >
-            <h2 className="text-2xl font-semibold text-green-600 mb-4">{country.name}</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4">
+              {country.name}
+            </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {countryRegions.map((region) => (
                 <div
                   key={region.id}
-                  className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg border border-gray-200 dark:border-gray-600 text-sm"
+                  className="p-4 rounded-lg bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 shadow-sm"
                 >
-                  <h3 className="font-medium mb-2">
-                    <Link href={`/region/${region.id}`} className="hover:underline">
+                  <h3 className="font-medium text-gray-800 dark:text-gray-100 mb-2">
+                    <Link
+                      href={`/region/${region.id}`}
+                      className="hover:underline"
+                    >
                       {region.name}
                     </Link>
                   </h3>
 
                   {region.bestSeason && (
-                    <div className="flex flex-wrap gap-1 mb-2 text-xs">
+                    <div className="flex flex-wrap gap-1 mb-2 text-xs text-gray-600 dark:text-gray-300">
                       {region.bestSeason.map((m) => (
                         <span
                           key={m}
-                          className={`px-1 py-0.5 rounded-full ${
-                            currentSeason.months.includes(m)
-                              ? "bg-green-600 text-white dark:bg-green-500"
-                              : "text-yellow-800 dark:text-yellow-400"
-                          }`}
+                          className="px-2 py-0.5 rounded-full bg-gray-200 dark:bg-gray-600"
                         >
                           {MonthNames[m - 1]}
                         </span>
@@ -138,8 +143,9 @@ export default function SeasonView({ season, countrys = [], regions = [] }: Seas
                     </div>
                   )}
 
-                  <p className="text-xs text-gray-700 dark:text-gray-300">
-                    Takeoffs: {region.takeoffs?.length ?? 0} | Landings: {region.landings?.length ?? 0}
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    Takeoffs: {region.takeoffs?.length ?? 0} | Landings:{" "}
+                    {region.landings?.length ?? 0}
                   </p>
                 </div>
               ))}

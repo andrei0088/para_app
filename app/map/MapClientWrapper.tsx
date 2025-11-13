@@ -1,43 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import calculateGPSCenter from "@/app/components/map/functions/calculateGPSCenter";
 import { Site } from "../types";
-
-const MapView = dynamic(() => import("./MapView"), { ssr: false });
-
-
 
 interface Props {
   allSites: Site[];
-  initialCenter: [number, number];
-  selected: { countryId: number | null; regionId: number | null };
+  selected: { lat: number | null; lng: number | null };
 }
 
-export default function MapClientWrapper({ allSites, initialCenter, selected }: Props) {
-  const [center, setCenter] = useState(initialCenter);
+// Importăm MapView doar pe client, cu loader
+const MapView = dynamic(() => import("./MapView"), {
+  ssr: false,
+  loading: () => (
+    <div className="flex justify-center items-center h-[40vh]">
+      <p className="text-gray-500 animate-pulse">Loading map...</p>
+    </div>
+  ),
+});
 
-  useEffect(() => {
-    let filteredSites = allSites;
+export default function MapClientWrapper({ allSites, selected }: Props) {
+  const initialCenter: [number, number] = [45.7, 7];
 
-    // dacă există țară, recentrează pe locurile din țara respectivă
-    if (selected.countryId) {
-      filteredSites = filteredSites.filter(s => s.countryId === selected.countryId);
-    }
+  // Dacă avem coordonate valide, le folosim ca centru
+  const center: [number, number] =
+    selected.lat !== null && selected.lng !== null
+      ? [selected.lat, selected.lng]
+      : initialCenter;
 
-    // dacă există regiune, recentrează pe locurile din regiune
-    if (selected.regionId) {
-      filteredSites = filteredSites.filter(s => s.regionId === selected.regionId);
-    }
-
-    // calculează centrul doar pe baza selecției
-    if (filteredSites.length) {
-      setCenter(calculateGPSCenter(filteredSites));
-    } else {
-      setCenter(initialCenter); // fallback pe toate locurile
-    }
-  }, [selected, allSites, initialCenter]);
-
-  return <MapView allSites={allSites} center={center} />;
+  return <MapView allSites={allSites} center={center} zoom={7} />;
 }

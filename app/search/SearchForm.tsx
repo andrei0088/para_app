@@ -31,10 +31,6 @@ export default async function SearchForm({ select }: SearchFormProps) {
   }));
 
   return (
-    <SearchElement
-      countrys={countrys}
-      regions={regions}
-      select={select}
-    />
+    <SearchElement countrys={countrys} regions={regions} select={select} />
   );
 }

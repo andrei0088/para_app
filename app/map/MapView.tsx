@@ -3,6 +3,7 @@
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { useEffect } from "react";
 
 interface Site {
   id: number;
@@ -10,6 +11,8 @@ interface Site {
   latitude: number;
   longitude: number;
   type: "takeoff" | "landing";
+  wind?: string | null;
+  altitude: number;
 }
 
 // Icon-uri custom
@@ -27,23 +30,35 @@ const landingIcon = new L.Icon({
   popupAnchor: [0, -32],
 });
 
-// Component pentru a recentra harta când center se schimbă
-function MapAutoCenter({ center }: { center: [number, number] }) {
+// 🔹 Componentă care recentrează și resetează zoom-ul
+function MapAutoCenter({
+  center,
+  resetZoom,
+}: {
+  center: [number, number];
+  resetZoom: number;
+}) {
   const map = useMap();
-  map.setView(center, map.getZoom(), { animate: true });
+
+  useEffect(() => {
+    // când centrul se schimbă, recentrăm și setăm zoom-ul din nou
+    map.setView(center, resetZoom, { animate: true });
+  }, [center, resetZoom, map]);
+
   return null;
 }
 
 interface MapViewProps {
   allSites: Site[];
   center: [number, number];
+  zoom: number;
 }
 
-export default function MapView({ allSites, center }: MapViewProps) {
+export default function MapView({ allSites, center, zoom }: MapViewProps) {
   return (
     <MapContainer
       center={center}
-      zoom={10}
+      zoom={zoom}
       scrollWheelZoom
       style={{ height: "100%", width: "100%" }}
     >
@@ -52,7 +67,8 @@ export default function MapView({ allSites, center }: MapViewProps) {
         attribution="&copy; OpenStreetMap contributors"
       />
 
-      <MapAutoCenter center={center} />
+      {/* 🔹 Adăugăm componenta care resetează zoom-ul când centrul se schimbă */}
+      <MapAutoCenter center={center} resetZoom={zoom || 7} />
 
       {allSites.map((site) => {
         const icon = site.type === "takeoff" ? takeoffIcon : landingIcon;
@@ -63,13 +79,15 @@ export default function MapView({ allSites, center }: MapViewProps) {
 
         return (
           <Marker
-            key={`${site.type}=${site.id}`}
+            key={`${site.type}-${site.id}`}
             position={[site.latitude, site.longitude]}
             icon={icon}
           >
             <Popup>
               <a href={link} className="text-blue-600 underline">
-                {site.name}
+                {site.name} {site.wind && ` (${site.wind})`}
+                <br />
+                {site.altitude} m
               </a>
             </Popup>
           </Marker>

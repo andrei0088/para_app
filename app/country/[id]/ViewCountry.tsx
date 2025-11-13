@@ -7,7 +7,7 @@ interface CountrySearchProps {
 export default function ViewCountry({ country }: CountrySearchProps) {
   return (
     <div
-      className="w-full md:w-3/4 p-4 dark:text-gray-800"
+      className="w-full md:w-3/4 p-4 "
       dangerouslySetInnerHTML={{
         __html: country.description || " Error",
       }}

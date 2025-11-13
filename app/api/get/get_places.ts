@@ -4,46 +4,48 @@ interface GetToSitesParams {
   id?: number;
 }
 export async function get_country_by_id({ id }: GetToSitesParams = {}) {
-    return await prisma.country.findFirst({
-      where: { id },  
-  })
+  return await prisma.country.findFirst({
+    where: { id },
+  });
 }
 
 export async function get_all_country() {
-    return await prisma.country.findMany({
-      orderBy: {
-        name: 'asc', 
-      },
-    });
-
+  return await prisma.country.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
 }
 
 export async function get_regions_by_id({ id }: GetToSitesParams = {}) {
-    return await prisma.region.findFirst({
-      where: { id }, 
-    });
+  return await prisma.region.findFirst({
+    where: { id },
+  });
 }
 
 export async function get_all_regions() {
-     return await prisma.region.findMany({
-      orderBy: {
-        name: 'asc', 
-      },
-    });
+  return await prisma.region.findMany({
+    orderBy: {
+      name: "asc",
+    },
+    include: {
+      takeoffs: { select: { id: true } },
+      landings: { select: { id: true } },
+    },
+  });
 }
 
 export async function get_all_regions_with_sites() {
   return await prisma.region.findMany({
     orderBy: {
-      name: 'asc',
+      name: "asc",
     },
     include: {
-      takeoffs: true,  // include takeoff sites
-      landings: true,  // include landing sites
+      takeoffs: true, // include takeoff sites
+      landings: true, // include landing sites
     },
   });
 }
-
 
 export async function get_country_regions({ id }: GetToSitesParams = {}) {
   if (!id) return []; // optional: returnează array gol dacă nu există id
@@ -59,35 +61,36 @@ export async function get_country_regions({ id }: GetToSitesParams = {}) {
 }
 
 export async function get_takeoff_by_id({ id }: GetToSitesParams = {}) {
-     return await prisma.takeoff.findFirst({
-      where: { id }, 
-    });
+  return await prisma.takeoff.findFirst({
+    where: { id },
+  });
 }
 
 export async function get_all_takeoff() {
-return await prisma.takeoff.findMany({
-      orderBy: {
-        name: 'asc', 
-      },
-    });
+  return await prisma.takeoff.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
 }
 
 export async function get_landing_by_id({ id }: GetToSitesParams = {}) {
-    return await prisma.landing.findFirst({
-      where: { id }, 
-    });
-
+  return await prisma.landing.findFirst({
+    where: { id },
+  });
 }
 
 export async function get_all_landing() {
-     return await prisma.landing.findMany({
-      orderBy: {
-        name: 'asc', 
-      },
-    });
+  return await prisma.landing.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
 }
 
-export async function get_country_landings_takeoffs({ id }: GetToSitesParams = {}) {
+export async function get_country_landings_takeoffs({
+  id,
+}: GetToSitesParams = {}) {
   if (!id) return { takeoff: [], landing: [] };
 
   const regions = await prisma.region.findMany({
@@ -98,8 +101,8 @@ export async function get_country_landings_takeoffs({ id }: GetToSitesParams = {
     },
   });
 
-  const takeoff: typeof regions[0]["takeoffs"] = [];
-  const landing: typeof regions[0]["landings"] = [];
+  const takeoff: (typeof regions)[0]["takeoffs"] = [];
+  const landing: (typeof regions)[0]["landings"] = [];
 
   regions.forEach((r) => {
     takeoff.push(...r.takeoffs);
@@ -109,7 +112,9 @@ export async function get_country_landings_takeoffs({ id }: GetToSitesParams = {
   return { takeoff, landing };
 }
 
-export async function get_region_landings_takeoffs({ id }: GetToSitesParams = {}) {
+export async function get_region_landings_takeoffs({
+  id,
+}: GetToSitesParams = {}) {
   if (!id) return { takeoff: [], landing: [] };
 
   const region = await prisma.region.findFirst({
@@ -127,5 +132,3 @@ export async function get_region_landings_takeoffs({ id }: GetToSitesParams = {}
 
   return { takeoff, landing };
 }
-
-

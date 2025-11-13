@@ -1,15 +1,15 @@
 "use client";
 
 import React, { useState, FormEvent } from "react";
-import { CountryShort, RegionShort } from "../types";
-import { add_country, add_region } from "./lib/admin";
+import { add_country, add_region, add_landing, add_takeoff } from "./lib/admin";
 import { capitalizeFirstLetter } from "better-auth";
+import { Country, Region } from "@prisma/client";
 
 type PlaceType = "country" | "region" | "takeoff" | "landing";
 
 interface AddPlaceUserProps {
-  countries: CountryShort[];
-  regions: RegionShort[];
+  countries: Country[];
+  regions: Region[];
 }
 
 export default function AddPlaceUser({
@@ -21,10 +21,14 @@ export default function AddPlaceUser({
   const [region, setRegion] = useState("");
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [altitude, setAltitude] = useState("");
+  const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
+    setLoading(true);
     // Validation
     if (!type) return setMessage("Please select what you want to add.");
     if (!name.trim()) return setMessage("Please enter a valid name.");
@@ -32,6 +36,8 @@ export default function AddPlaceUser({
     // Add country
     if (type === "country") {
       const result = await add_country(name.trim());
+      setLoading(false);
+
       if (result.success)
         setMessage(`Country "${name}" has been added with ID ${result.rez}.`);
       else setMessage(`Error: ${result.error}`);
@@ -41,18 +47,60 @@ export default function AddPlaceUser({
     if (type === "region") {
       if (!country) return setMessage("Please select a country first.");
       const result = await add_region(name.trim(), Number(country));
+      setLoading(false);
+
       if (result.success)
         setMessage(`Region "${name}" has been added with ID ${result.rez}.`);
       else setMessage(`Error: ${result.error}`);
     }
 
     // Placeholder for future features
-    if (type === "takeoff") setMessage("Takeoff feature not implemented yet.");
-    if (type === "landing") setMessage("Landing feature not implemented yet.");
+    if (type === "takeoff") {
+      if (!country) return setMessage("Please select a country first.");
+      if (!region) return setMessage("Please select a region first.");
+      if (!latitude || !longitude || !altitude)
+        return setMessage("Please input gps coordonats and altitude.");
+      const result = await add_takeoff(
+        name.trim(),
+        Number(country),
+        Number(region),
+        Number(latitude),
+        Number(longitude),
+        Number(altitude)
+      );
+      setLoading(false);
+
+      if (result.success)
+        setMessage(`Takeogg "${name}" has been added with ID ${result.rez}.`);
+      else setMessage(`Error: ${result.error}`);
+    }
+    if (type === "landing") {
+      if (!country) return setMessage("Please select a country first.");
+      if (!region) return setMessage("Please select a region first.");
+      if (!latitude || !longitude || !altitude) {
+        setLoading(false);
+        return setMessage("Please input gps coordonats and altitude.");
+      }
+      const result = await add_landing(
+        name.trim(),
+        Number(country),
+        Number(region),
+        Number(latitude),
+        Number(longitude),
+        Number(altitude)
+      );
+      if (result.success) {
+        setLoading(false);
+        setMessage(`Landing "${name}" has been added with ID ${result.rez}.`);
+      } else {
+        setMessage(`Error: ${result.error}`);
+        setLoading(false);
+      }
+    }
   }
 
   return (
-    <div className="max-w-md mx-auto p-4">
+    <div className="w-full mx-auto p-4">
       {message && <p className="mb-2 text-blue-700">{message}</p>}
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -120,6 +168,32 @@ export default function AddPlaceUser({
                 return null;
               })}
             </select>
+            <label htmlFor="latitude">Latitude</label>
+            <input
+              type="number"
+              name="latitude"
+              value={latitude}
+              onChange={(e) => setLatitude(e.target.value)}
+              step="any"
+              className="border p-2 rounded-md"
+            />
+            <label htmlFor="longitude">Longitude</label>
+            <input
+              type="number"
+              name="longitude"
+              value={longitude}
+              onChange={(e) => setLongitude(e.target.value)}
+              step="any"
+              className="border p-2 rounded-md"
+            />
+            <label htmlFor="altitude">Altitude</label>
+            <input
+              type="number"
+              name="altitude"
+              value={altitude}
+              onChange={(e) => setAltitude(e.target.value)}
+              className="border p-2 rounded-md"
+            />
           </>
         )}
 
@@ -137,6 +211,7 @@ export default function AddPlaceUser({
 
         <button
           type="submit"
+          disabled={loading}
           className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition"
         >
           Add
