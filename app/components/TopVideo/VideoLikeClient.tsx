@@ -25,32 +25,25 @@ export default function VideoLikeClient({
   const [userLiked, setUserLiked] = useState(initialUserLiked);
   const [loading, setLoading] = useState(false);
 
-  const handleAdd = async () => {
+  const handleLike = async () => {
     if (loading) return;
-    setUserLiked(true);
-    setLike((prev) => prev + 1); // optimistic update
-    setLoading(true);
-    try {
-      await add_video_like(videoId);
-    } catch (err) {
-      setUserLiked(false); // rollback
-      setLike((prev) => prev - 1);
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  const handleRemove = async () => {
-    if (loading) return;
-    setUserLiked(false);
-    setLike((prev) => prev - 1); // optimistic update
+    // Optimistic update
+    const newLiked = !userLiked;
+    setUserLiked(newLiked);
+    setLike((prev) => prev + (newLiked ? 1 : -1));
     setLoading(true);
+
     try {
-      await remove_video_like(videoId);
+      if (newLiked) {
+        await add_video_like(videoId);
+      } else {
+        await remove_video_like(videoId);
+      }
     } catch (err) {
-      setUserLiked(true); // rollback
-      setLike((prev) => prev + 1);
+      // rollback dacă a eșuat
+      setUserLiked(userLiked);
+      setLike((prev) => prev + (userLiked ? 1 : -1));
       console.error(err);
     } finally {
       setLoading(false);
@@ -60,35 +53,29 @@ export default function VideoLikeClient({
   return (
     <div className="flex items-center gap-2 ml-auto w-full justify-end py-1 h-auto dark:text-gray-900">
       {logd ? (
-        userLiked ? (
-          <div
-            onClick={handleRemove}
-            className="flex items-center gap-1 py-1 px-2 border-2 rounded-full cursor-pointer
-                     bg-green-100 border-green-500 hover:bg-white hover:text-green-700 hover:border-green-600
-                     transition-all duration-300 active:scale-95 shadow-sm hover:shadow-md animate-[pulse_2.5s_ease-in-out_infinite] hover:animate-none text-xs md:text-sm"
+        <button
+          onClick={handleLike}
+          disabled={loading}
+          className={`flex items-center gap-1 py-1 px-2 border-2 rounded-full cursor-pointer
+                     transition-all duration-300 active:scale-95 shadow-sm hover:shadow-md text-xs md:text-sm
+                     ${
+                       userLiked
+                         ? "bg-green-100 border-green-500 hover:bg-white hover:text-green-700 hover:border-green-600"
+                         : "border-gray-900 hover:bg-green-100 hover:border-green-500 hover:text-green-700"
+                     }
+                     ${loading ? "opacity-50 pointer-events-none" : ""}`}
+        >
+          <span
+            className={`font-semibold ${userLiked ? "text-green-600" : ""}`}
           >
-            <span className="font-semibold text-green-600">I gave a</span>
-            <Image
-              src={top_img}
-              alt="top"
-              className="w-4 h-4 md:w-5 md:h-5 object-cover animate-[bounce_3s_infinite]"
-            />
-          </div>
-        ) : (
-          <div
-            onClick={handleAdd}
-            className="flex items-center gap-1 py-1 px-2 border-2 border-gray-900 rounded-full cursor-pointer
-                     hover:bg-green-100 hover:border-green-500 hover:text-green-700
-                     transition-all duration-300 active:scale-95 shadow-sm hover:shadow-md animate-[pulse_2.5s_ease-in-out_infinite] hover:animate-none text-xs md:text-sm"
-          >
-            <span className="font-semibold">I give a</span>
-            <Image
-              src={top_img}
-              alt="top"
-              className="w-4 h-4 md:w-5 md:h-5 object-cover animate-[bounce_3s_infinite]"
-            />
-          </div>
-        )
+            {userLiked ? "I gave a" : "I give a"}
+          </span>
+          <Image
+            src={top_img}
+            alt="top"
+            className="w-4 h-4 md:w-5 md:h-5 object-cover animate-[bounce_3s_infinite]"
+          />
+        </button>
       ) : (
         <Link
           href={`/user/login`}
@@ -96,7 +83,7 @@ export default function VideoLikeClient({
                      hover:bg-green-100 hover:border-green-500 hover:text-green-700
                      transition-all duration-300 active:scale-95 shadow-sm hover:shadow-md animate-[pulse_2.5s_ease-in-out_infinite] hover:animate-none text-xs md:text-sm"
         >
-          Join to drop a{" "}
+          Join to drop a
           <Image
             src={top_img}
             alt="top"
