@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import SEO from "../components/Seo";
 
 export default function GoodbyePage() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-white px-4 sm:px-6">
+      <SEO title={""} description={""} />
       <div className="max-w-lg text-center">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-800 mb-6">
           Your Account Has Been Deactivated 🪶

@@ -5,6 +5,7 @@ import SearchMapComp from "./SearchMapComp";
 import MapClientWrapper from "./MapClientWrapper";
 import { Country, Region, Takeoff, Landing } from "@prisma/client";
 import { Site } from "../types";
+import SEO from "../components/Seo";
 
 interface Props {
   countries: Country[];
@@ -33,6 +34,8 @@ export default function MapPageClient({
 
   return (
     <div className="flex flex-col h-[80vh] w-full text-gray-800 mt-5 z-40">
+      <SEO title={""} description={""} />
+
       <SearchMapComp
         countries={countries}
         regions={regions}

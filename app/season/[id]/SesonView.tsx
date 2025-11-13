@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Country, Region, Takeoff, Landing } from "@/app/types";
+import SEO from "@/app/components/Seo";
 
 const MonthNames = [
   "January",
@@ -46,6 +47,8 @@ export default function SeasonView({
 
   return (
     <section className="w-full my-10 px-4 sm:px-6 lg:px-8">
+      <SEO title={""} description={""} />
+
       {/* --- Header full width --- */}
       <header className="w-full mb-8 border-b pb-4">
         <h1 className="text-3xl font-semibold text-gray-800 ">

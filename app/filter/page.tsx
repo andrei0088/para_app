@@ -8,6 +8,7 @@ import type { Country } from "@/app/types";
 import MapGenerate from "../components/map/MapGenerate";
 import calculateGPSCenter from "../components/map/functions/calculateGPSCenter";
 import SearchForm from "../search/SearchForm";
+import SEO from "../components/Seo";
 
 interface FilterPageProps {
   searchParams: {
@@ -140,6 +141,8 @@ export default async function FilterPage({ searchParams }: FilterPageProps) {
 
   return (
     <>
+      <SEO title={selectedCountry.name} description={""} />
+
       <div className="h-[30vh]">
         <MapGenerate center={center} />
       </div>

@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import "./globals.css";
 import RightBar from "./components/RightBar";
 import NavBar from "./components/NavBar";
@@ -7,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Roboto, Oswald } from "next/font/google";
 import Banner from "./components/Banner";
+import GoogleAnalytics from "./lib/GoogleAnalytics";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -20,12 +20,6 @@ const oswald = Oswald({
   variable: "--font-oswald",
 });
 
-export const metadata: Metadata = {
-  title: "ParaAPP - Paragliding High",
-  description:
-    "Discover the world's most iconic paragliding destinations and learn everything about paragliding. From breathtaking landscapes to expert tips, explore the thrill of flying with our comprehensive guides and inspiring stories.",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -36,6 +30,9 @@ export default function RootLayout({
       <body
         className={`${roboto.variable} ${oswald.variable} antialiased min-h-screen flex flex-col `}
       >
+        <Analytics />
+        <SpeedInsights />
+        <GoogleAnalytics />
         <Banner />
         <NavBar />
 
@@ -43,8 +40,6 @@ export default function RootLayout({
         <div className="flex flex-1 flex-col lg:flex-row min-h-0 bg-white">
           {/* Content principal */}
           <main className="flex-1 flex flex-col overflow-auto px-1 md:px-2">
-            <Analytics />
-            <SpeedInsights />
             {children}
 
             {/* <!-- Google Tag Manager (noscript) --> */}

@@ -6,6 +6,7 @@ import { get_takoff_details } from "@/app/api/get/get_details";
 import ViewTakeoff from "./ViewTakeoff";
 import TakeoffDetails from "./TakeoffDetails";
 import SocialComponent from "@/app/components/social/SocialComponent";
+import SEO from "@/app/components/Seo";
 
 interface PageProps {
   params: { id: string };
@@ -91,6 +92,8 @@ export default async function TakeoffPage({ params }: PageProps) {
 
   return (
     <div className="space-y-6 dark:text-gray-800">
+      <SEO title={takeoff.name} description={takeoff.description} />
+
       {/* Detalii takeoff + regiune */}
       <TakeoffDetails details={detail} sites={sitesRaw} />
 

@@ -6,6 +6,7 @@ import { get_landing_details } from "@/app/api/get/get_details";
 import ViewLanding from "./ViewLanding";
 import LandingDetails from "./LandingDetails";
 import SocialComponent from "@/app/components/social/SocialComponent";
+import SEO from "@/app/components/Seo";
 
 interface PageProps {
   params: { id: string };
@@ -86,6 +87,8 @@ export default async function LandingPage({ params }: PageProps) {
 
   return (
     <div className="space-y-6 dark:text-gray-800">
+      <SEO title={landing.name} description={landing.description} />
+
       {/* Detalii landing + regiune */}
       <LandingDetails details={details} sites={sitesRaw} />
 

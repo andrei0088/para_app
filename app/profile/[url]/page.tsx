@@ -6,6 +6,7 @@ import ProfileVideos from "./ProfileVideos";
 import ProfileLike from "./ProfileLike";
 import ProfileBio from "./ProfileBio";
 import PMUser from "./PMUser";
+import SEO from "@/app/components/Seo";
 
 interface PageProps {
   params: { url: string };
@@ -27,6 +28,11 @@ const Page = async ({ params }: PageProps) => {
   const videos = await get_profile_video(rez.data.id);
   return (
     <div className="w-full h-full">
+      <SEO
+        title={profile.name}
+        description={`Discover ${profile.name}, a passionate paragliding pilot sharing flights, experiences, and favorite flying spots on ParaApp — the global paragliding community.`}
+      />
+
       <div className="bg-white    rounded-2xl shadow-lg p-6 sm:p-8 space-y-6 max-w-full w-full mx-auto transition-colors duration-300">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between w-full gap-4">
           <div>

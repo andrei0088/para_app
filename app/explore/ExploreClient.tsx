@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Globe, Map, CalendarDays, Sun } from "lucide-react";
+import SEO from "../components/Seo";
 
 const MonthNames = [
   "January",
@@ -35,6 +36,8 @@ export default function ExploreClient({
 }) {
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 text-gray-800">
+      <SEO title={"Explore"} description={""} />
+
       <h1 className="text-2xl md:text-3xl font-bold text-center mb-8 tracking-tight">
         Explore the World
       </h1>

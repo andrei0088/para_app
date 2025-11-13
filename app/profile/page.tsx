@@ -1,9 +1,13 @@
-import React from 'react'
+import React from "react";
+import SEO from "../components/Seo";
 
 const page = () => {
   return (
-    <div>Trebuie sa fii logat pentru a putea vedea un profil</div>
-  )
-}
+    <div>
+      <SEO title={"Profile "} description={""} />
+      Trebuie sa fii logat pentru a putea vedea un profil
+    </div>
+  );
+};
 
-export default page
+export default page;

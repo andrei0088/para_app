@@ -1,8 +1,11 @@
 import React from "react";
+import SEO from "../components/Seo";
 
 const AboutPage = () => {
   return (
     <section className="min-h-screen bg-linear-to-b from-white to-blue-50 px-6 py-20">
+      <SEO title={"About"} description={""} />
+
       <div className="max-w-4xl mx-auto space-y-10">
         <h1 className="text-4xl md:text-5xl font-extrabold text-blue-700 text-center tracking-tight">
           About Our Paragliding Community
