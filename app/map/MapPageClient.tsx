@@ -27,9 +27,16 @@ export default function MapPageClient({
     lng: number | null;
   }>({ lat: null, lng: null });
 
-  const handleSelect = (lat: number | null, lng: number | null) => {
-    console.log({ lat, lng });
+  // Zoom corect: număr simplu
+  const [zoom, setZoom] = useState<number>(7);
+
+  const handleSelect = (
+    lat: number | null,
+    lng: number | null,
+    newZoom: number | null
+  ) => {
     setSelectedLatLng({ lat, lng });
+    setZoom(newZoom ?? 7);
   };
 
   return (
@@ -43,8 +50,13 @@ export default function MapPageClient({
         landings={landings}
         onSelect={handleSelect}
       />
+
       <div className="flex-1">
-        <MapClientWrapper allSites={initialSites} selected={selectedLatLng} />
+        <MapClientWrapper
+          allSites={initialSites}
+          selected={selectedLatLng}
+          zoom={zoom} // trimite zoom-ul ca număr
+        />
       </div>
     </div>
   );

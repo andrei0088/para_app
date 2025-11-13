@@ -6,6 +6,7 @@ import { Site } from "../types";
 interface Props {
   allSites: Site[];
   selected: { lat: number | null; lng: number | null };
+  zoom: number | 7;
 }
 
 // Importăm MapView doar pe client, cu loader
@@ -18,8 +19,9 @@ const MapView = dynamic(() => import("./MapView"), {
   ),
 });
 
-export default function MapClientWrapper({ allSites, selected }: Props) {
+export default function MapClientWrapper({ allSites, selected, zoom }: Props) {
   const initialCenter: [number, number] = [45.7, 7];
+  console.log({ zoom });
 
   // Dacă avem coordonate valide, le folosim ca centru
   const center: [number, number] =
@@ -27,5 +29,5 @@ export default function MapClientWrapper({ allSites, selected }: Props) {
       ? [selected.lat, selected.lng]
       : initialCenter;
 
-  return <MapView allSites={allSites} center={center} zoom={7} />;
+  return <MapView allSites={allSites} center={center} zoom={zoom} />;
 }
