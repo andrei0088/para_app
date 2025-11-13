@@ -5,7 +5,7 @@ import Script from "next/script";
 export default function GoogleAnalytics() {
   return (
     <>
-      {/* Google tag (gtag.js) */}
+      {/* --- Google Analytics (GA4) --- */}
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-8QCTXYZH6H"
         strategy="afterInteractive"
@@ -18,6 +18,15 @@ export default function GoogleAnalytics() {
           gtag('config', 'G-8QCTXYZH6H');
         `}
       </Script>
+
+      {/* --- Google AdSense --- */}
+      <Script
+        id="adsense-script"
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5183818618154019"
+        strategy="afterInteractive"
+        crossOrigin="anonymous"
+      />
     </>
   );
 }
