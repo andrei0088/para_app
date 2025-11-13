@@ -21,7 +21,7 @@ export default function RandomVideoServer({ videos }: RandomVideoProps) {
   }
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 dark:text-gray-800">
       <h2 className="text-2xl font-bold text-gray-800">You mai like</h2>
 
       {videos.map((video) => {

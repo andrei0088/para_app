@@ -19,7 +19,7 @@ const ProfileVideos: React.FC<ProfileVideosProps> = ({ videos = [] }) => {
   };
 
   return (
-    <div className="flex flex-wrap mx-2 mt-2">
+    <div className="flex flex-wrap mx-2 mt-2 dark:text-gray-800">
       {videos.length === 0 && (
         <div className="w-full text-center py-10 flex flex-col items-center justify-center opacity-80 animate-fadeIn">
           <div className="text-4xl mb-3">🎬</div>

@@ -6,6 +6,7 @@ import {
   remove_video_like,
 } from "@/app/profile/[url]/get_profil";
 import Link from "next/link";
+import { useState } from "react";
 
 interface TopClientProps {
   videoId: number;
@@ -16,44 +17,78 @@ interface TopClientProps {
 
 export default function VideoLikeClient({
   videoId,
-  like,
-  userLiked,
+  like: initialLike,
+  userLiked: initialUserLiked,
   logd,
 }: TopClientProps) {
+  const [like, setLike] = useState(initialLike);
+  const [userLiked, setUserLiked] = useState(initialUserLiked);
+  const [loading, setLoading] = useState(false);
+
+  const handleAdd = async () => {
+    if (loading) return;
+    setUserLiked(true);
+    setLike((prev) => prev + 1); // optimistic update
+    setLoading(true);
+    try {
+      await add_video_like(videoId);
+    } catch (err) {
+      setUserLiked(false); // rollback
+      setLike((prev) => prev - 1);
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRemove = async () => {
+    if (loading) return;
+    setUserLiked(false);
+    setLike((prev) => prev - 1); // optimistic update
+    setLoading(true);
+    try {
+      await remove_video_like(videoId);
+    } catch (err) {
+      setUserLiked(true); // rollback
+      setLike((prev) => prev + 1);
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="flex items-center gap-2 ml-auto w-full justify-end py-1 h-auto">
+    <div className="flex items-center gap-2 ml-auto w-full justify-end py-1 h-auto dark:text-gray-900">
       {logd ? (
-        <>
-          {userLiked ? (
-            <div
-              onClick={() => remove_video_like(videoId)}
-              className="flex items-center gap-1 py-1 px-2 border-2 rounded-full cursor-pointer
+        userLiked ? (
+          <div
+            onClick={handleRemove}
+            className="flex items-center gap-1 py-1 px-2 border-2 rounded-full cursor-pointer
                      bg-green-100 border-green-500 hover:bg-white hover:text-green-700 hover:border-green-600
                      transition-all duration-300 active:scale-95 shadow-sm hover:shadow-md animate-[pulse_2.5s_ease-in-out_infinite] hover:animate-none text-xs md:text-sm"
-            >
-              <span className="font-semibold text-green-600">I gave a</span>
-              <Image
-                src={top_img}
-                alt="top"
-                className="w-4 h-4 md:w-5 md:h-5 object-cover animate-[bounce_3s_infinite]"
-              />
-            </div>
-          ) : (
-            <div
-              onClick={() => add_video_like(videoId)}
-              className="flex items-center gap-1 py-1 px-2 border-2 border-gray-900 rounded-full cursor-pointer
+          >
+            <span className="font-semibold text-green-600">I gave a</span>
+            <Image
+              src={top_img}
+              alt="top"
+              className="w-4 h-4 md:w-5 md:h-5 object-cover animate-[bounce_3s_infinite]"
+            />
+          </div>
+        ) : (
+          <div
+            onClick={handleAdd}
+            className="flex items-center gap-1 py-1 px-2 border-2 border-gray-900 rounded-full cursor-pointer
                      hover:bg-green-100 hover:border-green-500 hover:text-green-700
                      transition-all duration-300 active:scale-95 shadow-sm hover:shadow-md animate-[pulse_2.5s_ease-in-out_infinite] hover:animate-none text-xs md:text-sm"
-            >
-              <span className="font-semibold">I give a</span>
-              <Image
-                src={top_img}
-                alt="top"
-                className="w-4 h-4 md:w-5 md:h-5 object-cover animate-[bounce_3s_infinite]"
-              />
-            </div>
-          )}
-        </>
+          >
+            <span className="font-semibold">I give a</span>
+            <Image
+              src={top_img}
+              alt="top"
+              className="w-4 h-4 md:w-5 md:h-5 object-cover animate-[bounce_3s_infinite]"
+            />
+          </div>
+        )
       ) : (
         <Link
           href={`/user/login`}

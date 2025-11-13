@@ -109,7 +109,7 @@ export default function UserClient({ initialUser }: UserClientProps) {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto mt-10 p-8 bg-white  shadow-lg rounded-2xl border border-gray-200  transition-colors duration-300">
+    <div className="w-full dark:text-gray-800 max-w-4xl mx-auto mt-10 p-8 bg-white  shadow-lg rounded-2xl border border-gray-200  transition-colors duration-300">
       <h1 className="text-3xl font-bold mb-6 text-gray-900  text-center sm:text-left">
         Your Profile
       </h1>

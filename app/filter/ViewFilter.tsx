@@ -48,7 +48,6 @@ export default function ViewFilter({
   const availableSeasons = SEASONS.filter((s) =>
     s.months.some((m) => availableMonths.includes(m))
   );
-  console.log({ regions });
   return (
     <section className="w-full my-10 p-6 bg-white  rounded-2xl shadow-lg">
       {/* Titlu țară */}

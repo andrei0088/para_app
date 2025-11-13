@@ -100,7 +100,8 @@ const seasons = [
 ];
 
 export default async function MonthPage({ params }: Params) {
-  const month = Number(params.id);
+  const param = await params;
+  const month = Number(param.id);
   if (month < 1 || month > 12) return notFound();
 
   const currentSeason = seasons.find((s) => s.months.includes(month));

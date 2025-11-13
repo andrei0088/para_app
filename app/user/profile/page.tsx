@@ -38,7 +38,7 @@ export default async function ProfilePage() {
     showAge: data.showAge,
   };
   return (
-    <div className="w-full px-7 xl:max-w-7xl xl:mx-auto">
+    <div className="w-full px-7 xl:max-w-7xl xl:mx-auto dark:text-gray-800">
       <GeneralData isPublic={profile.public} url={profile.url} />
       <div className="w-full h-0.5 bg-linear-to-r from-gray-300 via-cyan-500 to-gray-300  rounded-full"></div>
 

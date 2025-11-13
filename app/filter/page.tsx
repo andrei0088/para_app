@@ -84,7 +84,7 @@ function sanitizeRegion(data: {
 }
 
 export default async function FilterPage({ searchParams }: FilterPageProps) {
-  const { country, season, month } = searchParams;
+  const { country, season, month } = await searchParams;
 
   if (!country) {
     return <p className="p-8 text-red-600">No country selected!</p>;

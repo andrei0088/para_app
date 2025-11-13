@@ -146,7 +146,7 @@ export default function SearchElement({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-wrap items-end gap-3 md:gap-4 bg-gray-50  p-3 md:p-4 rounded-xl shadow-md max-w-full  "
+      className="flex flex-wrap items-end gap-3 md:gap-4 bg-gray-50  p-3 md:p-4 rounded-xl shadow-md max-w-full dark:text-gray-800 "
     >
       {/* Country */}
       <div className="flex flex-col flex-1 min-w-[140px]">
