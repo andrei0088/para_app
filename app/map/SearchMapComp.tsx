@@ -111,7 +111,7 @@ export default function SearchMapComp({
           setTakeoffId(null);
           setLandingId(null);
           const coords = getLatLng(null, null, val, countryId);
-          onSelect(coords.lat, coords.lng, 10);
+          onSelect(coords.lat, coords.lng, 11);
         }}
         className="border rounded p-2"
       >

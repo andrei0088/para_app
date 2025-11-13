@@ -58,6 +58,15 @@ export default function ViewRegion({
       .filter((m, i, self) => self.indexOf(m) === i),
   ].filter(Boolean);
 
+  const fallbackDescription = `
+    <p class="text-xl font-semibold">Explore this amazing region!</p>
+    <p>
+      This page is under development, but soon you’ll find detailed insights about paragliding spots, takeoff and landing locations, ideal flying seasons, and safety tips specific to this region.
+    </p>
+    <p class="italic text-blue-700  font-medium">
+      Stay tuned for updates and start planning your next paragliding adventure here!
+    </p>
+  `;
   return (
     <section className="w-full p-4 ">
       {region.map && (
@@ -68,7 +77,7 @@ export default function ViewRegion({
 
       <div
         dangerouslySetInnerHTML={{
-          __html: region.description || "Error ",
+          __html: region.description || fallbackDescription,
         }}
       />
     </section>
