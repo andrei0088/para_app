@@ -112,7 +112,8 @@ export default async function RegionPage({
 }: {
   params: { id: string };
 }) {
-  const id = Number(params.id);
+  const para = await params;
+  const id = Number(para.id);
   if (isNaN(id)) return notFound();
 
   const regionRaw: RegionRaw | null = await get_regions_by_id({ id });

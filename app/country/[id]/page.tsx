@@ -123,10 +123,10 @@ export default async function Country({ params }: CountryPageProps) {
   };
 
   return (
-    <div className="my-2 py-2 dark:text-gray-800">
+    <div className="my-2 py-2 dark:text-gray-800 z-40">
       <SEO title={country.name} description={country.seo} />
       {/* Harta */}
-      <div className="h-[30vh] rounded-xl overflow-hidden shadow-md mb-4">
+      <div className="h-[30vh] rounded-xl overflow-hidden shadow-md mb-4 ">
         <MapGenerate
           center={
             countrySafe.latitude && countrySafe.longitude
