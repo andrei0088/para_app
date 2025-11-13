@@ -12,7 +12,8 @@ interface PageProps {
 }
 
 export default async function TakeoffPage({ params }: PageProps) {
-  const id = Number(params.id);
+  const para = await params;
+  const id = Number(para.id);
   if (isNaN(id)) {
     return (
       <p className="text-center text-gray-500 mt-10">Invalid takeoff ID.</p>
@@ -68,8 +69,6 @@ export default async function TakeoffPage({ params }: PageProps) {
     regionId: takeoffRaw.regionId,
     countryId: takeoffRaw.countryId,
   };
-  console.log({ takeoffRaw });
-  console.log({ takeoff });
   const detail = {
     country: {
       id: rawDetail.country.id,
@@ -91,7 +90,7 @@ export default async function TakeoffPage({ params }: PageProps) {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 dark:text-gray-800">
       {/* Detalii takeoff + regiune */}
       <TakeoffDetails details={detail} sites={sitesRaw} />
 

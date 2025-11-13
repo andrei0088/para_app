@@ -59,7 +59,7 @@ export default function ViewRegion({
   ].filter(Boolean);
 
   return (
-    <section className="w-full p-4 dark:text-gray-800">
+    <section className="w-full p-4 ">
       {region.map && (
         <div className="w-full rounded-xl overflow-hidden mb-5">
           <ViewRegionMap map={region.map} maps={maps} />

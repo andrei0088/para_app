@@ -45,19 +45,19 @@ export default function ViewTakeoff({
   const sendMaps = [details.region.map, ...maps];
 
   return (
-    <section className="max-w-6xl mx-auto bg-white/70 dark:bg-gray-900/70 backdrop-blur-md rounded-2xl shadow-md border border-gray-200 dark:border-gray-700 p-6 mb-6 transition-colors">
+    <section className="max-w-6xl mx-auto bg-white/70  backdrop-blur-md rounded-2xl shadow-md border border-gray-200  p-6 mb-6 transition-colors">
       {/* Breadcrumb */}
-      <div className="mb-4 text-gray-600 dark:text-gray-400 text-sm">
+      <div className="mb-4 text-gray-600  text-sm">
         <Link
           href={`/country/${details.country.id}`}
-          className="hover:underline text-blue-700 dark:text-glue-400"
+          className="hover:underline text-blue-700 "
         >
           {details.country.name}
         </Link>{" "}
         →{" "}
         <Link
           href={`/region/${details.region.id}`}
-          className="hover:underline text-blue-700 dark:text-blue-400"
+          className="hover:underline text-blue-700 "
         >
           {details.region.name}
         </Link>{" "}
@@ -67,7 +67,7 @@ export default function ViewTakeoff({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Col 1 - Info + Harta */}
         <div className="flex flex-col space-y-4 col-span-1">
-          <h1 className="text-3xl font-bold text-blue-700 dark:text-blue-400">
+          <h1 className="text-3xl font-bold text-blue-700 ">
             {takeoff.name} ({takeoff.wind})
           </h1>
 

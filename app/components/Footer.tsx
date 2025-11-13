@@ -5,8 +5,8 @@ import logo from "@/public/logo.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-50">
-      <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center">
+    <footer className="bg-gray-50 dark:text-gray-800 dark:bg-gray-100">
+      <div className="max-w-6xl mx-auto px-6 py-2 flex flex-col md:flex-row justify-between items-center">
         {/* Branding */}
         <div className="mb-4 md:mb-0 text-center md:text-left">
           <div className="w-30 ">
@@ -42,7 +42,7 @@ const Footer = () => {
       </div>
 
       {/* Optional: social media icons */}
-      <div className="border-t border-gray-700 mt-4 pt-4">
+      <div className="border-t border-gray-700 mt-2 pt-4">
         <div className="max-w-6xl mx-auto flex justify-center space-x-4 mb-5">
           <a
             href="https://www.facebook.com/paraglidinghigh"

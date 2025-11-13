@@ -94,7 +94,7 @@ export default async function Country({ params }: CountryPageProps) {
 
   // --- Fallback descriere ---
   const countryDescriptionFallback = `
-    <p class="text-xl font-semibold"><strong>Welcome to the paragliding guide for ${country.name}!</strong></p>
+    <p className="text-xl font-semibold"><strong>Welcome to the paragliding guide for ${country.name}!</strong></p>
     <hr /><br />
     <p>
       We are currently working on adding detailed information about this country, 
@@ -109,7 +109,7 @@ export default async function Country({ params }: CountryPageProps) {
       Your contributions will help us identify the best takeoff and landing locations, 
       as well as provide useful insights for safe and enjoyable paragliding experiences in this country.
     </p>
-    <p class="italic text-green-700  font-medium">
+    <p className="italic text-green-700  font-medium">
       Together, we can create the ultimate guide for paragliding in ${country.name}! 
       Stay tuned for updates and thank you for your support.
     </p>
@@ -123,7 +123,7 @@ export default async function Country({ params }: CountryPageProps) {
   };
 
   return (
-    <div className="my-2 py-2">
+    <div className="my-2 py-2 dark:text-gray-800">
       <SEO title={country.name} description={country.seo} />
       {/* Harta */}
       <div className="h-[30vh] rounded-xl overflow-hidden shadow-md mb-4">

@@ -1,5 +1,3 @@
-"use client";
-
 import { notFound } from "next/navigation";
 import SeasonView from "./SesonView";
 import { get_all_regions, get_country_by_id } from "@/app/api/get/get_places";
@@ -140,7 +138,8 @@ function normalizeCountry(c: ApiCountry): Country {
 
 // ---------------- COMPONENTA ----------------
 export default async function SeasonsPage({ params }: Params) {
-  const seasonId = Number(params.id);
+  const para = await params;
+  const seasonId = Number(para.id);
   const season = seasons.find((s) => s.id === seasonId);
   if (!season) return notFound();
 

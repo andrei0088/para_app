@@ -12,7 +12,8 @@ interface PageProps {
 }
 
 export default async function LandingPage({ params }: PageProps) {
-  const id = Number(params.id);
+  const para = await params;
+  const id = Number(para.id);
   if (isNaN(id)) {
     return (
       <p className="text-center text-gray-500 mt-10">Invalid landing ID.</p>
@@ -84,7 +85,7 @@ export default async function LandingPage({ params }: PageProps) {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 dark:text-gray-800">
       {/* Detalii landing + regiune */}
       <LandingDetails details={details} sites={sitesRaw} />
 

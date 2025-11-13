@@ -42,7 +42,7 @@ export default async function ProfilePage() {
       <GeneralData isPublic={profile.public} url={profile.url} />
       <div className="w-full h-0.5 bg-linear-to-r from-gray-300 via-cyan-500 to-gray-300  rounded-full"></div>
 
-      <div className="w-full flex gap-5 md:flex-row flex-col dark:text-gray-800">
+      <div className="w-full flex gap-5 md:flex-row flex-col ">
         <div className="w-full">
           <ViewAvatar image={profile.image} />
           <hr />

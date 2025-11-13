@@ -166,7 +166,7 @@ export default async function RegionPage({
   `;
 
   return (
-    <div className="mb-2">
+    <div className="mb-2 dark:text-gray-800">
       <SEO title={region.name} description={region.seo} />
       <SearchForm select={{ country, region: [region] }} />
 

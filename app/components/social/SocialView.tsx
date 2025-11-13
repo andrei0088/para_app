@@ -145,7 +145,7 @@ export default function SocialView({
   }
 
   return (
-    <section className="max-w-6xl mx-auto mt-12 px-8 py-6 bg-gray-50  rounded-3xl shadow-md">
+    <section className="max-w-6xl mx-auto mt-12 px-8 py-6 bg-gray-50  rounded-3xl shadow-md dark:text-gray-900 mb-2">
       <h2 className="text-3xl font-serif text-center mb-5 text-gray-900 ">
         What others say about{" "}
         <span className="font-semibold">{selectedName}</span>
