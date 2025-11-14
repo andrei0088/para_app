@@ -8,6 +8,7 @@ export interface Country {
   description?: string; // null -> undefined
   latitude?: number;
   longitude?: number;
+  image?: string;
 }
 export interface CountryShort {
   id: number;

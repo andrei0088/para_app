@@ -35,7 +35,7 @@ const LeftRegion: React.FC<LeftRegionProps> = ({
   ].filter(Boolean);
 
   return (
-    <div className="w-full md:w-3/7 p-4 relative ">
+    <div className="w-full md:w-3/7 p-4 relative space-y-2 ">
       <BestSeson months={region.bestSeason ?? []} /> {/* ✅ fallback */}
       <TopView component="r" id={Number(region.id)} />
       <ViewSites takeoff={takeoff} landing={landing} />

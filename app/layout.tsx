@@ -7,12 +7,18 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Roboto, Oswald } from "next/font/google";
 import Banner from "./components/Banner";
 import GoogleAnalytics from "./lib/GoogleAnalytics";
+import { Metadata } from "next";
 
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
   variable: "--font-roboto",
 });
+export const metadata: Metadata = {
+  title: "ParaApp – your paragliding journey",
+  description:
+    "Discover the best paragliding spots around the world. Join our community of pilots, share your experiences, and grow the international paragliding network.",
+};
 
 const oswald = Oswald({
   subsets: ["latin"],

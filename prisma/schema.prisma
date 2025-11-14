@@ -15,6 +15,7 @@ model Country {
   latitude    Float?
   longitude   Float?
   seo         String?
+  image       String?
   comments    CountryComment[]
   likes       CountryLike[]
   landings    Landing[]

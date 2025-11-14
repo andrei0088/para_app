@@ -31,6 +31,7 @@ export default function CountryEdit({ country }: CountryEditProps) {
   const [latitude, setLatitude] = useState(country.latitude ?? null);
   const [longitude, setLongitude] = useState(country.longitude ?? null);
   const [loading, setLoading] = useState(false);
+  const [image, setImage] = useState(country.image ?? "");
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -45,6 +46,7 @@ export default function CountryEdit({ country }: CountryEditProps) {
       seo,
       latitude,
       longitude,
+      image,
     };
 
     const res = await edit_country(updatedCountry);
@@ -90,6 +92,17 @@ export default function CountryEdit({ country }: CountryEditProps) {
             onChange={(e) => setName(e.target.value)}
             className="flex-1 border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
             required
+          />
+        </div>
+
+        {/* Image */}
+        <div className={rowClass}>
+          <label className="font-medium w-32">Image</label>
+          <input
+            type="text"
+            value={image}
+            onChange={(e) => setImage(e.target.value)}
+            className="flex-1 border p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-400"
           />
         </div>
 

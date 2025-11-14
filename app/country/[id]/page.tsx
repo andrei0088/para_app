@@ -120,6 +120,7 @@ export default async function Country({ params }: CountryPageProps) {
     description: country.description ?? countryDescriptionFallback,
     latitude: country.latitude ?? undefined,
     longitude: country.longitude ?? undefined,
+    image: country.image ?? undefined,
   };
 
   return (
