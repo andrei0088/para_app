@@ -1,8 +1,6 @@
 import Link from "next/link";
-import {
-  get_all_country,
-  get_all_regions_with_sites,
-} from "@/app/api/get/get_places";
+
+import { get_home_country, get_home_region } from "@/app/api/get/homeAction";
 
 const MONTHS = [
   "January",
@@ -22,8 +20,8 @@ const MONTHS = [
 export default async function ViewAllPlaces() {
   // ✅ Fetch paralel (mult mai rapid)
   const [countries, regions] = await Promise.all([
-    get_all_country(),
-    get_all_regions_with_sites(),
+    get_home_country(),
+    get_home_region(),
   ]);
 
   // ✅ Grupăm regiunile pe țări o singură dată
@@ -85,10 +83,10 @@ export default async function ViewAllPlaces() {
                       {/* Takeoff & Landing counts */}
                       <div className="flex flex-wrap gap-1 mt-1 text-xs font-medium text-gray-700">
                         <span className="px-2 py-0.5 rounded-full border border-gray-300">
-                          Takeoff: {region.takeoffs?.length ?? 0}
+                          Takeoff: {region._count.takeoffs ?? 0}
                         </span>
                         <span className="px-2 py-0.5 rounded-full border border-gray-300">
-                          Landing: {region.landings?.length ?? 0}
+                          Landing: {region._count.landings ?? 0}
                         </span>
                       </div>
                     </Link>
