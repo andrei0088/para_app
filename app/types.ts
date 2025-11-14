@@ -42,6 +42,7 @@ export interface Takeoff {
   map?: string | null;
   seo?: string | null;
   altitude?: number;
+  wind?: string;
 }
 
 export interface Landing {

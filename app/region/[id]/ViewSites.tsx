@@ -19,7 +19,7 @@ const ViewSites = ({ takeoff, landing }: ViewSitesProps) => {
                   href={`/takeoff/${t.id}`}
                   className="hover:text-green-600 "
                 >
-                  {t.name} - {t.altitude}m
+                  {t.name} {t.wind && `( ${t.wind} )`} - {t.altitude}m
                 </Link>
               </li>
             ))}

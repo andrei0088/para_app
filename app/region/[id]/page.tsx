@@ -22,6 +22,7 @@ interface Takeoff {
   countryId: number;
   description?: string;
   map?: string;
+  wind?: string;
 }
 
 interface Landing {
@@ -79,6 +80,7 @@ interface TakeoffRaw {
   countryId: number;
   description?: string | null;
   map?: string | null;
+  wind?: string;
 }
 
 interface LandingRaw {
@@ -104,6 +106,7 @@ const normalizeSite = (site: TakeoffRaw | LandingRaw): Takeoff | Landing => ({
   countryId: site.countryId,
   description: site.description ?? undefined,
   map: site.map ?? undefined,
+  wind: "wind" in site ? site.wind : undefined,
 });
 
 // ------------- COMPONENTA ------------------
