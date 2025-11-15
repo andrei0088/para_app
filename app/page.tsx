@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import HomeMap from "./components/homeComponents/HomeMap";
 import SearchHome from "./components/homeComponents/SearchHome";
 import ViewAllPlaces from "./components/homeComponents/ViewAllPlaces";
@@ -11,15 +12,28 @@ export default function Home() {
   return (
     <div className="z-40">
       <SEO title={"Home"} description={seo} />
-
-      <HomeMap />
+      <Suspense fallback={<div className="text-gray-500">Loading map...</div>}>
+        <HomeMap />
+      </Suspense>
       <SearchHome />
       <div className="flex flex-col md:flex-row gap-2 mb-2 mt-2">
         <div className="w-full md:w-5/7 md:border-r md:border-gray-100 md:pr-2">
-          <ViewAllPlaces />
+          <Suspense
+            fallback={
+              <div className="text-gray-500">
+                Loading all grate flying places...
+              </div>
+            }
+          >
+            <ViewAllPlaces />
+          </Suspense>
         </div>
         <div className="w-full md:w-2/5 md:pl-2">
-          <TopVideo />
+          <Suspense
+            fallback={<div className="text-gray-500">Loading videos...</div>}
+          >
+            <TopVideo />
+          </Suspense>
         </div>
       </div>
     </div>
