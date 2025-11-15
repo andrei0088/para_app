@@ -9,8 +9,8 @@ interface Props {
   takeoffs: Takeoff[];
   landings: Landing[];
   onSelect: (
-    lat: number | null,
-    lng: number | null,
+    id: number | null,
+    type: string | null,
     zoom: number | null
   ) => void;
 }
@@ -90,7 +90,7 @@ export default function SearchMapComp({
           setTakeoffId(null);
           setLandingId(null);
           const coords = getLatLng(null, null, null, val);
-          onSelect(coords.lat, coords.lng, 7);
+          onSelect(val, "c", 7);
         }}
         className="border rounded p-2"
       >
@@ -111,7 +111,7 @@ export default function SearchMapComp({
           setTakeoffId(null);
           setLandingId(null);
           const coords = getLatLng(null, null, val, countryId);
-          onSelect(coords.lat, coords.lng, 11);
+          onSelect(val, "r", 11);
         }}
         className="border rounded p-2"
       >
@@ -130,7 +130,7 @@ export default function SearchMapComp({
           const val = e.target.value ? parseInt(e.target.value) : null;
           setTakeoffId(val);
           const coords = getLatLng(val, null, regionId, countryId);
-          onSelect(coords.lat, coords.lng, 14);
+          onSelect(val, "t", 14);
         }}
         className="border rounded p-2"
       >
@@ -149,7 +149,7 @@ export default function SearchMapComp({
           const val = e.target.value ? parseInt(e.target.value) : null;
           setLandingId(val);
           const coords = getLatLng(null, val, regionId, countryId);
-          onSelect(coords.lat, coords.lng, 14);
+          onSelect(val, "l", 14);
         }}
         className="border rounded p-2"
       >

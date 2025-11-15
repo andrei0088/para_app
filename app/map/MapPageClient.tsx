@@ -31,11 +31,36 @@ export default function MapPageClient({
   const [zoom, setZoom] = useState<number>(7);
 
   const handleSelect = (
-    lat: number | null,
-    lng: number | null,
+    id: number | null,
+    type: string | null,
     newZoom: number | null
   ) => {
-    setSelectedLatLng({ lat, lng });
+    if (type === "c") {
+      const country = countries.find((c) => c.id === id);
+      if (country && country.latitude && country.longitude) {
+        setSelectedLatLng({ lat: country.latitude, lng: country.longitude });
+      }
+    }
+    if (type === "r") {
+      const region = regions.find((r) => r.id === id);
+      if (region && region.latitude && region.longitude) {
+        setSelectedLatLng({ lat: region.latitude, lng: region.longitude });
+      }
+    }
+    if (type === "t") {
+      const takeoff = takeoffs.find((t) => t.id === id);
+      if (takeoff && takeoff.latitude && takeoff.longitude) {
+        setSelectedLatLng({ lat: takeoff.latitude, lng: takeoff.longitude });
+      }
+    }
+    if (type === "l") {
+      const landing = landings.find((l) => l.id === id);
+      if (landing && landing.latitude && landing.longitude) {
+        setSelectedLatLng({ lat: landing.latitude, lng: landing.longitude });
+      }
+    }
+    if (selectedLatLng.lat === null || selectedLatLng.lng === null)
+      setSelectedLatLng({ lat: null, lng: null });
     setZoom(newZoom ?? 7);
   };
 

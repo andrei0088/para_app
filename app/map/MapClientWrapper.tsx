@@ -27,6 +27,5 @@ export default function MapClientWrapper({ allSites, selected, zoom }: Props) {
     selected.lat !== null && selected.lng !== null
       ? [selected.lat, selected.lng]
       : initialCenter;
-
   return <MapView allSites={allSites} center={center} zoom={zoom} />;
 }
