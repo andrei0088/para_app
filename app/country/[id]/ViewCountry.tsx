@@ -1,7 +1,7 @@
 import type { Country } from "@/app/types";
 import { CldImage } from "next-cloudinary";
 import Image from "next/image";
-import mapD from "@/public/bigmap.jpg";
+import mapD from "@/public/map_xc.jpg";
 
 interface CountrySearchProps {
   country: Country;
