@@ -1,7 +1,7 @@
 import type { Country } from "@/app/types";
 import { CldImage } from "next-cloudinary";
 import Image from "next/image";
-import mapD from "@/public/map_xc.jpg";
+import mapD from "@/public/map_xc_gen3.jpg";
 
 interface CountrySearchProps {
   country: Country;
@@ -40,7 +40,7 @@ export default function ViewCountry({ country }: CountrySearchProps) {
             crop="fill"
             gravity="auto"
             aspectRatio="16:9"
-            alt="Region map"
+            alt={`${country.name} xc route map`}
             style={{ objectFit: "cover", cursor: "pointer" }}
             className="w-full z-0"
             quality="auto"
@@ -48,7 +48,7 @@ export default function ViewCountry({ country }: CountrySearchProps) {
         ) : (
           <Image
             src={mapD}
-            alt={`Default ${country.name} map`}
+            alt={`${country.name} xc route map`}
             width={800}
             height={500}
             className="w-full z-0"
@@ -56,19 +56,19 @@ export default function ViewCountry({ country }: CountrySearchProps) {
         )}
 
         {/* Gradient – sub text */}
-        <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent z-10"></div>
+        <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent z-10"></div>
 
         {/* Text – deasupra gradientului */}
         <div className="absolute inset-0 flex items-end p-6 z-20">
           <div
             className="
-        text-3xl md:text-4xl font-extrabold text-yellow-400
+        text-2xl md:text-4xl font-extrabold text-yellow-400
         drop-shadow-[0_0_15px_rgba(255,215,0,0.8)]
         tracking-wide uppercase
       "
           >
-            <span className="opacity-90">Paragliding in</span>
-            <span className="italic ml-2 underline decoration-yellow-300">
+            <span className="opacity-90">Flying in</span>
+            <span className="italic ml-2 decoration-yellow-300">
               {country.name}
             </span>
           </div>
