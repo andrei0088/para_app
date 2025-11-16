@@ -258,8 +258,9 @@ export default function SearchElement({
       {/* Submit */}
       <div className="flex items-end">
         <button
+          disabled={loading}
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-all shadow-sm hover:shadow-md"
+          className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-all shadow-sm hover:shadow-md"
         >
           {loading ? "Filtering..." : "Filter"}
         </button>
