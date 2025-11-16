@@ -1,7 +1,5 @@
 import type { Country } from "@/app/types";
-import { CldImage } from "next-cloudinary";
-import Image from "next/image";
-import mapD from "@/public/map_xc_gen3.jpg";
+import CountryImage from "./CountryImage";
 
 interface CountrySearchProps {
   country: Country;
@@ -32,47 +30,7 @@ export default function ViewCountry({ country }: CountrySearchProps) {
   return (
     <div className="w-full md:w-3/4 px-2 my-4">
       <div className="relative">
-        {country.image ? (
-          <CldImage
-            src={country.image}
-            width={800}
-            height={500}
-            crop="fill"
-            gravity="auto"
-            aspectRatio="16:9"
-            alt={`${country.name} xc route map`}
-            style={{ objectFit: "cover", cursor: "pointer" }}
-            className="w-full z-0"
-            quality="auto"
-          />
-        ) : (
-          <Image
-            src={mapD}
-            alt={`${country.name} xc route map`}
-            width={800}
-            height={500}
-            className="w-full z-0"
-          />
-        )}
-
-        {/* Gradient – sub text */}
-        <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent z-10"></div>
-
-        {/* Text – deasupra gradientului */}
-        <div className="absolute inset-0 flex items-end p-6 z-20">
-          <div
-            className="
-        text-2xl md:text-4xl font-extrabold text-yellow-400
-        drop-shadow-[0_0_15px_rgba(255,215,0,0.8)]
-        tracking-wide uppercase
-      "
-          >
-            <span className="opacity-90">Flying in</span>
-            <span className="italic ml-2 decoration-yellow-300">
-              {country.name}
-            </span>
-          </div>
-        </div>
+        <CountryImage map={country.image} name={country.name} />
       </div>
 
       <div

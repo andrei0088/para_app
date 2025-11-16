@@ -62,11 +62,12 @@ export interface Site {
   latitude: number;
   longitude: number;
   countryId: number;
-  regionId?: number;
+  regionId: number;
   map?: string | null;
   seo?: string | null;
   altitude: number;
-  type: "takeoff" | "landing";
+  type?: string;
+  wind?: string | null;
 }
 
 export interface BasePlace {

@@ -4,15 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import Link from "next/link";
-
-interface Site {
-  id: number;
-  latitude: number;
-  longitude: number;
-  name?: string;
-  altitude: number;
-  wind?: string;
-}
+import { Site } from "@/app/types";
 
 interface MapProps {
   center: [number, number];

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import UserNav from "./users/UserNav";
 import NavBarClient from "./NavBarClient";
+import { Suspense } from "react";
 
 export default function NavBarServer() {
   return (
@@ -62,7 +63,9 @@ export default function NavBarServer() {
         </div>
 
         {/* UserNav */}
-        <UserNav />
+        <Suspense fallback={<div>Loading...</div>}>
+          <UserNav />
+        </Suspense>
       </div>
 
       {/* Mobile */}
@@ -73,7 +76,9 @@ export default function NavBarServer() {
 
         {/* UserNav în colț dreapta sus */}
         <div className="absolute right-0 top-0">
-          <UserNav />
+          <Suspense fallback={<div>Loading...</div>}>
+            <UserNav />
+          </Suspense>
         </div>
       </div>
     </nav>

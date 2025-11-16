@@ -1,5 +1,6 @@
 "use client";
 
+import { Site } from "@/app/types";
 import dynamic from "next/dynamic";
 
 const MapView = dynamic(() => import("./MapView"), {
@@ -10,13 +11,6 @@ const MapView = dynamic(() => import("./MapView"), {
     </div>
   ),
 });
-
-interface Site {
-  id: number;
-  latitude: number;
-  longitude: number;
-  name?: string;
-}
 
 interface MapGenerateProps {
   center: [number, number];

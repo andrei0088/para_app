@@ -4,16 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect } from "react";
-
-interface Site {
-  id: number;
-  name: string;
-  latitude: number;
-  longitude: number;
-  type: "takeoff" | "landing";
-  wind?: string | null;
-  altitude: number;
-}
+import { Site } from "../types";
 
 // Icon-uri custom
 const takeoffIcon = new L.Icon({

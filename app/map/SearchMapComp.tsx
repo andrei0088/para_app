@@ -89,7 +89,6 @@ export default function SearchMapComp({
           setRegionId(null);
           setTakeoffId(null);
           setLandingId(null);
-          const coords = getLatLng(null, null, null, val);
           onSelect(val, "c", 7);
         }}
         className="border rounded p-2"
@@ -110,7 +109,6 @@ export default function SearchMapComp({
           setRegionId(val);
           setTakeoffId(null);
           setLandingId(null);
-          const coords = getLatLng(null, null, val, countryId);
           onSelect(val, "r", 11);
         }}
         className="border rounded p-2"
@@ -129,8 +127,6 @@ export default function SearchMapComp({
         onChange={(e) => {
           const val = e.target.value ? parseInt(e.target.value) : null;
           setTakeoffId(val);
-          const coords = getLatLng(val, null, regionId, countryId);
-          onSelect(val, "t", 14);
         }}
         className="border rounded p-2"
       >
@@ -148,7 +144,6 @@ export default function SearchMapComp({
         onChange={(e) => {
           const val = e.target.value ? parseInt(e.target.value) : null;
           setLandingId(val);
-          const coords = getLatLng(null, val, regionId, countryId);
           onSelect(val, "l", 14);
         }}
         className="border rounded p-2"
