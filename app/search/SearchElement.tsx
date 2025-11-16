@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import type { Country, Region, Select } from "@/app/types";
+import { set } from "better-auth";
 
 interface SearchElementProps {
   countrys: Country[];
@@ -17,6 +18,7 @@ export default function SearchElement({
 }: SearchElementProps) {
   const router = useRouter();
 
+  const [loading, setLoading] = useState(false);
   const [selectedCountryId, setSelectedCountryId] = useState(select.country.id);
   const [selectedRegionId, setSelectedRegionId] = useState<number | "">("");
   const [selectedSeason, setSelectedSeason] = useState<number | "">(
@@ -122,7 +124,7 @@ export default function SearchElement({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
+    setLoading(true);
     if (selectedRegionId !== "") {
       router.push(`/region/${selectedRegionId}`);
       return;
@@ -259,7 +261,7 @@ export default function SearchElement({
           type="submit"
           className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-all shadow-sm hover:shadow-md"
         >
-          Filter
+          {loading ? "Filtering..." : "Filter"}
         </button>
       </div>
     </form>
