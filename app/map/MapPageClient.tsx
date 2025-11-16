@@ -35,6 +35,7 @@ export default function MapPageClient({
     type: string | null,
     newZoom: number | null
   ) => {
+    console.log(id, type, newZoom);
     if (type === "c") {
       const country = countries.find((c) => c.id === id);
       if (country && country.latitude && country.longitude) {
@@ -59,11 +60,10 @@ export default function MapPageClient({
         setSelectedLatLng({ lat: landing.latitude, lng: landing.longitude });
       }
     }
-    if (selectedLatLng.lat === null || selectedLatLng.lng === null)
-      setSelectedLatLng({ lat: null, lng: null });
+
     setZoom(newZoom ?? 7);
   };
-
+  console.log({ selectedLatLng });
   return (
     <div className="flex flex-col h-[80vh] w-full text-gray-800 mt-5 z-40">
       <SEO title={""} description={""} />

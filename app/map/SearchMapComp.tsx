@@ -42,54 +42,17 @@ export default function SearchMapComp({
     [landings, regionId]
   );
 
-  // funcție utilitară pentru coordonate
-  const getLatLng = (
-    takeoffId: number | null,
-    landingId: number | null,
-    regionId: number | null,
-    countryId: number | null
-  ) => {
-    if (takeoffId) {
-      const site = takeoffs.find((t) => t.id === takeoffId);
-      if (site) return { lat: site.latitude, lng: site.longitude };
-    }
-    if (landingId) {
-      const site = landings.find((l) => l.id === landingId);
-      if (site) return { lat: site.latitude, lng: site.longitude };
-    }
-    if (regionId) {
-      const region = regions.find((r) => r.id === regionId);
-      if (
-        region &&
-        region.latitude !== undefined &&
-        region.longitude !== undefined
-      )
-        return { lat: region.latitude, lng: region.longitude };
-    }
-    if (countryId) {
-      const firstRegion = regions.find((r) => r.countryId === countryId);
-      if (
-        firstRegion &&
-        firstRegion.latitude !== undefined &&
-        firstRegion.longitude !== undefined
-      )
-        return { lat: firstRegion.latitude, lng: firstRegion.longitude };
-    }
-    return { lat: null, lng: null };
-  };
-
   return (
     <div className="flex gap-4 mb-4">
       {/* Country */}
       <select
         value={countryId ?? ""}
         onChange={(e) => {
-          const val = e.target.value ? parseInt(e.target.value) : null;
+          const val = e.target.value ? Number(e.target.value) : null;
           setCountryId(val);
           setRegionId(null);
           setTakeoffId(null);
           setLandingId(null);
-          const coords = getLatLng(null, null, null, val);
           onSelect(val, "c", 7);
         }}
         className="border rounded p-2"
@@ -106,11 +69,10 @@ export default function SearchMapComp({
       <select
         value={regionId ?? ""}
         onChange={(e) => {
-          const val = e.target.value ? parseInt(e.target.value) : null;
+          const val = e.target.value ? Number(e.target.value) : null;
           setRegionId(val);
           setTakeoffId(null);
           setLandingId(null);
-          const coords = getLatLng(null, null, val, countryId);
           onSelect(val, "r", 11);
         }}
         className="border rounded p-2"
@@ -129,7 +91,6 @@ export default function SearchMapComp({
         onChange={(e) => {
           const val = e.target.value ? parseInt(e.target.value) : null;
           setTakeoffId(val);
-          const coords = getLatLng(val, null, regionId, countryId);
           onSelect(val, "t", 14);
         }}
         className="border rounded p-2"
@@ -148,7 +109,6 @@ export default function SearchMapComp({
         onChange={(e) => {
           const val = e.target.value ? parseInt(e.target.value) : null;
           setLandingId(val);
-          const coords = getLatLng(null, val, regionId, countryId);
           onSelect(val, "l", 14);
         }}
         className="border rounded p-2"

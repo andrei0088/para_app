@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import type { Country, Region, Select } from "@/app/types";
-import { set } from "better-auth";
 
 interface SearchElementProps {
   countrys: Country[];
