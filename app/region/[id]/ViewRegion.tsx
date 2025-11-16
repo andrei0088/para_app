@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import ViewRegionMap from "./ViewRegionMap";
 
 interface Takeoff {
@@ -71,7 +72,15 @@ export default function ViewRegion({
     <section className="w-full p-4 ">
       {region.map && (
         <div className="w-full rounded-xl overflow-hidden mb-5">
-          <ViewRegionMap map={region.map} maps={maps} />
+          <Suspense
+            fallback={
+              <div className="text-gray-500">
+                Loading all grate flying places...
+              </div>
+            }
+          >
+            <ViewRegionMap map={region.map} maps={maps} />
+          </Suspense>
         </div>
       )}
 

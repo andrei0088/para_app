@@ -10,6 +10,8 @@ interface Site {
   latitude: number;
   longitude: number;
   name?: string;
+  altitude: number;
+  wind?: string;
 }
 
 interface MapProps {
@@ -58,7 +60,9 @@ export default function MapView({
         >
           <Popup>
             {site.name ? (
-              <Link href={`/takeoff/${site.id}`}>{site.name}</Link>
+              <Link href={`/takeoff/${site.id}`}>
+                {site.name} {site.wind && `(${site.wind})`} - {site.altitude} m
+              </Link>
             ) : (
               "Takeoff"
             )}
