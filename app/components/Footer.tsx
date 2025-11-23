@@ -10,7 +10,7 @@ const Footer = () => {
         {/* Branding */}
         <div className="mb-4 md:mb-0 text-center md:text-left">
           <div className="w-30 ">
-            <Image src={logo} alt="ParaApp logo" />
+            <Image src={logo} alt="ParaUP logo" />
           </div>
           <p className="text-sm mt-1">
             &copy; {new Date().getFullYear()} Paragliding High. All rights

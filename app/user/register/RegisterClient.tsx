@@ -124,7 +124,7 @@ export default function RegisterClient() {
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-100 to-gray-200  px-4 py-6">
       <div className="w-full max-w-md bg-white  shadow-xl rounded-2xl p-8 border border-gray-200 ">
         <h1 className="text-2xl font-semibold text-center mb-6 text-gray-900 ">
-          Create Your ParaAPP Account 🪂
+          Create Your ParaUP Account 🪂
         </h1>
 
         {message?.text && (

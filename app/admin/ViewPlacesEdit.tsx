@@ -63,7 +63,13 @@ export default function ViewPlacesEdit({
     if (!selectedType || !selectedId) return;
 
     const path = `/admin/edit?type=${selectedType}&id=${selectedId}`;
-    router.push(path); // ✅ Navigăm la pagina de editare
+    router.push(path);
+  };
+  const handleMapChange = () => {
+    if (!selectedType || !selectedId) return;
+
+    const path = `/admin/changemap?type=${selectedType}&id=${selectedId}`;
+    router.push(path); //
   };
 
   const selectClass =
@@ -94,7 +100,6 @@ export default function ViewPlacesEdit({
             </option>
           ))}
         </select>
-
         {/* Select Region */}
         <label className="block mb-2 font-semibold">Region</label>
         <select
@@ -118,7 +123,6 @@ export default function ViewPlacesEdit({
               </option>
             ))}
         </select>
-
         {/* Select Takeoff */}
         <label className="block mb-2 font-semibold">Takeoff</label>
         <select
@@ -142,7 +146,6 @@ export default function ViewPlacesEdit({
               </option>
             ))}
         </select>
-
         {/* Select Landing */}
         <label className="block mb-2 font-semibold">Landing</label>
         <select
@@ -166,13 +169,21 @@ export default function ViewPlacesEdit({
               </option>
             ))}
         </select>
-
         <button
           type="submit"
           disabled={!selectedType || !selectedId}
           className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors w-full disabled:bg-gray-300 disabled:hover:bg-gray-300"
         >
           Edit selected
+        </button>
+        <div className="h-2"></div>{" "}
+        <button
+          type="button"
+          onClick={handleMapChange}
+          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-colors w-full disabled:bg-gray-300 disabled:hover:bg-gray-300"
+          disabled={!selectedType || !selectedId}
+        >
+          Add Map
         </button>
       </form>
 

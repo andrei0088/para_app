@@ -9,7 +9,7 @@ export default function SEO({ title, description }: SEOProps) {
   // Asigurăm că titlul include "paragliding" pentru SEO
 
   // Structura titlului SEO-friendly
-  const fullTitle = `${title} | ParaApp – your paragliding journey`;
+  const fullTitle = `${title} | ParaUp – your paragliding journey`;
 
   // Description generată cu focus pe "paragliding"
   const metaDescription =

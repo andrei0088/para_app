@@ -47,7 +47,7 @@ export const auth = betterAuth({
       <hr style="margin: 30px 0; border: none; border-top: 1px solid #e5e7eb;" />
 
       <p style="font-size: 12px; color: #999;">
-        Thank you for using ParaAPP 🪂. If you need help, contact us at:
+        Thank you for using ParaUP 🪂. If you need help, contact us at:
         <a href="mailto:contact@paragliding-high.eu" style="color: #16a34a;">contact@paragliding-high.eu</a>
       </p>
     </div>

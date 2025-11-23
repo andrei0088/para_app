@@ -30,7 +30,7 @@ const Page = async ({ params }: PageProps) => {
     <div className="w-full h-full">
       <SEO
         title={profile.name}
-        description={`Discover ${profile.name}, a passionate paragliding pilot sharing flights, experiences, and favorite flying spots on ParaApp — the global paragliding community.`}
+        description={`Discover ${profile.name}, a passionate paragliding pilot sharing flights, experiences, and favorite flying spots on ParaUP — the global paragliding community.`}
       />
 
       <div className="bg-white    rounded-2xl shadow-lg p-6 sm:p-8 space-y-6 max-w-full w-full mx-auto transition-colors duration-300">

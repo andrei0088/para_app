@@ -8,8 +8,8 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({
   children,
-  title = "ParaApp - Paragliding Community",
-  description = "Join ParaApp, the global paragliding community. Discover flying spots, connect with pilots, and share your paragliding experiences.",
+  title = "ParaUP - Paragliding Community",
+  description = "Join ParaUP, the global paragliding community. Discover flying spots, connect with pilots, and share your paragliding experiences.",
 }) => {
   return (
     <>

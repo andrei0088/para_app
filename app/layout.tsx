@@ -15,7 +15,7 @@ const roboto = Roboto({
   variable: "--font-roboto",
 });
 export const metadata: Metadata = {
-  title: "ParaApp – your paragliding journey",
+  title: "ParaUp – your paragliding journey",
   description:
     "Discover the best paragliding spots around the world. Join our community of pilots, share your experiences, and grow the international paragliding network.",
 };
