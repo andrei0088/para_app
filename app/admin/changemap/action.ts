@@ -9,25 +9,13 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET!,
 });
 
-// Tip pentru rezultatul Cloudinary
 interface CloudinaryUploadResult {
   public_id: string;
-  version: number;
-  signature: string;
-  width: number;
-  height: number;
-  format: string;
-  resource_type: string;
-  created_at: string;
-  bytes: number;
-  type: string;
-  url: string;
   secure_url: string;
-  etag: string;
-  folder?: string;
+  // ... restul nu sunt necesare pentru DB
 }
 
-// Funcție utilitară pentru extragerea public_id din URL
+// Dacă încă primești URL, păstrezi funcția.
 function extractPublicId(url: string): string | null {
   if (!url) return null;
   const parts = url.split("/");
@@ -37,19 +25,17 @@ function extractPublicId(url: string): string | null {
   return `${folder}/${filename.split(".")[0]}`;
 }
 
-// Funcție principală de upload și update DB
 export async function uploadNewMap(formData: FormData) {
   const file = formData.get("mapFile") as File | null;
   const id = Number(formData.get("id"));
   const type = formData.get("type") as string;
-  const oldUrl = formData.get("oldUrl") as string;
+  const oldValue = formData.get("oldUrl") as string; // poate fi URL sau public_id
 
   if (!file) return { success: false, error: "No file received" };
 
-  // Convertim fișierul în buffer
   const buffer = Buffer.from(await file.arrayBuffer());
 
-  // Upload pe Cloudinary
+  // Upload Cloudinary
   const uploaded: CloudinaryUploadResult = await new Promise(
     (resolve, reject) => {
       cloudinary.uploader
@@ -60,43 +46,51 @@ export async function uploadNewMap(formData: FormData) {
     }
   );
 
-  // Ștergere veche (dacă există)
-  if (oldUrl) {
-    const publicId = extractPublicId(oldUrl);
-    if (publicId) {
-      await cloudinary.uploader.destroy(publicId);
-    }
+  // Ștergere veche imagine
+  if (oldValue) {
+    // Dacă în DB ai deja public_id, poți folosi direct:
+    // await cloudinary.uploader.destroy(oldValue);
+
+    // Dacă încă trimiți URL din formulare:
+    const publicId = extractPublicId(oldValue) ?? oldValue;
+    await cloudinary.uploader.destroy(publicId);
   }
 
-  // Update DB în funcție de tip
+  // Actualizare DB cu public_id
+  const newPublicId = uploaded.public_id;
+
   switch (type) {
     case "c":
       await prisma.country.update({
         where: { id },
-        data: { image: uploaded.secure_url },
+        data: { image: newPublicId },
       });
       break;
+
     case "r":
       await prisma.region.update({
         where: { id },
-        data: { map: uploaded.secure_url },
+        data: { map: newPublicId },
       });
       break;
+
     case "t":
       await prisma.takeoff.update({
         where: { id },
-        data: { map: uploaded.secure_url },
+        data: { map: newPublicId },
       });
       break;
+
     case "l":
       await prisma.landing.update({
         where: { id },
-        data: { map: uploaded.secure_url },
+        data: { map: newPublicId },
       });
       break;
+
     default:
       throw new Error("Invalid type for updating map");
   }
 
-  return { success: true, url: uploaded.secure_url };
+  return { success: true, public_id: newPublicId };
 }
