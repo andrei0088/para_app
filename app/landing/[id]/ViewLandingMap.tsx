@@ -7,8 +7,8 @@ import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import "yet-another-react-lightbox/styles.css";
 
 interface MapProps {
-  map: string;     // imaginea curentă
-  maps: string[];  // lista de imagini
+  map: string; // imaginea curentă
+  maps: string[]; // lista de imagini
 }
 
 export default function ViewLandingMap({ map, maps }: MapProps) {
@@ -18,19 +18,19 @@ export default function ViewLandingMap({ map, maps }: MapProps) {
 
   const slides = useMemo(() => {
     return maps.map((m) => ({
-      src: `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto/${m}`
+      src: `https://res.cloudinary.com/${cloudName}/image/upload/f_auto,q_auto/${m}`,
     }));
   }, [maps, cloudName]);
 
   const startIndex = maps.indexOf(map);
-if(!map) return "";
+  if (!map) return "";
 
   return (
     <>
       <CldImage
         src={map}
-        width={800}
-        height={500}
+        width={1122}
+        height={794}
         crop="fill"
         gravity="auto"
         aspectRatio="16:9"
