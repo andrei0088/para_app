@@ -7,6 +7,7 @@ import {
 import ViewPlacesEdit from "./ViewPlacesEdit";
 import AddPlace from "./AddPlace";
 import { revalidateAllCache } from "./revalidateCache";
+import EditDetails from "./EditDetails";
 
 // Props pentru Raported
 
@@ -43,6 +44,7 @@ export default async function AdminPage() {
           landings={landingData}
         />
         <AddPlace country={countryData} region={regionData} />
+        <EditDetails />
       </div>
     </div>
   );

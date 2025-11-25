@@ -13,8 +13,7 @@ interface PageProps {
 }
 
 export default async function LandingPage({ params }: PageProps) {
-  const para = await params;
-  const id = Number(para.id);
+  const id = Number(params.id);
   if (isNaN(id)) {
     return (
       <p className="text-center text-gray-500 mt-10">Invalid landing ID.</p>
@@ -44,22 +43,13 @@ export default async function LandingPage({ params }: PageProps) {
     id: rawDetail.region.id,
   });
 
-  // 4️⃣ Fallback descriere
-  const landingDescriptionFallback = `
-    <p class="text-xl font-semibold">Discover this landing spot!</p>
-    <p>Detailed info about this landing site, nearby takeoffs, safety tips, and best seasons will be available soon.</p>
-    <p class="italic text-blue-700  font-medium">
-      Stay tuned for full updates and start preparing for your next paragliding adventure!
-    </p>
-  `;
-
-  // 5️⃣ Normalizare date landing
+  // 5️⃣ Normalizare date landing (description poate fi gol)
   const landing = {
     ...landingRaw,
     description:
       landingRaw.description && landingRaw.description.trim() !== ""
         ? landingRaw.description
-        : landingDescriptionFallback,
+        : "", // nu mai folosim fallback
     map: landingRaw.map ?? "",
   };
 
