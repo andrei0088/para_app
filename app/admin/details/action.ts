@@ -123,9 +123,7 @@ export async function update_country_description(formData: FormData) {
       url: formData.get("autUrl")?.toString() || "",
       name: formData.get("autName")?.toString() || "",
     },
-    overview: (formData.get("overview")?.toString() || "")
-      .split("\n")
-      .filter((x) => x.trim() !== ""),
+    overview: formData.get("overview")?.toString() || "",
     regulations: (formData.get("regulations")?.toString() || "")
       .split("\n")
       .filter((x) => x.trim() !== ""),
