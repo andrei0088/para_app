@@ -56,7 +56,7 @@ export default function LoginClient({ succes = false }: Succes) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br  p-6">
+    <div className=" flex items-center justify-center bg-linear-to-br  p-6">
       <div className="bg-white  p-8 rounded-2xl shadow-xl border border-gray-200  w-full max-w-sm transition-all">
         <h2 className="text-2xl font-semibold text-center mb-6 text-gray-900 ">
           Don’t have an account yet?{" "}

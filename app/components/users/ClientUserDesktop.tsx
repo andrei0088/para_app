@@ -16,7 +16,7 @@ type Session = {
   };
 } | null;
 
-export default function UserNav({ session }: { session: Session }) {
+export default function ClientUserDesktop({ session }: { session: Session }) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +41,7 @@ export default function UserNav({ session }: { session: Session }) {
         </Link>
         <Link
           href="/user/register"
-          className="px-3 py-1 bg-gray-800 text-white rounded hover:bg-gray-900 transition-colors duration-200"
+          className="px-3 py-1 bg-gray-800 text-white  hover:bg-gray-900 transition-colors duration-200"
         >
           Sign up
         </Link>
@@ -50,8 +50,8 @@ export default function UserNav({ session }: { session: Session }) {
 
   return (
     <div
-      className="relative flex items-center gap-2   justify-end  md:p-5 p-3  h-full  bg-gray-50  
-                   border-gray-200 border-l w-fit "
+      className="relative flex items-center gap-2   justify-end  md:px-5 px-3  h-full  bg-gray-50  
+                  border-l  border-gray-200  w-fit   "
       ref={menuRef}
       onClick={() => setOpen(!open)}
     >

@@ -2,6 +2,7 @@ import Link from "next/link";
 import MapGenerate from "@/app/components/map/MapGenerate";
 import TopView from "@/app/components/dinamic/TopView";
 import ViewTakeoffMap from "./ViewTakeoffMap";
+import DisplayJsonTakeoff from "./DisplayJsonTakeoff";
 
 interface Takeoff {
   id: number;
@@ -10,7 +11,7 @@ interface Takeoff {
   latitude: number;
   longitude: number;
   altitude: number;
-  description: string;
+  description: string | null;
   wind?: string;
 }
 
@@ -101,9 +102,9 @@ export default function ViewTakeoff({
         {/* Col 2-3 - Descriere + Map */}
         <div className="col-span-2 flex flex-col gap-4">
           <ViewTakeoffMap map={takeoff.map} maps={sendMaps} />
-          <div
-            className="prose prose-lg  text-gray-700  leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: takeoff.description }}
+          <DisplayJsonTakeoff
+            takeoff={takeoff.description}
+            name={takeoff.name}
           />
         </div>
       </div>

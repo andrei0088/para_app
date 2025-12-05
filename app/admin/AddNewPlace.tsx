@@ -2,8 +2,11 @@
 
 import React, { useState, FormEvent } from "react";
 import { add_country, add_region, add_landing, add_takeoff } from "./lib/admin";
-import { capitalizeFirstLetter } from "better-auth";
 import { Country, Region } from "@prisma/client";
+
+const capitalizeFirstLetter = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
 
 type PlaceType = "country" | "region" | "takeoff" | "landing";
 

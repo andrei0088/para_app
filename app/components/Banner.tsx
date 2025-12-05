@@ -6,7 +6,7 @@ const Banner = () => {
     <div className="w-full h-fit">
       <Image
         src={banner}
-        className="w-full"
+        className="w-full md:w-[90vw] xl:w-[80vw]  md:mx-auto  h-auto object-cover"
         alt="Paraglider floating among wide open skies and soft clouds"
       />
     </div>

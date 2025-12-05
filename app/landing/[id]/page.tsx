@@ -13,7 +13,8 @@ interface PageProps {
 }
 
 export default async function LandingPage({ params }: PageProps) {
-  const id = Number(params.id);
+  const prop = await params;
+  const id = Number(prop.id);
   if (isNaN(id)) {
     return (
       <p className="text-center text-gray-500 mt-10">Invalid landing ID.</p>

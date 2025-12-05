@@ -57,6 +57,62 @@ export default function ViewCountry({ country }: CountrySearchProps) {
               </p>
             )}
 
+            {/* overview */}
+            {descriptionJson.overview && (
+              <>
+                <h2 className="text-2xl font-semibold text-gray-900 mt-6">
+                  Overview
+                </h2>
+                <p className="text-xl text-gray-600 mb-6">
+                  {descriptionJson.overview}
+                </p>
+              </>
+            )}
+
+            {/* regulations */}
+            {descriptionJson.regulations && (
+              <>
+                <h2 className="text-2xl font-semibold text-gray-900 mt-6">
+                  Regulations
+                </h2>
+                <p className="text-xl text-gray-600 mb-6">
+                  {descriptionJson.regulations}
+                </p>
+              </>
+            )}
+
+            {/* authority */}
+            {descriptionJson.authority.name && (
+              <p className="text-xl text-gray-800 mb-6">
+                <strong>Authority : </strong>{" "}
+                <a
+                  href={descriptionJson.authority.url || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-800 underline"
+                >
+                  {descriptionJson.authority.name}
+                </a>
+              </p>
+            )}
+            {/* Sections */}
+            {Object.entries(descriptionJson.custom).map(([key, value]) => (
+              <section key={key} className="mt-10 space-y-4">
+                <h2 className="text-2xl font-semibold text-gray-900 mt-6">
+                  {key}
+                </h2>
+
+                {Array.isArray(value) ? (
+                  value.map((p, i) => (
+                    <p key={i} className="text-gray-700">
+                      {p}
+                    </p>
+                  ))
+                ) : (
+                  <p className="text-gray-700">{String(value)}</p>
+                )}
+              </section>
+            ))}
             {/* Authority link */}
             {descriptionJson.Authority && (
               <p className=" mb-8">
@@ -68,30 +124,6 @@ export default function ViewCountry({ country }: CountrySearchProps) {
                   }}
                 />
               </p>
-            )}
-
-            {/* Sections */}
-            {Object.entries(descriptionJson).map(
-              ([key, value]) =>
-                key !== "title" &&
-                key !== "subtitle" &&
-                key !== "Authority" && (
-                  <section key={key} className="mt-10 space-y-4">
-                    <h2 className="text-2xl font-semibold text-gray-900 mt-6">
-                      {key}
-                    </h2>
-
-                    {Array.isArray(value) ? (
-                      value.map((p, i) => (
-                        <p key={i} className="text-gray-700">
-                          {p}
-                        </p>
-                      ))
-                    ) : (
-                      <p className="text-gray-700">{String(value)}</p>
-                    )}
-                  </section>
-                )
             )}
           </article>
         ) : (

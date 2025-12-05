@@ -11,9 +11,10 @@ export default async function returnUser(email: string, name: string) {
   if (!deletedUser)
     return { success: false, reason: "User not found or already active" };
 
+  // Better Auth va apela automat sendResetPassword când apelezi requestPasswordReset
   let emailSent = false;
   try {
-    await auth.api.forgetPassword({
+    await auth.api.requestPasswordReset({
       body: { email, redirectTo: "/user/reset" },
       method: "POST",
     });
