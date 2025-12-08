@@ -63,6 +63,7 @@ export default function ViewCountry({ country }: CountrySearchProps) {
                 <h2 className="text-2xl font-semibold text-gray-900 mt-6">
                   Overview
                 </h2>
+
                 <div className="text-xl text-gray-600 mb-6 indent-4">
                   {descriptionJson.overview
                     .split("\r\n")
