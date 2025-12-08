@@ -1,4 +1,4 @@
-import { update_landing_description } from "../action";
+import { update_takeoff_description } from "../action";
 
 interface EditPageProps {
   desc: string | null;
@@ -7,10 +7,10 @@ interface EditPageProps {
 
 export default function EditPage({ desc, id }: EditPageProps) {
   const descJson = JSON.parse(desc || "{}");
-
+  console.log(descJson.takeoffDifficulty);
   return (
     <div className="w-full p-4">
-      <form action={update_landing_description} className="w-full space-y-4">
+      <form action={update_takeoff_description} className="w-full space-y-4">
         {/* Description */}
         <input type="hidden" name="id" value={id} />
         <div>
@@ -71,38 +71,6 @@ export default function EditPage({ desc, id }: EditPageProps) {
               defaultValue={descJson.access?.roadConditions || ""}
               className="border-2 rounded-xl p-2 flex-1"
             />
-          </div>
-
-          {/* Public Transport */}
-          <div className="flex items-center gap-2">
-            <label className="whitespace-nowrap">Public Transport:</label>
-            <label>
-              <input
-                type="radio"
-                name="publicTransport"
-                value="yes"
-                defaultChecked={descJson.access?.publicTransport === true}
-              />
-              Yes
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="publicTransport"
-                value="no"
-                defaultChecked={descJson.access?.publicTransport === false}
-              />
-              No
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="publicTransport"
-                value=""
-                defaultChecked={descJson.access?.publicTransport === undefined}
-              />
-              Undefined
-            </label>
           </div>
 
           {/* Cable to Takeoff */}
@@ -184,113 +152,26 @@ export default function EditPage({ desc, id }: EditPageProps) {
 
         {/* Facilities */}
         <div className="space-y-2">
-          <p className="font-semibold">Facilities:</p>
-
-          {/* Toilets */}
-          <div className="flex items-center gap-2">
-            <label className="whitespace-nowrap">Toilets:</label>
-            <label>
-              <input
-                type="radio"
-                name="toilets"
-                value="yes"
-                defaultChecked={descJson.facilities?.toilets === true}
-              />
-              Yes
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="toilets"
-                value="no"
-                defaultChecked={descJson.facilities?.toilets === false}
-              />
-              No
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="toilets"
-                value=""
-                defaultChecked={descJson.facilities?.toilets === undefined}
-              />
-              Undefined
-            </label>
-          </div>
-
-          {/* Food Nearby */}
-          <div className="flex items-center gap-2">
-            <label className="whitespace-nowrap">Food Nearby:</label>
-            <label>
-              <input
-                type="radio"
-                name="foodNearby"
-                value="yes"
-                defaultChecked={descJson.facilities?.foodNearby === true}
-              />
-              Yes
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="foodNearby"
-                value="no"
-                defaultChecked={descJson.facilities?.foodNearby === false}
-              />
-              No
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="foodNearby"
-                value=""
-                defaultChecked={descJson.facilities?.foodNearby === undefined}
-              />
-              Undefined
-            </label>
-          </div>
-
-          {/* Camping */}
-          <div className="flex items-center gap-2">
-            <label className="whitespace-nowrap">Camping:</label>
-            <label>
-              <input
-                type="radio"
-                name="camping"
-                value="yes"
-                defaultChecked={descJson.facilities?.camping === true}
-              />
-              Yes
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="camping"
-                value="no"
-                defaultChecked={descJson.facilities?.camping === false}
-              />
-              No
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="camping"
-                value=""
-                defaultChecked={descJson.facilities?.camping === undefined}
-              />
-              Undefined
-            </label>
-          </div>
+          <p className="font-semibold">Contact Website:</p>
 
           {/* Contact Website */}
           <div className="w-full flex items-center gap-2">
             <label htmlFor="contactWebsite" className="whitespace-nowrap">
-              Contact Website:
+              URL:
             </label>
             <input
               type="text"
-              name="contactWebsite"
-              defaultValue={descJson.facilities?.contactWebsite || ""}
+              name="contactWebsiteUrl"
+              defaultValue={descJson.contactWebsite.url || ""}
+              className="border-2 rounded-xl p-2 flex-1"
+            />
+            <label htmlFor="contactWebsite" className="whitespace-nowrap">
+              Name:
+            </label>
+            <input
+              type="text"
+              name="contactWebsiteName"
+              defaultValue={descJson.contactWebsite.name || ""}
               className="border-2 rounded-xl p-2 flex-1"
             />
           </div>
@@ -300,30 +181,22 @@ export default function EditPage({ desc, id }: EditPageProps) {
         <div className="space-y-2">
           <p className="font-semibold">Safety:</p>
 
-          {/* Landing Difficulty */}
+          {/* Takeoff Difficulty */}
           <div className="w-full flex items-center gap-2">
-            <label htmlFor="landingDifficulty" className="whitespace-nowrap">
-              Landing Difficulty:
+            <label htmlFor="takeoffDifficulty" className="whitespace-nowrap">
+              Takeoff Difficulty:
             </label>
-            <input
-              type="text"
-              name="landingDifficulty"
-              defaultValue={descJson.safety?.landingDifficulty || ""}
+            <select
+              name="takeoffDifficulty"
+              defaultValue={descJson.takeoffDifficulty || ""}
               className="border-2 rounded-xl p-2 flex-1"
-            />
-          </div>
+            >
+              <option value=""></option>
 
-          {/* Common Hazards */}
-          <div>
-            <label htmlFor="commonHazards" className="font-semibold">
-              Common Hazards (comma separated):
-            </label>
-            <input
-              type="text"
-              name="commonHazards"
-              defaultValue={descJson.safety?.commonHazards?.join(", ") || ""}
-              className="w-full border-2 rounded-xl p-2 mt-1"
-            />
+              <option value="Easy">Easy</option>
+              <option value="Medium">Medium</option>
+              <option value="Hard">Hard</option>
+            </select>
           </div>
 
           {/* Safety Notes */}
@@ -333,7 +206,7 @@ export default function EditPage({ desc, id }: EditPageProps) {
             </label>
             <textarea
               name="safetyNotes"
-              defaultValue={descJson.safety?.notes || ""}
+              defaultValue={descJson.notes || ""}
               className="w-full h-20 border-2 p-2 rounded-2xl mt-1"
             />
           </div>

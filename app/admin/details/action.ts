@@ -193,3 +193,58 @@ export async function update_region_description(formData: FormData) {
   revalidatePath(`/region/${rez.id}`);
   revalidatePath(`/admin/details/region?id=${rez.id}`);
 }
+
+export async function get_takeoff_description(id: number) {
+  const rez = await prisma.takeoff.findUnique({
+    where: { id: id },
+    select: { description: true },
+  });
+  return rez?.description || null;
+}
+
+export async function update_takeoff_description(formData: FormData) {
+  const id = Number(formData.get("id"));
+
+  const json = {
+    description: formData.get("description"),
+    access: {
+      parking:
+        formData.get("parking") === "yes"
+          ? true
+          : formData.get("parking") === "no"
+          ? false
+          : undefined,
+      roadConditions: formData.get("roadConditions")?.toString() || "",
+      cableToTakeoff:
+        formData.get("cableToTakeoff") === "yes"
+          ? true
+          : formData.get("cableToTakeoff") === "no"
+          ? false
+          : undefined,
+      shuttleToTakeoff:
+        formData.get("shuttleToTakeoff") === "yes"
+          ? true
+          : formData.get("shuttleToTakeoff") === "no"
+          ? false
+          : undefined,
+      notes: formData.get("accessNotes")?.toString() || "",
+    },
+    contactWebsite: {
+      url: formData.get("contactWebsiteUrl")?.toString() || "",
+      name: formData.get("contactWebsiteName")?.toString() || "",
+    },
+
+    takeoffDifficulty: formData.get("takeoffDifficulty")?.toString() || "",
+
+    notes: formData.get("notes")?.toString() || "",
+  };
+
+  const jsonString = JSON.stringify(json, null, 2);
+
+  await prisma.takeoff.update({
+    where: { id },
+    data: { description: jsonString },
+  });
+  revalidatePath(`/takeoff/${id}`);
+  revalidatePath(`/admin/details/takeoff?id=${id}`);
+}

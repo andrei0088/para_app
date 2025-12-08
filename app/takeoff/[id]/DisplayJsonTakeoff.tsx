@@ -55,24 +55,12 @@ export default function DisplayJsonTakeoff({
         {take.access?.parking && (
           <Image src={parking} alt="Parking Icon" width={32} height={32} />
         )}
-        {take.access?.publicTransport && (
-          <Image src={bus} alt="Public Transport" width={32} height={32} />
-        )}
+
         {take.access?.cableToTakeoff && (
           <Image src={cablecar} alt="Cablecar" width={32} height={32} />
         )}
         {take.access?.shuttleToTakeoff && (
-          <Image src={shuttle} alt="Shuttle" width={32} height={32} />
-        )}
-
-        {take.facilities?.toilets && (
-          <Image src={toilet} alt="Toilets" width={32} height={32} />
-        )}
-        {take.facilities?.foodNearby && (
-          <Image src={food} alt="Food" width={32} height={32} />
-        )}
-        {take.facilities?.camping && (
-          <Image src={camping} alt="Camping" width={32} height={32} />
+          <Image src={bus} alt="Shuttle" width={32} height={32} />
         )}
       </div>
 
@@ -92,60 +80,36 @@ export default function DisplayJsonTakeoff({
             <li>
               Road Conditions: {textOrFallback(take.access.roadConditions)}
             </li>
-            <li>Public Transport: {boolToText(take.access.publicTransport)}</li>
             <li>
               Shuttle to Takeoff: {boolToText(take.access.shuttleToTakeoff)}
             </li>
             <li>Cable to Takeoff: {boolToText(take.access.cableToTakeoff)}</li>
-            <li>Notes: {textOrFallback(take.access.notes)}</li>
+            <li> {textOrFallback(take.access.notes)}</li>
           </ul>
         </section>
       )}
 
       {/* Facilities */}
-      {take.facilities && (
-        <section className="text-gray-700">
-          <h2 className="text-lg font-semibold">Facilities</h2>
-          <ul className="list-disc list-inside">
-            <li>Toilets: {boolToText(take.facilities.toilets)}</li>
-            <li>Food Nearby: {boolToText(take.facilities.foodNearby)}</li>
-            <li>Camping: {boolToText(take.facilities.camping)}</li>
-            <li>
-              Contact Website:{" "}
-              {take.facilities.contactWebsite ? (
-                <a
-                  href={take.facilities.contactWebsite}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 underline hover:text-blue-800"
-                >
-                  {take.facilities.contactWebsite}
-                </a>
-              ) : (
-                "No information"
-              )}
-            </li>
-          </ul>
-        </section>
-      )}
+      <section>
+        {take.contactWebsite && (
+          <>
+            Contact Website:{" "}
+            <a
+              href={take.contactWebsite.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 underline hover:text-blue-800"
+            >
+              {take.contactWebsite.name}
+            </a>
+          </>
+        )}
+      </section>
 
-      {/* Safety */}
-      {take.safety && (
+      {/* takeoffDifficulty */}
+      {take.takeoffDifficulty && (
         <section className="text-gray-700">
-          <h2 className="text-lg font-semibold">Safety</h2>
-          <ul className="list-disc list-inside">
-            <li>
-              Takeoff Difficulty:{" "}
-              {textOrFallback(take.safety.takeoffDifficulty)}
-            </li>
-            <li>
-              Common Hazards:{" "}
-              {take.safety.commonHazards
-                ? take.safety.commonHazards.join(", ")
-                : "No information"}
-            </li>
-            <li>Notes: {textOrFallback(take.safety.notes)}</li>
-          </ul>
+          Takeoff Difficulty: {textOrFallback(take.takeoffDifficulty)}
         </section>
       )}
 

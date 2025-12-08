@@ -1,4 +1,4 @@
-import { get_landing_description } from "../action";
+import { get_takeoff_description } from "../action";
 import EditPage from "./EditPage";
 
 export default async function Page({
@@ -8,7 +8,7 @@ export default async function Page({
 }) {
   const prop = await searchParams;
   const id = Number(prop.id);
-  const desc = await get_landing_description(id); // JS object
+  const desc = await get_takeoff_description(id); // JS object
 
   return (
     <div className="p-6">
