@@ -1,3 +1,12 @@
+import parking from "@/public/icons/parking.png";
+import bus from "@/public/icons/buss.png";
+import cablecar from "@/public/icons/cable.png";
+import shuttle from "@/public/icons/shuttle.png";
+import camping from "@/public/icons/camping.png";
+import toilet from "@/public/icons/toilet.png";
+import food from "@/public/icons/fast.png";
+import Image from "next/image";
+
 interface LandingDescriptionProps {
   description: string | null;
   name: string;
@@ -22,6 +31,32 @@ export default function LandingDescription({
     <section className="w-full max-w-6xl mx-auto p-6 bg-white/70 backdrop-blur-md rounded-2xl shadow-md border border-gray-200 transition-colors space-y-6">
       {/* Nume */}
       <h1 className="text-3xl font-bold text-green-700">{name}</h1>
+
+      {/* Iconuri pentru facilitati: */}
+      <div className="flex gap-2">
+        {landing.access.parking && (
+          <Image src={parking} alt="Parking Icon" width={32} height={32} />
+        )}
+        {landing.access.publicTransport && (
+          <Image src={bus} alt="public transport" width={32} height={32} />
+        )}
+        {landing.access.cableToTakeoff && (
+          <Image src={cablecar} alt="cablecar" width={32} height={32} />
+        )}
+        {landing.access.shuttleToTakeoff && (
+          <Image src={shuttle} alt="shuttle" width={32} height={32} />
+        )}
+
+        {landing.facilities.toilets && (
+          <Image src={toilet} alt="Toilets" width={32} height={32} />
+        )}
+        {landing.facilities.foodNearby && (
+          <Image src={food} alt="Food facility" width={32} height={32} />
+        )}
+        {landing.facilities.camping && (
+          <Image src={camping} alt="camping" width={32} height={32} />
+        )}
+      </div>
 
       {/* Descriere */}
       {landing.description && (

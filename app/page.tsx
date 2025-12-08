@@ -10,7 +10,7 @@ export default function Home() {
     "Discover the world's most iconic paragliding destinations and learn everything about paragliding. From breathtaking landscapes to expert tips, explore the thrill of flying with our comprehensive guides and inspiring stories.";
 
   return (
-    <div className="z-40">
+    <div className="z-40 ">
       <SEO title={"Home"} description={seo} />
       <Suspense fallback={<div className="text-gray-500">Loading map...</div>}>
         <HomeMap />

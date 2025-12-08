@@ -44,15 +44,6 @@ export default async function TakeoffPage({ params }: PageProps) {
     id: rawDetail.region.id,
   });
 
-  // 4️⃣ Fallback descriere
-  const takeoffDescriptionFallback = `
-    <p class="text-xl font-semibold">Discover this amazing takeoff spot!</p>
-    <p>Detailed info about this takeoff, ideal flying conditions, nearby landing sites, and safety tips will be available soon.</p>
-    <p class="italic text-blue-700  font-medium">
-      Stay tuned for full updates and start preparing for your next paragliding adventure!
-    </p>
-  `;
-
   // 5️⃣ Normalizare date pentru TypeScript
   const takeoff = {
     id: takeoffRaw.id,
@@ -64,7 +55,7 @@ export default async function TakeoffPage({ params }: PageProps) {
     description:
       takeoffRaw.description && takeoffRaw.description.trim() !== ""
         ? takeoffRaw.description
-        : takeoffDescriptionFallback,
+        : null,
     map: takeoffRaw.map ?? "",
     seo: takeoffRaw.seo ?? undefined,
     regionId: takeoffRaw.regionId,

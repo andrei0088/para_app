@@ -5,7 +5,7 @@ export default async function HomeMap() {
   const center: [number, number] = [46.577, 9.975];
 
   return (
-    <div className="h-[30vh]">
+    <div className="h-[30vh] ">
       <MapGenerate center={center} zoom={6} />
     </div>
   );

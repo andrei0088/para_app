@@ -83,3 +83,113 @@ export async function update_landing_description(formData: FormData) {
   revalidatePath(`/landing/${id}`);
   revalidatePath(`/admin/details/landing?id=${id}`);
 }
+
+export async function get_country_description(id: number) {
+  const rez = await prisma.country.findUnique({
+    where: { id: id },
+    select: { description: true },
+  });
+  return rez?.description || null;
+}
+
+export async function update_country_description(formData: FormData) {
+  const custom: Record<string, string[]> = {};
+
+  let index = 0;
+
+  while (true) {
+    const name = formData.get(`custom_name_${index}`);
+    const value = formData.get(`custom_value_${index}`);
+
+    if (!name) break;
+
+    const key = name.toString().trim();
+    const raw = value?.toString().trim() || "";
+
+    // Convert textarea în array (separate by newline)
+    const arr = raw
+      .split("\n")
+      .map((line) => line.trim())
+      .filter((line) => line.length > 0);
+
+    custom[key] = arr;
+    index++;
+  }
+
+  const data = {
+    title: formData.get("title")?.toString() || "",
+    subtitle: formData.get("subtitle")?.toString() || "",
+    authority: {
+      url: formData.get("autUrl")?.toString() || "",
+      name: formData.get("autName")?.toString() || "",
+    },
+    overview: formData.get("overview")?.toString() || "",
+    regulations: (formData.get("regulations")?.toString() || "")
+      .split("\n")
+      .filter((x) => x.trim() !== ""),
+    custom, // aici obiectul final
+  };
+
+  const rez = await prisma.country.update({
+    where: { id: Number(formData.get("id")) },
+    data: { description: JSON.stringify(data, null, 2) },
+  });
+  revalidatePath(`/country/${rez.id}`);
+  revalidatePath(`/admin/details/landing?id=${rez.id}`);
+}
+
+export async function get_region_description(id: number) {
+  const rez = await prisma.region.findUnique({
+    where: { id: id },
+    select: { description: true },
+  });
+  return rez?.description || null;
+}
+
+export async function update_region_description(formData: FormData) {
+  const id = Number(formData.get("id"));
+
+  // checkboxes return "on" if checked, null if not
+  const isChecked = (name: string) => formData.get(name) !== null;
+
+  const json = {
+    title: formData.get("title"),
+    subtitle: formData.get("subtitle"),
+
+    overview: (formData.get("overview")?.toString() || "")
+      .split("\n")
+      .map((s) => s.trim()),
+
+    transport: {
+      text: (formData.get("regulations")?.toString() || "")
+        .split("\n")
+        .map((s) => s.trim()),
+
+      cable: isChecked("cable"),
+      shuttle: isChecked("shuttle"),
+      car: isChecked("car"),
+      hike: isChecked("hike"),
+    },
+
+    fly: (formData.get("fly")?.toString() || "")
+      .split("\n")
+      .map((s) => s.trim()),
+
+    roules: (formData.get("roules")?.toString() || "")
+      .split("\n")
+      .map((s) => s.trim()),
+
+    link: {
+      url: formData.get("autUrl"),
+      name: formData.get("autName"),
+    },
+  };
+
+  const jsonString = JSON.stringify(json, null, 2);
+  const rez = await prisma.region.update({
+    where: { id },
+    data: { description: jsonString },
+  });
+  revalidatePath(`/region/${rez.id}`);
+  revalidatePath(`/admin/details/region?id=${rez.id}`);
+}

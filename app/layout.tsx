@@ -43,9 +43,9 @@ export default function RootLayout({
         <NavBar />
 
         {/* Main + RightBar */}
-        <div className="flex flex-1 flex-col lg:flex-row min-h-0 bg-white">
+        <div className="flex flex-1 flex-col lg:flex-row min-h-0 bg-white w-full 2xl:w-[80vw] mx-auto ">
           {/* Content principal */}
-          <main className="flex-1 flex flex-col overflow-auto px-1 md:px-2">
+          <main className="flex-1 flex flex-col overflow-auto  ">
             {children}
 
             {/* <!-- Google Tag Manager (noscript) --> */}

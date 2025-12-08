@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import ViewRegionMap from "./ViewRegionMap";
+import DisplayJsonRegion from "./DisplayJsonRegion";
 
 interface Takeoff {
   id: number;
@@ -83,12 +84,15 @@ export default function ViewRegion({
           </Suspense>
         </div>
       )}
-
-      <div
-        dangerouslySetInnerHTML={{
-          __html: region.description || fallbackDescription,
-        }}
-      />
+      {region.description ? (
+        <DisplayJsonRegion descriptionJson={region.description} />
+      ) : (
+        <div
+          dangerouslySetInnerHTML={{
+            __html: fallbackDescription,
+          }}
+        />
+      )}
     </section>
   );
 }

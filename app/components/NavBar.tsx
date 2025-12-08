@@ -5,7 +5,7 @@ import { Suspense } from "react";
 
 export default function NavBarServer() {
   return (
-    <nav className="w-full bg-gray-50  shadow-md h-16">
+    <nav className="w-full xl:w-[80vw] mx-auto bg-gray-50  shadow-md h-16">
       {/* Desktop */}
       <div className="hidden md:flex max-w-full mx-auto pl-4 justify-between items-center h-full">
         {/* Logo + Menu */}
@@ -64,7 +64,7 @@ export default function NavBarServer() {
 
         {/* UserNav */}
         <Suspense fallback={<div>Loading...</div>}>
-          <UserNav />
+          <UserNav wstyle={"desktop"} />
         </Suspense>
       </div>
 
@@ -77,7 +77,7 @@ export default function NavBarServer() {
         {/* UserNav în colț dreapta sus */}
         <div className="absolute right-0 top-0">
           <Suspense fallback={<div>Loading...</div>}>
-            <UserNav />
+            <UserNav wstyle={"mobile"} />
           </Suspense>
         </div>
       </div>
