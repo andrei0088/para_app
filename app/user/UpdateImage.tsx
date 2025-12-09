@@ -1,9 +1,11 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
+import AvatarEditor from "react-avatar-editor";
 import Image from "next/image";
 import { CldImage } from "next-cloudinary";
+
 import blankProfile from "@/public/blank-profile.png";
 import { add_picture, delete_picture } from "./functions";
 
@@ -16,56 +18,66 @@ export default function UpdateImage({ currentImage }: UpdateImageProps) {
   const [preview, setPreview] = useState<string | null>(currentImage || null);
   const [msg, setMsg] = useState<string | null>(null);
 
+  const [scale, setScale] = useState(1.2);
+  const [position, setPosition] = useState({ x: 0.5, y: 0.5 });
+  const editorRef = useRef<AvatarEditor>(null);
+
+  // Dropzone - ONLY when image is not being edited
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length === 0) return;
     setSelectedFile(acceptedFiles[0]);
+    setPreview(null);
   }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: { "image/*": [] },
     maxFiles: 1,
+    disabled: selectedFile !== null, // IMPORTANT: disable when editing
   });
 
+  // Upload cropped image
   async function handleSubmit() {
     if (!selectedFile) return;
 
-    try {
-      // Trimitem arrayBuffer direct către funcția server
-      const arrayBuffer = await selectedFile.arrayBuffer();
-      const filename = selectedFile.name.split(".")[0];
+    let finalFile = selectedFile;
 
-      const rez = await add_picture(
-        arrayBuffer,
-        filename,
-        preview || undefined
+    if (editorRef.current) {
+      const canvas = editorRef.current.getImageScaledToCanvas();
+      const blob = await new Promise<Blob>((resolve) =>
+        canvas.toBlob((b) => resolve(b!), "image/jpeg")
       );
+      finalFile = new File([blob], selectedFile.name, { type: "image/jpeg" });
+    }
 
-      if (rez.success) {
-        setPreview(rez.url || null);
-        setSelectedFile(null);
-        setMsg("Profile picture updated successfully");
-        window.location.reload();
-      }
-    } catch (err) {
-      console.error("Upload failed:", err);
+    const arrayBuffer = await finalFile.arrayBuffer();
+    const filename = finalFile.name.split(".")[0];
+
+    const rez = await add_picture(arrayBuffer, filename, preview || undefined);
+
+    if (rez.success) {
+      setPreview(rez.url || null);
+      setSelectedFile(null);
+      setMsg("Profile picture updated successfully");
+      window.location.reload();
+    } else {
       setMsg("Failed to update profile picture");
     }
   }
 
+  // Delete profile picture
   async function handleDelete() {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete your profile picture? This action cannot be undone."
-    );
-    if (!confirmed) return;
+    if (!confirm("Are you sure you want to delete your profile picture?"))
+      return;
 
     const rez = await delete_picture();
+
     if (rez.success) {
       setPreview(null);
       setMsg("Profile picture deleted successfully");
       window.location.reload();
     } else {
-      setMsg(rez.message || "Failed to delete profile picture");
+      setMsg("Failed to delete picture");
     }
   }
 
@@ -75,51 +87,87 @@ export default function UpdateImage({ currentImage }: UpdateImageProps) {
         Your profile image will be public and cannot be private!
       </h2>
 
-      <div
-        {...getRootProps()}
-        className={`w-36 h-36 mx-auto mb-6 flex flex-col items-center justify-center rounded-full border-2 border-dashed cursor-pointer overflow-hidden transition-all duration-300
-          ${
-            isDragActive
-              ? "border-blue-500 bg-blue-50 "
-              : "border-gray-300 bg-gray-50 "
-          }`}
-      >
-        <input {...getInputProps()} />
-
+      {/* IMAGE AREA */}
+      <div className="w-40 mx-auto mb-6 flex flex-col items-center justify-center">
+        {/* --- STATE 1: EDITING (Avatar Editor) --- */}
         {selectedFile ? (
-          <Image
-            src={URL.createObjectURL(selectedFile)}
-            alt="Preview"
-            width={144}
-            height={144}
-            className="object-cover rounded-full"
-          />
-        ) : preview ? (
-          <CldImage
-            src={preview}
-            width={200}
-            height={200}
-            crop="fill"
-            gravity="auto"
-            alt="Profile picture"
-            quality="auto"
-            radius="max"
-            style={{ objectFit: "cover", cursor: "pointer" }}
-          />
-        ) : (
-          <div className="flex flex-col items-center text-gray-400">
-            <Image
-              src={blankProfile}
-              alt="Blank profile"
-              width={64}
-              height={64}
-              className="mb-2"
+          <div className="cursor-grab active:cursor-grabbing">
+            <AvatarEditor
+              ref={editorRef}
+              image={URL.createObjectURL(selectedFile)}
+              width={200}
+              height={200}
+              border={0}
+              borderRadius={100}
+              scale={scale}
+              position={position}
+              onPositionChange={setPosition}
+              className="rounded-full"
             />
-            <span className="text-sm">Drag a picture here</span>
+
+            <p className="text-xs text-gray-500 mt-2">
+              Drag to reposition the image
+            </p>
+          </div>
+        ) : (
+          /* --- STATE 2: DROPZONE (BEFORE UPLOAD) --- */
+          <div
+            {...getRootProps()}
+            className={`w-40 h-40 flex items-center justify-center rounded-full 
+              border-2 border-dashed cursor-pointer overflow-hidden transition
+              ${
+                isDragActive
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-300 bg-gray-50"
+              }`}
+          >
+            <input {...getInputProps()} />
+
+            {preview ? (
+              <CldImage
+                src={preview}
+                width={200}
+                height={200}
+                crop="fill"
+                gravity="auto"
+                radius="max"
+                alt="Profile picture"
+                quality="auto"
+                className="rounded-full object-cover"
+              />
+            ) : (
+              <div className="flex flex-col items-center text-gray-400">
+                <Image
+                  src={blankProfile}
+                  alt="Blank profile"
+                  width={70}
+                  height={70}
+                  className="mb-2 opacity-60"
+                />
+                <span className="text-sm">Drag a picture here</span>
+              </div>
+            )}
           </div>
         )}
       </div>
 
+      {/* ZOOM SLIDER */}
+      {selectedFile && (
+        <div className="flex flex-col items-center mb-4">
+          <label className="mb-1 text-sm">Zoom</label>
+          <input
+            type="range"
+            min="1"
+            max="3"
+            step="0.01"
+            value={scale}
+            onChange={(e) => setScale(parseFloat(e.target.value))}
+            className="w-40"
+          />
+        </div>
+      )}
+
+      {/* BUTTONS */}
       <div className="flex gap-5 items-center">
         <button
           onClick={handleSubmit}
@@ -127,12 +175,14 @@ export default function UpdateImage({ currentImage }: UpdateImageProps) {
         >
           Submit
         </button>
+
         <button
           onClick={handleDelete}
           className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
         >
           Delete
         </button>
+
         {msg && <p className="text-green-600">{msg}</p>}
       </div>
 

@@ -75,7 +75,7 @@ export default function NavBarServer() {
         <NavBarClient />
 
         {/* UserNav în colț dreapta sus */}
-        <div className="absolute right-0 top-0">
+        <div className="absolute right-0 top-0 h-15">
           <Suspense fallback={<div>Loading...</div>}>
             <UserNav wstyle={"mobile"} />
           </Suspense>
