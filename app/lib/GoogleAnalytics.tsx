@@ -15,7 +15,9 @@ export default function GoogleAnalytics() {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', 'G-8QCTXYZH6H');
+          gtag('config', 'G-8QCTXYZH6H', {
+  cookie_expires: 3600 * 24 * 365 // 12 luni
+});
         `}
       </Script>
 

@@ -8,6 +8,8 @@ import { Roboto, Oswald } from "next/font/google";
 import Banner from "./components/Banner";
 import GoogleAnalytics from "./lib/GoogleAnalytics";
 import { Metadata } from "next";
+import Cookie from "./components/Cookie";
+import { cookies } from "next/headers";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -26,20 +28,39 @@ const oswald = Oswald({
   variable: "--font-oswald",
 });
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const consent = cookieStore.get("cookie-consent");
+
+  let analyticsAccepted = false;
+
+  if (consent) {
+    try {
+      const prefs = JSON.parse(consent.value);
+      analyticsAccepted = prefs.analytics === true;
+    } catch {}
+  }
+
   return (
     <html lang="en">
       <body
         className={`${roboto.variable} ${oswald.variable} antialiased min-h-screen flex flex-col `}
       >
-        <Analytics />
-        <SpeedInsights />
-        <GoogleAnalytics />
+        <Cookie />
+        {analyticsAccepted && (
+          <>
+            <Analytics />
+            <SpeedInsights />
+            <GoogleAnalytics />
+          </>
+        )}
+
         <Banner />
+
         <NavBar />
 
         {/* Main + RightBar */}
