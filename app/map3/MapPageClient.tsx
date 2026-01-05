@@ -1,17 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import SearchMapComp from "../map3/SearchMapComp";
+import { useState } from "react";
+import SearchMapComp from "./SearchMapComp";
 import MapClientWrapper from "./MapClientWrapper";
 import { Country, Region, Takeoff, Landing } from "@prisma/client";
+import { Site } from "../types";
 import SEO from "../components/Seo";
-import MapGetParams from "./MapGetParams";
 
 interface Props {
   countries: Country[];
   regions: Region[];
   takeoffs: Takeoff[];
   landings: Landing[];
+  initialSites: Site[];
 }
 
 export default function MapPageClient({
@@ -19,12 +20,14 @@ export default function MapPageClient({
   regions,
   takeoffs,
   landings,
+  initialSites,
 }: Props) {
   const [selectedLatLng, setSelectedLatLng] = useState<{
     lat: number | null;
     lng: number | null;
   }>({ lat: null, lng: null });
 
+  // Zoom corect: număr simplu
   const [zoom, setZoom] = useState<number>(7);
 
   const handleSelect = (
@@ -32,47 +35,35 @@ export default function MapPageClient({
     type: string | null,
     newZoom: number | null
   ) => {
-    if (!id || !type) return;
-
+    console.log(id, type, newZoom);
     if (type === "c") {
       const country = countries.find((c) => c.id === id);
-      if (country?.latitude && country?.longitude) {
+      if (country && country.latitude && country.longitude) {
         setSelectedLatLng({ lat: country.latitude, lng: country.longitude });
       }
     }
-
     if (type === "r") {
       const region = regions.find((r) => r.id === id);
-      if (region?.latitude && region?.longitude) {
+      if (region && region.latitude && region.longitude) {
         setSelectedLatLng({ lat: region.latitude, lng: region.longitude });
       }
     }
-
     if (type === "t") {
       const takeoff = takeoffs.find((t) => t.id === id);
-      if (takeoff?.latitude && takeoff?.longitude) {
+      if (takeoff && takeoff.latitude && takeoff.longitude) {
         setSelectedLatLng({ lat: takeoff.latitude, lng: takeoff.longitude });
       }
     }
-
     if (type === "l") {
       const landing = landings.find((l) => l.id === id);
-      if (landing?.latitude && landing?.longitude) {
+      if (landing && landing.latitude && landing.longitude) {
         setSelectedLatLng({ lat: landing.latitude, lng: landing.longitude });
       }
     }
 
     setZoom(newZoom ?? 7);
   };
-
-  const params = MapGetParams();
-
-  useEffect(() => {
-    if (!params) return;
-
-    handleSelect(params.id, params.type, null);
-  }, [params?.id, params?.type]); // ✅ primitive deps only
-
+  console.log({ selectedLatLng });
   return (
     <div className="flex flex-col h-[80vh] w-full text-gray-800 mt-5 z-40">
       <SEO title={""} description={""} />
@@ -87,10 +78,9 @@ export default function MapPageClient({
 
       <div className="flex-1">
         <MapClientWrapper
-          takeoffs={takeoffs}
-          landings={landings}
+          allSites={initialSites}
           selected={selectedLatLng}
-          zoom={zoom}
+          zoom={zoom} // trimite zoom-ul ca număr
         />
       </div>
     </div>

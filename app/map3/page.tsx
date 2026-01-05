@@ -49,12 +49,41 @@ export default async function MapRutePage() {
     seo: l.seo ?? null,
   }));
 
+  const initialSites: Site[] = [
+    ...takeoffs.map((t) => ({
+      id: t.id,
+      name: t.name,
+      latitude: t.latitude,
+      longitude: t.longitude,
+      countryId: t.countryId,
+      regionId: t.regionId,
+      type: "takeoff" as const,
+      map: t.map,
+      seo: t.seo,
+      wind: t.wind,
+      altitude: t.altitude,
+    })),
+    ...landings.map((l) => ({
+      id: l.id,
+      name: l.name,
+      latitude: l.latitude,
+      longitude: l.longitude,
+      countryId: l.countryId,
+      regionId: l.regionId,
+      type: "landing" as const,
+      map: l.map,
+      seo: l.seo,
+      altitude: l.altitude,
+    })),
+  ];
+
   return (
     <MapPageClient
       countries={countries}
       regions={regions}
       takeoffs={takeoffs}
       landings={landings}
+      initialSites={initialSites}
     />
   );
 }

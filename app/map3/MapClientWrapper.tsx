@@ -2,11 +2,9 @@
 
 import dynamic from "next/dynamic";
 import { Site } from "../types";
-import { Landing, Takeoff } from "@prisma/client";
 
 interface Props {
-  takeoffs: Takeoff[];
-  landings: Landing[];
+  allSites: Site[];
   selected: { lat: number | null; lng: number | null };
   zoom: number;
 }
