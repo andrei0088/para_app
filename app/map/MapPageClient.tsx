@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import SearchMapComp from "../map3/SearchMapComp";
+import SearchMapComp from "./SearchMapComp";
 import MapClientWrapper from "./MapClientWrapper";
 import { Country, Region, Takeoff, Landing } from "@prisma/client";
 import SEO from "../components/Seo";
