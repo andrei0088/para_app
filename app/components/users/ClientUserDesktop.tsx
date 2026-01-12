@@ -50,8 +50,8 @@ export default function ClientUserDesktop({ session }: { session: Session }) {
 
   return (
     <div
-      className="relative flex items-center gap-2   justify-end  md:px-5 px-3  h-full  bg-gray-50  
-                  border-l  border-gray-200  w-fit   "
+      className="relative flex items-center gap-2   justify-end  md:px-5 px-3  h-full  
+                     w-fit   "
       ref={menuRef}
       onClick={() => setOpen(!open)}
     >
