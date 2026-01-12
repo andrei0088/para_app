@@ -4,6 +4,7 @@ import SearchHome from "./components/homeComponents/SearchHome";
 import ViewAllPlaces from "./components/homeComponents/ViewAllPlaces";
 import SEO from "./components/Seo";
 import TopVideo from "./components/TopVideo/TopVideo";
+import TopSites from "./components/homeComponents/TopSites";
 
 export default function Home() {
   const seo =
@@ -16,8 +17,8 @@ export default function Home() {
         <HomeMap />
       </Suspense>
       <SearchHome />
-      <div className="flex flex-col md:flex-row gap-2 mb-2 mt-2">
-        <div className="w-full md:w-5/7 md:border-r md:border-gray-100 md:pr-2">
+      <div className="mx-2 ">
+        <div className="w-full ">
           <Suspense
             fallback={
               <div className="text-gray-500">
@@ -25,10 +26,10 @@ export default function Home() {
               </div>
             }
           >
-            <ViewAllPlaces />
+            <TopSites />
           </Suspense>
         </div>
-        <div className="w-full md:w-2/5 md:pl-2">
+        <div className="w-full mx-2">
           <Suspense
             fallback={<div className="text-gray-500">Loading videos...</div>}
           >

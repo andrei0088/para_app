@@ -5,7 +5,7 @@ import { Suspense } from "react";
 
 export default function NavBarServer() {
   return (
-    <nav className="w-full xl:w-[80vw] mx-auto bg-gray-50  shadow-md h-16">
+    <nav className="w-full bg-gray-50  h-16">
       {/* Desktop */}
       <div className="hidden md:flex max-w-full mx-auto pl-4 justify-between items-center h-full">
         {/* Logo + Menu */}
@@ -14,7 +14,7 @@ export default function NavBarServer() {
             <li>
               <Link
                 href="/"
-                className="hover:text-green-500  transition-colors duration-200"
+                className="hover:text-gray-900 hover:font-bold  transition-colors duration-200"
               >
                 Home
               </Link>
@@ -22,7 +22,7 @@ export default function NavBarServer() {
             <li>
               <Link
                 href="/explore"
-                className="hover:text-green-500  transition-colors duration-200"
+                className="hover:text-gray-900 hover:font-bold transition-colors duration-200"
               >
                 Explore Sites
               </Link>
@@ -30,7 +30,7 @@ export default function NavBarServer() {
             <li>
               <Link
                 href="/map"
-                className="hover:text-green-500  transition-colors duration-200"
+                className="hover:text-gray-900 hover:font-bold  transition-colors duration-200"
               >
                 Map Sites
               </Link>
@@ -38,7 +38,7 @@ export default function NavBarServer() {
             <li>
               <Link
                 href="/contact"
-                className="hover:text-green-500  transition-colors duration-200"
+                className="hover:text-gray-900 hover:font-bold  transition-colors duration-200"
               >
                 Contact
               </Link>
@@ -46,7 +46,7 @@ export default function NavBarServer() {
             <li>
               <Link
                 href="/wing-up"
-                className="hover:text-green-500  transition-colors duration-200"
+                className="hover:text-gray-900 hover:font-bold  transition-colors duration-200"
               >
                 User Area
               </Link>
@@ -54,7 +54,7 @@ export default function NavBarServer() {
             <li>
               <Link
                 href="/about"
-                className="hover:text-green-500  transition-colors duration-200"
+                className="hover:text-gray-900 hover:font-bold  transition-colors duration-200"
               >
                 About
               </Link>

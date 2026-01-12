@@ -32,7 +32,7 @@ export default function ClientUserDesktop({ session }: { session: Session }) {
 
   if (!session)
     return (
-      <div className="gap-3 items-center flex justify-end p-5 bg-gray-50  shadow-sm h-full w-fit">
+      <div className="gap-3 items-center flex justify-end p-5 bg-gray-50  h-full w-fit">
         <Link
           href="/user/login"
           className="px-3 py-1 border border-gray-300 text-gray-700 rounded  hover:bg-gray-100 transition-colors duration-200"
@@ -41,7 +41,7 @@ export default function ClientUserDesktop({ session }: { session: Session }) {
         </Link>
         <Link
           href="/user/register"
-          className="px-3 py-1 bg-gray-800 text-white  hover:bg-gray-900 transition-colors duration-200"
+          className="px-3 py-1 border border-gray-800 text-gray-100 rounded bg-gray-800 hover:bg-gray-700 transition-colors duration-200"
         >
           Sign up
         </Link>

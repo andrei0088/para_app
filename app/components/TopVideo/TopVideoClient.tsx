@@ -19,7 +19,7 @@ export default function TopVideoServer({ topVideos }: Props) {
   return (
     <div className="space-y-2 dark:text-gray-800">
       <div></div>
-      <h2 className="text-xl font-bold text-gray-800"> Top Videos</h2>
+      <h2 className="text-xl font-bold text-gray-800"> Top Videos:</h2>
       {topVideos.map((v) => {
         const videoId = extractYouTubeId(v.video?.url);
         return (

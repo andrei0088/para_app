@@ -9,7 +9,12 @@ import MapPageClient from "./MapPageClient";
 import { Country, Region, Takeoff, Landing } from "@prisma/client";
 import { Site } from "../types";
 
-export default async function MapRutePage() {
+interface PageProps {
+  searchParams: { region?: string };
+}
+
+export default async function MapRutePage({ searchParams }: PageProps) {
+  const selected = await searchParams;
   const countriesRaw = await get_all_country();
   const regionsRaw = await get_all_regions();
   const takeoffsRaw = await get_all_takeoff();

@@ -70,7 +70,7 @@ export default function HomeForm({
   };
 
   return (
-    <form className="flex flex-wrap items-end gap-4 bg-white text-gray-800  p-4 rounded-xl shadow-md max-w-full">
+    <form className="flex flex-wrap items-end gap-4 bg-white text-gray-800  p-4 max-w-full">
       {/* Country */}
       <div className="flex flex-col flex-1 min-w-[150px]">
         <label htmlFor="country" className="mb-1 font-medium text-gray-700 ">
@@ -80,7 +80,7 @@ export default function HomeForm({
           name="country"
           id="country"
           onChange={handleChange}
-          className="border border-gray-300  rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400  transition-colors duration-200"
+          className="border border-gray-300  rounded-sm p-2 focus:outline-none focus:ring-2 focus:ring-blue-100  transition-colors duration-200"
         >
           <option value="">Select a country</option>
           {countrys.map((c) => (
@@ -100,7 +100,7 @@ export default function HomeForm({
           name="region"
           id="region"
           onChange={handleChange}
-          className="border border-gray-300  rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400  transition-colors duration-200"
+          className="border border-gray-300  rounded-sm p-2 focus:outline-none focus:ring-2 focus:ring-blue-100  transition-colors duration-200"
         >
           <option value="">Select a region</option>
           {regions.map((r) => (
@@ -120,7 +120,7 @@ export default function HomeForm({
           name="season"
           id="season"
           onChange={handleChange}
-          className="border border-gray-300  rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400  transition-colors duration-200"
+          className="border border-gray-300  rounded-sm p-2 focus:outline-none focus:ring-2 focus:ring-blue-100  transition-colors duration-200"
         >
           <option value="">Select a season</option>
           {seasons.map((s) => (
@@ -140,7 +140,7 @@ export default function HomeForm({
           name="month"
           id="month"
           onChange={handleChange}
-          className="border border-gray-300  rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-400  transition-colors duration-200"
+          className="border border-gray-300  rounded-sm p-2 focus:outline-none focus:ring-2 focus:ring-blue-100  transition-colors duration-200"
         >
           <option value="">Select a month</option>
           {months.map((m) => (
@@ -157,7 +157,7 @@ export default function HomeForm({
           onClick={(e) => {
             e.preventDefault();
           }}
-          className="bg-gray-700 hover:bg-gray-800 disabled:opacity-50 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+          className="bg-gray-700 hover:bg-gray-800 disabled:opacity-50 text-white px-4 py-2 rounded-sm font-medium transition-colors"
         >
           Filter
         </button>

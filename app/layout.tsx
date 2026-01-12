@@ -10,6 +10,7 @@ import GoogleAnalytics from "./lib/GoogleAnalytics";
 import { Metadata } from "next";
 import Cookie from "./components/Cookie";
 import { cookies } from "next/headers";
+import UnderConstruction from "./components/UnderConstruction";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -48,7 +49,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${roboto.variable} ${oswald.variable} antialiased min-h-screen flex flex-col `}
+        className={`${roboto.variable} ${oswald.variable} antialiased  flex flex-col  `}
       >
         <Cookie />
         {analyticsAccepted && (
@@ -58,15 +59,16 @@ export default async function RootLayout({
             <GoogleAnalytics />
           </>
         )}
-
-        <Banner />
-
-        <NavBar />
+        <UnderConstruction />
+        <div className="w-full md:w-[90vw] xl:w-[80vw]  md:mx-auto mx-auto ">
+          <Banner />
+          <NavBar />
+        </div>
 
         {/* Main + RightBar */}
-        <div className="flex flex-1 flex-col lg:flex-row min-h-0 bg-white w-full 2xl:w-[80vw] mx-auto ">
+        <div className=" px-[1px]  flex flex-col lg:flex-row  bg-white w-full md:w-[90vw] xl:w-[80vw]  md:mx-auto mx-auto ">
           {/* Content principal */}
-          <main className="flex-1 flex flex-col overflow-auto  ">
+          <main className="flex-1 flex flex-col overflow-auto  shadow-sm ">
             {children}
 
             {/* <!-- Google Tag Manager (noscript) --> */}
@@ -82,7 +84,7 @@ export default async function RootLayout({
           </main>
 
           {/* RightBar */}
-          <aside className="w-full lg:w-64 mt-4 lg:mt-0 lg:shrink-0 lg:flex lg:flex-col">
+          <aside className="w-full lg:w-64 mt-4 lg:mt-0 lg:shrink-0 lg:flex lg:flex-col ">
             <RightBar />
           </aside>
         </div>

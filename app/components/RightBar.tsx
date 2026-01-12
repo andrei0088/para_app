@@ -5,7 +5,7 @@ import ViewRisk from "./foehn/ViewRisk";
 
 export default function RightBar() {
   return (
-    <aside className="w-full h-full lg:w-64 bg-white  shadow-md flex flex-col items-center py-3 gap-4 border-l border-gray-200 ">
+    <aside className="w-full h-full lg:w-64 bg-white  flex flex-col items-center py-3 gap-4 border-r border-l border-r-1 border-gray-100 ">
       {/* ViewRisk component */}
       <div className="w-full px-3">
         <ViewRisk />
@@ -32,7 +32,21 @@ export default function RightBar() {
       </div>
 
       {/* Extra section */}
-      <div className="flex flex-col items-center gap-2 w-full px-3"></div>
+      <div className="flex flex-col items-center gap-2 w-full px-3 ">
+        <button
+          className="
+    bg-linear-to-r from-blue-500 to-indigo-500 
+    text-white font-semibold 
+    px-6 py-2 rounded-lg 
+    shadow-md 
+    hover:brightness-105 hover:scale-105 
+    transition 
+    duration-200
+  "
+        >
+          Donate
+        </button>
+      </div>
     </aside>
   );
 }
