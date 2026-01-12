@@ -153,7 +153,6 @@ export async function signInAction(formData: FormData) {
 // ===== SIGN OUT =====
 export async function signOutAction() {
   await auth.api.signOut({ headers: await headers() });
-  console.log("logout");
   redirect("/");
 }
 

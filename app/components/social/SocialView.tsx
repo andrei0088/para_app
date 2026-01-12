@@ -145,8 +145,8 @@ export default function SocialView({
   }
 
   return (
-    <section className="max-full  mt-12 px-8 py-6 bg-gray-50   shadow-md dark:text-gray-900 mb-2">
-      <h2 className="text-3xl font-serif text-center mb-5 text-gray-900 ">
+    <section className="max-full  mt-12 px-8 py-6  mb-2">
+      <h2 className="text-3xl font-serif text-center mb-5  ">
         What others say about{" "}
         <span className="font-semibold">{selectedName}</span>
       </h2>
@@ -154,7 +154,7 @@ export default function SocialView({
       {message && (
         <p
           className={`mb-4 text-center ${
-            messageType === "success" ? "text-green-600" : "text-red-500"
+            messageType === "success" ? "text-cyan-600" : "text-red-500"
           }`}
         >
           {message}
@@ -163,22 +163,22 @@ export default function SocialView({
 
       <div className="space-y-3">
         {visibleComments.map((c) => (
-          <article key={c.id} className="p-4 rounded-2xl border bg-white ">
+          <article key={c.id} className="p-4 rounded-sm border bg-white ">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium text-gray-900 ">
+              <h3 className="text-lg font-medium text-sky-900 ">
                 {c.userId === user ? (
-                  <span className="italic text-gray-400 mr-1">You</span>
+                  <span className="italic  mr-1">You</span>
                 ) : (
                   c.user.name
                 )}
-                <span className="ml-2 text-sm text-gray-500 ">
+                <span className="ml-2 text-sm text-gray-900 ">
                   on {new Date(c.createdAt).toLocaleDateString()}
                 </span>
               </h3>
               {!c.temp && <LikeComment commentId={c.id} type={selectedTipe} />}
               {c.userId != user && (
                 <button
-                  className={`text-sm px-3 py-1 rounded-md border ${
+                  className={`text-sm px-3 py-1 rounded-sm border ${
                     raportedIds.has(c.id)
                       ? "text-red-500 bg-red-100"
                       : "text-yellow-500"
@@ -194,7 +194,7 @@ export default function SocialView({
 
               {c.userId === user && editId !== c.id && (
                 <button
-                  className="text-sm px-3 py-1 rounded-md border hover:bg-gray-200 "
+                  className="text-sm px-3 py-1 rounded-sm border hover:bg-gray-200 "
                   onClick={() => startEdit(c)}
                 >
                   Edit
@@ -205,7 +205,7 @@ export default function SocialView({
             {editId === c.id ? (
               <form onSubmit={handleUpdate} className="mt-3 space-y-2">
                 <textarea
-                  className="w-full p-2 border rounded-xl"
+                  className="w-full p-2 border rounded-sm"
                   value={editText}
                   onChange={(e) => setEditText(e.target.value)}
                 />
@@ -215,20 +215,20 @@ export default function SocialView({
                 <div className="flex gap-2">
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-xl"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-sm"
                   >
                     Save
                   </button>
                   <button
                     type="button"
-                    className="px-4 py-2 border rounded-xl"
+                    className="px-4 py-2 border rounded-sm"
                     onClick={() => setEditId(null)}
                   >
                     Cancel
                   </button>
                   <button
                     type="button"
-                    className="px-4 py-2 bg-red-600 text-white rounded-xl"
+                    className="px-4 py-2 bg-red-600 text-white rounded-sm"
                     onClick={() => handleDelete(c.id)}
                   >
                     Delete
@@ -249,14 +249,14 @@ export default function SocialView({
           <button
             onClick={() => setPage(page + 1)}
             disabled={page + 1 >= totalPages}
-            className="px-3 py-1 rounded-full bg-gray-200  disabled:opacity-40"
+            className="px-3 py-1 rounded-sm bg-gray-200  disabled:opacity-40"
           >
             ↑ Older
           </button>
           <button
             onClick={() => setPage(page - 1)}
             disabled={page === 0}
-            className="px-3 py-1 rounded-full bg-gray-200  disabled:opacity-40"
+            className="px-3 py-1 rounded-sm bg-gray-200  disabled:opacity-40"
           >
             ↓ Newer
           </button>
@@ -265,7 +265,7 @@ export default function SocialView({
 
       <form className="mt-6" onSubmit={handleSubmit}>
         <textarea
-          className="w-full h-28 p-4 border rounded-2xl"
+          className="w-full h-28 p-4 border rounded-sm"
           placeholder="Share your experience..."
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
@@ -274,7 +274,7 @@ export default function SocialView({
           {newComment.length}/1000 characters
         </p>
         <button
-          className="mt-3 px-6 py-3 bg-blue-600 text-white rounded-xl"
+          className="mt-3 px-6 py-3 bg-cyan-900 text-white rounded-sm"
           disabled={loading}
         >
           Submit

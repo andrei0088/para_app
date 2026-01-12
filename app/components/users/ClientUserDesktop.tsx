@@ -95,8 +95,8 @@ export default function ClientUserDesktop({ session }: { session: Session }) {
       {/* Dropdown Menu */}
       {open && (
         <div
-          className="absolute left-0 md:top-full top-full w-full bg-gray-50 rounded-b-2xl 
-                  border-b border-l border-r border-gray-200 shadow-lg z-50"
+          className="absolute left-0 md:top-full top-0 w-full bg-gray-50 
+                rounded-b-sm border border-t-0 border-gray-100 z-50"
         >
           <Link
             href="/user/profile"

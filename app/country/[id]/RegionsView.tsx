@@ -44,10 +44,10 @@ const RegionsView = ({ regions, sites }: RegionsViewProps) => {
         return (
           <div
             key={r.id}
-            className="bg-gray-50 rounded-xl p-4 shadow-sm border border-gray-200  hover:shadow-md transition my-3 py-1"
+            className="bg-sky-50 rounded-xl p-4   hover:shadow-md transition my-3 py-1"
           >
             <Link href={`/region/${r.id}`}>
-              <h3 className="text-lg md:text-xl font-semibold text-green-600 hover:underline mb-2">
+              <h3 className="text-lg md:text-xl font-semibold text-teal-600 hover:underline mb-2">
                 {r.name}
               </h3>
             </Link>

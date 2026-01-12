@@ -1,6 +1,5 @@
-// TopVideoServer.tsx (Server Component)
 import Link from "next/link";
-import VideoLike from "./VideoLike"; // Server Component
+import VideoLike from "./VideoLike";
 import type { TopVideo } from "./action";
 
 interface Props {
@@ -18,7 +17,19 @@ export default function TopVideoServer({ topVideos }: Props) {
 
   return (
     <div className="space-y-2 dark:text-gray-800">
-      <h2 className="text-xl font-bold text-gray-800"> Top Videos:</h2>
+      <section aria-labelledby="top-videos-heading" className="mt-6">
+        <h2
+          id="top-videos-heading"
+          className="text-2xl font-bold text-gray-900 flex gap-2"
+        >
+          Top Paragliding Videos
+        </h2>
+        <p className="mt-2 text-gray-600">
+          Discover the most liked paragliding videos shared by the Para APP
+          community, showcasing breathtaking flights and top tips for pilots.
+        </p>
+      </section>
+
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mx-2">
         {topVideos.map((v) => {
           const videoId = extractYouTubeId(v.video?.url);
@@ -46,7 +57,7 @@ export default function TopVideoServer({ topVideos }: Props) {
                 </div>
 
                 {/* Al doilea rând: titlu video */}
-                <div className="font-medium [&::first-letter]:uppercase">
+                <div className="font-medium first-letter:uppercase">
                   {v.video?.title ?? "Untitled"}
                 </div>
               </div>

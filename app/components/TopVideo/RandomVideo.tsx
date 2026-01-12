@@ -22,7 +22,18 @@ export default function RandomVideoServer({ videos }: RandomVideoProps) {
 
   return (
     <div className="space-y-2 dark:text-gray-800">
-      <h2 className="text-2xl font-bold text-gray-800">You mai like :</h2>
+      <section aria-labelledby="recommended-videos-heading" className="mt-6">
+        <h2
+          id="recommended-videos-heading"
+          className="text-2xl font-bold text-gray-800"
+        >
+          You may like:
+        </h2>
+        <p className="mt-2 text-gray-600">
+          Check out these random paragliding videos from our
+          community—handpicked to inspire your next flight.
+        </p>
+      </section>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mx-2">
         {videos.map((video) => {
           const videoId = extractYouTubeId(video.url);
@@ -44,7 +55,7 @@ export default function RandomVideoServer({ videos }: RandomVideoProps) {
                 </div>
 
                 {/* Al doilea rând: titlu video */}
-                <div className="font-medium [&::first-letter]:uppercase">
+                <div className="font-medium capitalize">
                   {video.title ?? "Untitled"}
                 </div>
               </div>

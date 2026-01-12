@@ -7,7 +7,6 @@ interface EditPageProps {
 
 export default function EditPage({ desc, id }: EditPageProps) {
   const descJson = JSON.parse(desc || "{}");
-  console.log(descJson.takeoffDifficulty);
   return (
     <div className="w-full p-4">
       <form action={update_takeoff_description} className="w-full space-y-4">

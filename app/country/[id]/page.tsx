@@ -124,10 +124,10 @@ export default async function Country({ params }: CountryPageProps) {
   };
 
   return (
-    <div className="my-2 py-2 dark:text-gray-800 z-40">
+    <div className="my-2 z-40">
       <SEO title={country.name} description={country.seo} />
       {/* Harta */}
-      <div className="h-[30vh] rounded-xl overflow-hidden shadow-md mb-4 ">
+      <div className="h-[30vh] rounded-sm overflow-hidden mb-4 ">
         <MapGenerate
           center={
             countrySafe.latitude && countrySafe.longitude
@@ -139,8 +139,8 @@ export default async function Country({ params }: CountryPageProps) {
 
       {/* Search */}
       <SearchForm select={{ country: countrySafe, region: regions }} />
-      <div className="w-full  bg-gray-50 rounded-2xl shadow-lg mt-2 pt-2">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 border-b border-gray-200  py-2 px-5">
+      <div className="w-full   rounded-sm  mt-2 pt-2">
+        <h1 className="text-3xl md:text-4xl font-bold mb-6   py-2 px-5">
           {country.name}
         </h1>
 
@@ -158,7 +158,7 @@ export default async function Country({ params }: CountryPageProps) {
           {/* ViewCountry pe dreapta pe desktop */}
           <ViewCountry country={countrySafe} />
         </div>
-        <div className="w-full h-1 rounded-full bg-linear-to-r from-cyan-50 via-black to-cyan-50 blur-[0.3px]" />
+        <div className="w-full h-px rounded-full bg-linear-to-r from-white via-cyan-900 to-white blur-[0.3px]" />
 
         {/* Social */}
         <SocialComponent

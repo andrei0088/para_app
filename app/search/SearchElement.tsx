@@ -147,19 +147,19 @@ export default function SearchElement({
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-wrap items-end gap-3 md:gap-4 bg-gray-50  p-3 md:p-4 rounded-xl shadow-md max-w-full dark:text-gray-800 "
+      className="flex flex-wrap items-end gap-3 md:gap-4   p-3 md:p-4 rounded-sm  max-w-full dark:text-gray-800 "
     >
       {/* Country */}
       <div className="flex flex-col flex-1 min-w-[140px]">
         <label
           htmlFor="country"
-          className="mb-1 text-sm md:text-base font-medium text-gray-700 "
+          className="mb-1 text-sm md:text-base font-medium  "
         >
           Country
         </label>
         <select
           id="country"
-          className="border border-gray-300  rounded-lg p-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-blue-400  transition"
+          className="border border-gray-300  rounded-sm p-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-cyan-100  transition"
           value={selectedCountryId}
           onChange={(e) => setSelectedCountryId(Number(e.target.value))}
         >
@@ -175,13 +175,13 @@ export default function SearchElement({
       <div className="flex flex-col flex-1 min-w-[140px]">
         <label
           htmlFor="region"
-          className="mb-1 text-sm md:text-base font-medium text-gray-700 "
+          className="mb-1 text-sm md:text-base font-medium "
         >
           Region
         </label>
         <select
           id="region"
-          className="border border-gray-300  rounded-lg p-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+          className="border border-gray-300  rounded-sm p-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-cyan-100 transition"
           value={selectedRegionId}
           onChange={(e) =>
             setSelectedRegionId(
@@ -202,13 +202,13 @@ export default function SearchElement({
       <div className="flex flex-col flex-1 min-w-[120px]">
         <label
           htmlFor="season"
-          className="mb-1 text-sm md:text-base font-medium text-gray-700 "
+          className="mb-1 text-sm md:text-base font-medium "
         >
           Season
         </label>
         <select
           id="season"
-          className="border border-gray-300  rounded-lg p-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-blue-4000 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="border border-gray-300  rounded-sm p-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-cyan-100 transition disabled:opacity-50 disabled:cursor-not-allowed"
           value={selectedSeason}
           onChange={(e) =>
             setSelectedSeason(
@@ -230,13 +230,13 @@ export default function SearchElement({
       <div className="flex flex-col flex-1 min-w-[120px]">
         <label
           htmlFor="month"
-          className="mb-1 text-sm md:text-base font-medium text-gray-700 "
+          className="mb-1 text-sm md:text-base font-medium  "
         >
           Month
         </label>
         <select
           id="month"
-          className="border border-gray-300  rounded-lg p-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-blue-400  transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="border border-gray-300  rounded-sm p-2 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-cyan-100  transition disabled:opacity-50 disabled:cursor-not-allowed"
           value={selectedMonth}
           onChange={(e) =>
             setSelectedMonth(
@@ -259,7 +259,7 @@ export default function SearchElement({
         <button
           disabled={loading}
           type="submit"
-          className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-4 py-2 rounded-lg font-medium text-sm md:text-base transition-all shadow-sm hover:shadow-md"
+          className="bg-cyan-900 hover:bg-cyan-800 disabled:bg-cyan-600 text-white px-4 py-2 rounded-sm font-medium text-sm md:text-base transition-all shadow-sm hover:shadow-md"
         >
           {loading ? "Filtering..." : "Filter"}
         </button>

@@ -66,9 +66,9 @@ export default async function RootLayout({
         </div>
 
         {/* Main + RightBar */}
-        <div className=" px-[1px]  flex flex-col lg:flex-row  bg-white w-full md:w-[90vw] xl:w-[80vw]  md:mx-auto mx-auto ">
+        <div className=" pl-px  flex flex-col lg:flex-row  bg-white w-full md:w-[90vw] xl:w-[80vw]  md:mx-auto mx-auto ">
           {/* Content principal */}
-          <main className="flex-1 flex flex-col overflow-auto  shadow-sm ">
+          <main className="flex-1 flex flex-col overflow-auto  border-l border-gray-50 pb-5 ">
             {children}
 
             {/* <!-- Google Tag Manager (noscript) --> */}

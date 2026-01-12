@@ -39,7 +39,6 @@ export async function add_country(name: string) {
 }
 
 export async function add_region(name: string, country: number) {
-  console.log(name + " si id : " + country);
   if (!name && !country)
     return {
       success: false,

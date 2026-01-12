@@ -59,7 +59,6 @@ export default async function sendEmail(
       html: mailBody,
     });
 
-    console.log(`Email sent to ${sendTo.email}`);
     return { success: true, message: "Email sent successfully" };
   } catch (error) {
     console.error("Failed to send email:", error);

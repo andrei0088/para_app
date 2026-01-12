@@ -81,9 +81,6 @@ const LeftCountry = async ({
 
       {/* Galerie hărți */}
       <MapList maps={maps} />
-
-      {/* Linie verticală gradient */}
-      <div className="hidden md:block absolute right-0 top-0 h-full w-0.5 bg-linear-to-b from-gray-100 via-cyan-500 to-gray-200"></div>
     </div>
   );
 };

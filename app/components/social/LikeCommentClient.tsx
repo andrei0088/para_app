@@ -32,10 +32,10 @@ export default function LikeCommentClient({
                 window.location.reload();
               }}
               className="flex items-center gap-1 py-1 px-2 border-2 rounded-full cursor-pointer
-                     bg-green-100 border-green-500 hover:bg-white hover:text-green-700 hover:border-green-600
+                     bg-cyan-100 border-cyan-500 hover:bg-white hover:text-cyan-700 hover:border-cyan-600
                      transition-all duration-300 active:scale-95 shadow-sm hover:shadow-md animate-[pulse_2.5s_ease-in-out_infinite] hover:animate-none text-xs md:text-sm"
             >
-              <span className="font-semibold text-green-600">I gave a</span>
+              <span className="font-semibold text-cyan-600">I gave a</span>
               <Image
                 src={top_img}
                 alt="top"
@@ -49,7 +49,7 @@ export default function LikeCommentClient({
                 window.location.reload();
               }}
               className="flex items-center gap-1 py-1 px-2 border-2 border-gray-900 rounded-full cursor-pointer
-                     hover:bg-green-100 hover:border-green-500 hover:text-green-700
+                     hover:bg-cyan-100 hover:border-cyan-500 hover:text-cyan-700
                      transition-all duration-300 active:scale-95 shadow-sm hover:shadow-md animate-[pulse_2.5s_ease-in-out_infinite] hover:animate-none text-xs md:text-sm"
             >
               <span className="font-semibold">I give a</span>
@@ -65,7 +65,7 @@ export default function LikeCommentClient({
         <Link
           href={`/user/login`}
           className="flex items-center gap-1 py-1 px-2 border-2 border-gray-900 rounded-full cursor-pointer
-                     hover:bg-green-100 hover:border-green-500 hover:text-green-700
+                     hover:bg-cyan-100 hover:border-cyan-500 hover:text-cyan-700
                      transition-all duration-300 active:scale-95 shadow-sm hover:shadow-md animate-[pulse_2.5s_ease-in-out_infinite] hover:animate-none text-xs md:text-sm"
         >
           Join to drop a{" "}
