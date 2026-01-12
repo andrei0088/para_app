@@ -5,7 +5,6 @@ import { get_top_spots } from "./homeAction";
 
 export default async function TopSites() {
   const topSpots = await get_top_spots();
-  console.log("Top spots:", topSpots);
   return (
     <div>
       <div className="mb-6">

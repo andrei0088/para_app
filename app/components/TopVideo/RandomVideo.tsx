@@ -23,56 +23,54 @@ export default function RandomVideoServer({ videos }: RandomVideoProps) {
   return (
     <div className="space-y-2 dark:text-gray-800">
       <h2 className="text-2xl font-bold text-gray-800">You mai like :</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mx-2">
+        {videos.map((video) => {
+          const videoId = extractYouTubeId(video.url);
+          return (
+            <div key={video.id} className="p-4 bg-white rounded-sm shadow-sm  ">
+              <div className="w-full">
+                {/* Primul rând: link profil */}
+                <div className="flex justify-end">
+                  {video?.public ? (
+                    <Link
+                      href={`/profile/${video?.profileUrl}`}
+                      className="font-medium"
+                    >
+                      {video?.profileName ?? "Unknown"}
+                    </Link>
+                  ) : (
+                    <span>{video?.profileName ?? "Unknown"}</span>
+                  )}
+                </div>
 
-      {videos.map((video) => {
-        const videoId = extractYouTubeId(video.url);
-        return (
-          <div
-            key={video.id}
-            className="p-4 bg-white rounded-2xl shadow-md border border-gray-100"
-          >
-            <div className="w-full">
-              {/* Primul rând: link profil */}
-              <div className="flex justify-end">
-                {video?.public ? (
-                  <Link
-                    href={`/profile/${video?.profileUrl}`}
-                    className="font-medium"
-                  >
-                    {video?.profileName ?? "Unknown"}
-                  </Link>
-                ) : (
-                  <span>{video?.profileName ?? "Unknown"}</span>
-                )}
+                {/* Al doilea rând: titlu video */}
+                <div className="font-medium [&::first-letter]:uppercase">
+                  {video.title ?? "Untitled"}
+                </div>
               </div>
 
-              {/* Al doilea rând: titlu video */}
-              <div className="font-medium [&::first-letter]:uppercase">
-                {video.title ?? "Untitled"}
-              </div>
+              {videoId ? (
+                <div className="aspect-video w-full overflow-hidden rounded-sm mb-2">
+                  <iframe
+                    className="w-full h-full"
+                    src={`https://www.youtube.com/embed/${videoId}`}
+                    title={video.title || "YouTube video"}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
+                </div>
+              ) : (
+                <p className="text-gray-500 italic">
+                  Invalid or missing YouTube link
+                </p>
+              )}
+
+              {/* Server Component VideoLike */}
+              <VideoLike videoId={video.id} />
             </div>
-
-            {videoId ? (
-              <div className="aspect-video w-full overflow-hidden rounded-xl mb-2">
-                <iframe
-                  className="w-full h-full"
-                  src={`https://www.youtube.com/embed/${videoId}`}
-                  title={video.title || "YouTube video"}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
-              </div>
-            ) : (
-              <p className="text-gray-500 italic">
-                Invalid or missing YouTube link
-              </p>
-            )}
-
-            {/* Server Component VideoLike */}
-            <VideoLike videoId={video.id} />
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }

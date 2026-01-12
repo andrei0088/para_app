@@ -46,7 +46,7 @@ export async function getTopVideos(): Promise<TopVideo[]> {
     _count: { videoId: true },
     where: { videoId: { in: validIds } },
     orderBy: { _count: { videoId: "desc" } },
-    take: 3,
+    take: 6,
   });
 
   const videoIds = topVideos.map((v) => v.videoId);

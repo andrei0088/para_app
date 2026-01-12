@@ -30,6 +30,24 @@ export default function RightBar() {
           />
         </Link>
       </div>
+      <div className="flex flex-col items-center text-center px-2 w-full space-y-2">
+        <h2>You may like to use:</h2>
+        <Link href="https://flyxc.app/" className="text-cyan-800 font-semibold">
+          FlyXC
+        </Link>
+        <Link
+          href="https://www.hikeandfly.org/"
+          className="text-cyan-800 font-semibold"
+        >
+          Hike&Fly
+        </Link>
+        <Link
+          href="https://paraglidable.com/"
+          className="text-cyan-800 font-semibold"
+        >
+          Paraglidable
+        </Link>
+      </div>
 
       {/* Extra section */}
       <div className="flex flex-col items-center gap-2 w-full px-3 ">

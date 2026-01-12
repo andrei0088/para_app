@@ -6,7 +6,7 @@ import TopVideoClient from "./TopVideoClient";
 
 export default async function SomePage() {
   const topVideos = await getTopVideos(); // server-side fetch
-  const randomVideo = await getRandomVideos(4);
+  const randomVideo = await getRandomVideos(6);
 
   return (
     <div className="space-y-2">

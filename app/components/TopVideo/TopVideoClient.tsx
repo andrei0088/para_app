@@ -19,18 +19,18 @@ export default function TopVideoServer({ topVideos }: Props) {
   return (
     <div className="space-y-2 dark:text-gray-800">
       <h2 className="text-xl font-bold text-gray-800"> Top Videos:</h2>
-      <div className="flex md:flex-col flex-row gap-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mx-2">
         {topVideos.map((v) => {
           const videoId = extractYouTubeId(v.video?.url);
           return (
             <div
               key={v.video?.id}
-              className="p-1 bg-white rounded-2xl shadow-md border border-gray-100 md:w-1/3"
+              className="p-2 bg-white rounded-sm shadow-sm w-full"
             >
-              <div className="w-full">
+              <div className="">
                 {/* Primul rând: place și link profil */}
                 <div className="flex justify-between items-center mb-1">
-                  <span className="text-lg font-semibold text-green-700">
+                  <span className="text-lg font-semibold text-blue-900">
                     #{v.place}
                   </span>
                   {v.video?.public ? (
@@ -52,7 +52,7 @@ export default function TopVideoServer({ topVideos }: Props) {
               </div>
 
               {videoId ? (
-                <div className="aspect-video w-full overflow-hidden rounded-xl mb-2">
+                <div className="aspect-video w-full overflow-hidden rounded-sm mb-2">
                   <iframe
                     className="w-full h-full"
                     src={`https://www.youtube.com/embed/${videoId}`}

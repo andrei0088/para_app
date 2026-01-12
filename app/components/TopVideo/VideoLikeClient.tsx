@@ -56,12 +56,12 @@ export default function VideoLikeClient({
         <button
           onClick={handleLike}
           disabled={loading}
-          className={`flex items-center gap-1 py-1 px-2 border-2 rounded-full cursor-pointer
+          className={`flex items-center gap-1 py-1 px-2  rounded-sm cursor-pointer
                      transition-all duration-300 active:scale-95 shadow-sm hover:shadow-md text-xs md:text-sm
                      ${
                        userLiked
-                         ? "bg-green-100 border-green-500 hover:bg-white hover:text-green-700 hover:border-green-600"
-                         : "border-gray-900 hover:bg-green-100 hover:border-green-500 hover:text-green-700"
+                         ? "bg-green-50 border-green-100 hover:bg-green-100 hover:text-green-900 hover:border-green-100"
+                         : "border-gray-900 hover:bg-green-50 hover:border-green-800 hover:text-green-900"
                      }
                      ${loading ? "opacity-50 pointer-events-none" : ""}`}
         >
@@ -79,8 +79,8 @@ export default function VideoLikeClient({
       ) : (
         <Link
           href={`/user/login`}
-          className="flex items-center gap-1 py-1 px-2 border-2 border-gray-900 rounded-full cursor-pointer
-                     hover:bg-green-100 hover:border-green-500 hover:text-green-700
+          className="flex items-center gap-1 py-1 px-2 border-2 border-gray-900 rounded-sm cursor-pointer
+                     hover:bg-green-100 hover:border-green-700 hover:text-green-900
                      transition-all duration-300 active:scale-95 shadow-sm hover:shadow-md animate-[pulse_2.5s_ease-in-out_infinite] hover:animate-none text-xs md:text-sm"
         >
           Join to drop a
@@ -92,7 +92,7 @@ export default function VideoLikeClient({
         </Link>
       )}
 
-      <div className="flex items-center gap-1 py-1 px-2 bg-gray-100 rounded-2xl shadow-sm text-xs md:text-sm">
+      <div className="flex items-center gap-1 py-1 px-2 bg-gray-100 rounded-sm shadow-sm text-xs md:text-sm">
         <p className="text-gray-700 font-medium">receive {like}</p>
         <Image
           src={top_img}
