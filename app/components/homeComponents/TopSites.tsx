@@ -19,9 +19,11 @@ export default async function TopSites() {
           flights.
         </p>
       </div>
-      <div className="flex flex-col">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {topSpots.map((spot) => (
-          <TopSiteCard spot={spot} key={spot.regionId} />
+          <div>
+            <TopSiteCard spot={spot} key={spot.regionId} />
+          </div>
         ))}
       </div>
     </div>
