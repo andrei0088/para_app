@@ -74,7 +74,7 @@ const LeftCountry = async ({
       <RegionsView regions={regions} sites={sites} />
 
       {/* Join / call to action */}
-      <JoinView />
+      <JoinView type="country" id={countryId} />
 
       {/* Vezi pe hartă */}
       <ViewOnMap country={countryId} region={""} name={countryName} />
