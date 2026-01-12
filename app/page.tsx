@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import HomeMap from "./components/homeComponents/HomeMap";
 import SearchHome from "./components/homeComponents/SearchHome";
-import ViewAllPlaces from "./components/homeComponents/ViewAllPlaces";
 import SEO from "./components/Seo";
 import TopVideo from "./components/TopVideo/TopVideo";
 import TopSites from "./components/homeComponents/TopSites";

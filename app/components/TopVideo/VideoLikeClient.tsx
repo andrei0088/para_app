@@ -60,14 +60,12 @@ export default function VideoLikeClient({
                      transition-all duration-300 active:scale-95 shadow-sm hover:shadow-md text-xs md:text-sm
                      ${
                        userLiked
-                         ? "bg-green-50 border-green-100 hover:bg-green-100 hover:text-green-900 hover:border-green-100"
-                         : "border-gray-900 hover:bg-green-50 hover:border-green-800 hover:text-green-900"
+                         ? "bg-teal-50 border-teal-100 hover:bg-teal-100 hover:text-teal-900 hover:border-teal-100"
+                         : "border-gray-900 hover:bg-teal-50 hover:border-teal-800 hover:text-teal-900"
                      }
                      ${loading ? "opacity-50 pointer-events-none" : ""}`}
         >
-          <span
-            className={`font-semibold ${userLiked ? "text-green-600" : ""}`}
-          >
+          <span className={`font-semibold ${userLiked ? "text-teal-600" : ""}`}>
             {userLiked ? "I gave a" : "I give a"}
           </span>
           <Image
@@ -80,7 +78,7 @@ export default function VideoLikeClient({
         <Link
           href={`/user/login`}
           className="flex items-center gap-1 py-1 px-2 border-2 border-gray-900 rounded-sm cursor-pointer
-                     hover:bg-green-100 hover:border-green-700 hover:text-green-900
+                     hover:bg-teal-100 hover:border-teal-700 hover:text-teal-900
                      transition-all duration-300 active:scale-95 shadow-sm hover:shadow-md animate-[pulse_2.5s_ease-in-out_infinite] hover:animate-none text-xs md:text-sm"
         >
           Join to drop a
