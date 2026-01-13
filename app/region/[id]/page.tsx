@@ -47,6 +47,8 @@ interface Region {
   bestSeason: number[];
   takeoffs: Takeoff[];
   landings: Landing[];
+  latitude?: number;
+  longitude?: number;
 }
 
 interface Country {
@@ -68,6 +70,8 @@ interface RegionRaw {
   seo?: string | null;
   takeoffs?: TakeoffRaw[] | null;
   landings?: LandingRaw[] | null;
+  longitude?: number | null;
+  latitude?: number | null;
 }
 
 interface TakeoffRaw {
@@ -150,6 +154,8 @@ export default async function RegionPage({
     bestSeason: regionRaw.bestSeason ?? [],
     takeoffs: (regionRaw.takeoffs ?? []).map(normalizeSite) as Takeoff[],
     landings: (regionRaw.landings ?? []).map(normalizeSite) as Landing[],
+    latitude: regionRaw.latitude ?? undefined,
+    longitude: regionRaw.longitude ?? undefined,
   };
 
   const takeoff: Takeoff[] = (sitesRaw.takeoff ?? []).map(
@@ -170,12 +176,12 @@ export default async function RegionPage({
   `;
 
   return (
-    <div className="mb-2 dark:text-gray-800">
+    <div className="">
       <SEO title={region.name} description={region.seo} />
       <SearchForm select={{ country, region: [region] }} />
 
-      <div className="w-full xl:max-w-7xl mx-auto bg-gray-50 rounded-2xl shadow-lg mt-2 pt-2">
-        <h1 className="text-xl md:text-2xl font-extrabold text-gray-900 mb-6 border-b border-gray-300 pb-3 px-6 tracking-wide leading-snug">
+      <div className="w-full mx-auto  mt-2 pt-2">
+        <h1 className="text-xl md:text-2xl font-extrabold  mb-6 pb-3 px-6 tracking-wide leading-snug">
           <Link
             href={`/country/${country.id}`}
             className="hover:text-green-900 transition-colors duration-300"
@@ -204,7 +210,7 @@ export default async function RegionPage({
           />
         </div>
 
-        <div className="w-full h-1 rounded-full bg-linear-to-r from-cyan-50 via-black to-cyan-50 blur-[0.3px]" />
+        <div className="w-full h-px rounded-sm bg-linear-to-r from-cyan-100 via-slate-500 to-cyan-100 blur-[0.3px]" />
         <SocialComponent
           selectedTipe="r"
           selectedName={region.name}

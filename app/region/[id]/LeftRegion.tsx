@@ -6,6 +6,7 @@ import JoinView from "@/app/components/dinamic/JoinView";
 import ViewOnMap from "@/app/components/dinamic/ViewOnMap";
 import ViewSiteMap from "./ViewSiteMap";
 import { Landing, Takeoff } from "@/app/types";
+import Meteow from "./Meteow";
 
 interface Region {
   id: number | string;
@@ -13,6 +14,8 @@ interface Region {
   countryId: number | string;
   map?: string | null;
   bestSeason?: number[]; // ✅ Acum este opțional
+  longitude?: number;
+  latitude?: number;
 }
 
 interface LeftRegionProps {
@@ -39,12 +42,13 @@ const LeftRegion: React.FC<LeftRegionProps> = ({
       <BestSeson months={region.bestSeason ?? []} /> {/* ✅ fallback */}
       <TopView component="r" id={Number(region.id)} />
       <ViewSites takeoff={takeoff} landing={landing} />
-      <JoinView />
+      <JoinView type="region" id={Number(region.id)} />
       <ViewOnMap
         country={Number(region.countryId)}
         region={Number(region.id)}
         name={region.name}
       />
+      <Meteow url={`${region.latitude}N${region.longitude}E`} />
       <div className=" flex flex-wrap gap-3 p-3">
         {maps.map((m, index) =>
           index !== 0 ? (
@@ -54,7 +58,6 @@ const LeftRegion: React.FC<LeftRegionProps> = ({
           ) : null
         )}
       </div>
-      <div className="hidden md:block absolute right-0 top-0 h-full w-0.5 bg-linear-to-b from-gray-100 via-cyan-500 to-gray-200"></div>
     </div>
   );
 };
