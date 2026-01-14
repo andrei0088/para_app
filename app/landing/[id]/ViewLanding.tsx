@@ -108,7 +108,7 @@ export default function ViewLanding({
 
         {/* Col 2-3 - Description + Map */}
         <div className="col-span-2 flex flex-col gap-4">
-          <div className="w-full rounded-sm overflow-hidden mb-5">
+          <div className="w-full rounded-sm overflow-hidden mb-2">
             <Suspense
               fallback={
                 <div className="text-gray-500">
