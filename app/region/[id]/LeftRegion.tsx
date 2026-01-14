@@ -38,7 +38,7 @@ const LeftRegion: React.FC<LeftRegionProps> = ({
   ].filter(Boolean);
 
   return (
-    <div className="w-full md:w-3/7 p-4 relative space-y-2 ">
+    <div className="w-full md:w-3/7 p-4 relative space-y-2 min-w-[460px]">
       <BestSeson months={region.bestSeason ?? []} /> {/* ✅ fallback */}
       <TopView component="r" id={Number(region.id)} />
       <ViewSites takeoff={takeoff} landing={landing} />
@@ -52,7 +52,7 @@ const LeftRegion: React.FC<LeftRegionProps> = ({
       <div className=" flex flex-wrap gap-3 p-3">
         {maps.map((m, index) =>
           index !== 0 ? (
-            <div key={index} className="rounded-xl overflow-hidden">
+            <div key={index} className="rounded-sm overflow-hidden">
               <ViewSiteMap map={m} maps={maps} />
             </div>
           ) : null

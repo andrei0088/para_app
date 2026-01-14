@@ -77,7 +77,7 @@ export default async function LandingPage({ params }: PageProps) {
   );
 
   return (
-    <div className="space-y-6 dark:text-gray-800">
+    <>
       <SEO title={landing.name} description={landing.description} />
 
       {/* Detalii landing + regiune */}
@@ -85,6 +85,7 @@ export default async function LandingPage({ params }: PageProps) {
 
       {/* Vizualizare landing + hărți */}
       <ViewLanding landing={landing} details={details} maps={maps} />
+      <div className="w-full h-px rounded-sm bg-linear-to-r from-cyan-100 via-slate-500 to-cyan-100 blur-[0.3px]" />
 
       {/* Social sharing */}
       <SocialComponent
@@ -92,6 +93,6 @@ export default async function LandingPage({ params }: PageProps) {
         selectedName={landing.name}
         selectedId={id}
       />
-    </div>
+    </>
   );
 }

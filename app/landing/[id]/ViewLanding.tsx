@@ -74,30 +74,10 @@ export default function ViewLanding({
 `;
 
   return (
-    <section className="max-w-6xl mx-auto bg-white/70 backdrop-blur-md rounded-2xl shadow-md border border-gray-200 p-6 mb-6 transition-colors">
-      {/* Breadcrumb */}
-      <div className="mb-4 text-gray-600 text-sm">
-        <Link
-          href={`/country/${details.country.id}`}
-          className="hover:underline text-green-700"
-        >
-          {details.country.name}
-        </Link>{" "}
-        →{" "}
-        <Link
-          href={`/region/${details.region.id}`}
-          className="hover:underline text-green-700"
-        >
-          {details.region.name}
-        </Link>{" "}
-        → <span className="font-medium text-gray-900">{landing.name}</span>
-      </div>
-
+    <section className="w-full max-w-7xl mx-auto p-2   ">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Col 1 - Info + Map */}
         <div className="flex flex-col space-y-4 col-span-1">
-          <h1 className="text-3xl font-bold text-green-700">{landing.name}</h1>
-
           <TopView component="l" id={landing.id} />
 
           <p className="text-gray-700">
@@ -111,13 +91,13 @@ export default function ViewLanding({
               href={googleMapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-green-600 underline hover:text-green-800"
+              className="text-indigo-900  underline hover:text-indigo-800 "
             >
               {landing.latitude.toFixed(6)}, {landing.longitude.toFixed(6)}
             </a>
           </p>
 
-          <div className="mt-2 h-[40vh] rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+          <div className="mt-2 h-[40vh] rounded-sm overflow-hidden ">
             <MapGenerate
               center={[landing.latitude, landing.longitude]}
               zoom={11}

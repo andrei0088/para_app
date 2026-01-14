@@ -46,52 +46,30 @@ export default function ViewTakeoff({
   const sendMaps = [details.region.map, ...maps];
 
   return (
-    <section className="max-w-6xl mx-auto bg-white/70  backdrop-blur-md rounded-2xl shadow-md border border-gray-200  p-6 mb-6 transition-colors">
-      {/* Breadcrumb */}
-      <div className="mb-4 text-gray-600  text-sm">
-        <Link
-          href={`/country/${details.country.id}`}
-          className="hover:underline text-blue-700 "
-        >
-          {details.country.name}
-        </Link>{" "}
-        →{" "}
-        <Link
-          href={`/region/${details.region.id}`}
-          className="hover:underline text-blue-700 "
-        >
-          {details.region.name}
-        </Link>{" "}
-        → <span className="font-medium text-gray-900">{takeoff.name}</span>
-      </div>
-
+    <section className="w-full max-w-7xl mx-auto p-2  ">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Col 1 - Info + Harta */}
         <div className="flex flex-col space-y-4 col-span-1">
-          <h1 className="text-3xl font-bold text-blue-700 ">
-            {takeoff.name} ({takeoff.wind})
-          </h1>
-
           <TopView component="t" id={takeoff.id} />
 
-          <p className="text-gray-700 ">
+          <p className="text-slate-700 ">
             <span className="font-semibold">🗻 Altitude:</span>{" "}
             {takeoff.altitude} m
           </p>
 
-          <p className="text-gray-700 ">
+          <p className=" ">
             <span className="font-semibold">📍 Coordinates:</span>{" "}
             <a
               href={googleMapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600  underline hover:text-blue-800 "
+              className="text-indigo-900  underline hover:text-indigo-800 "
             >
               {takeoff.latitude.toFixed(6)}, {takeoff.longitude.toFixed(6)}
             </a>
           </p>
 
-          <div className="mt-2 h-[40vh] rounded-xl overflow-hidden border border-gray-200  shadow-sm">
+          <div className="mt-2 h-[40vh] rounded-sm overflow-hidden ">
             <MapGenerate
               center={[takeoff.latitude, takeoff.longitude]}
               zoom={11}
@@ -105,6 +83,8 @@ export default function ViewTakeoff({
           <DisplayJsonTakeoff
             takeoff={takeoff.description}
             name={takeoff.name}
+            wind={takeoff.wind || null}
+            altitude={takeoff.altitude || null}
           />
         </div>
       </div>

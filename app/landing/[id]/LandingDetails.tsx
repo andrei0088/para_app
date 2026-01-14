@@ -40,7 +40,7 @@ export default function TakeoffDetails({ details, sites }: Props) {
     : "N/A";
 
   return (
-    <section className="w-full max-w-7xl mx-auto my-4 p-6 bg-white/70  backdrop-blur-md border border-gray-200/50  rounded-2xl shadow-md transition-colors">
+    <section className="w-full max-w-7xl mx-auto p-2  ">
       {/* === HEADER: Region / Country / Best Season === */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
         <div className="flex flex-wrap items-center gap-3 text-gray-900  font-medium tracking-tight">
@@ -48,23 +48,23 @@ export default function TakeoffDetails({ details, sites }: Props) {
             🪂{" "}
             <Link
               href={`/region/${details.region.id}`}
-              className="hover:underline hover:text-blue-600  transition-colors"
+              className="hover:underline hover:text-slate-600  transition-colors"
             >
               {details.region.name}
             </Link>
           </span>
-          <span className="text-gray-500 ">
+          <span className="text-gray-800 ">
             ·{" "}
             <Link
               href={`/country/${details.country.id}`}
-              className="hover:underline hover:text-blue-600  transition-colors"
+              className="hover:underline hover:text-slate-600  transition-colors"
             >
               {details.country.name}
             </Link>
           </span>
-          <span className="text-gray-500 ">
+          <span className="text-slate-500 ">
             · 🌤️ Best season:{" "}
-            <span className="font-medium text-gray-700 ">{bestSeason}</span>
+            <span className="font-medium text-slate-700 ">{bestSeason}</span>
           </span>
         </div>
       </div>
@@ -73,7 +73,7 @@ export default function TakeoffDetails({ details, sites }: Props) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Takeoffs */}
         <div>
-          <h3 className="font-medium text-blue-600  mb-2 flex items-center gap-2">
+          <h3 className="font-medium text-slate-600  mb-2 flex items-center gap-2">
             🛫 Takeoffs
           </h3>
           {sites.takeoff.length ? (
@@ -82,7 +82,7 @@ export default function TakeoffDetails({ details, sites }: Props) {
                 <li key={t.id}>
                   <Link
                     href={`/takeoff/${t.id}`}
-                    className="block px-3 py-1 rounded-md hover:bg-blue-100/60  transition-colors"
+                    className="block px-3 py-1 rounded-sm hover:bg-slate-100/60  transition-colors"
                   >
                     {t.name}
                     {t.altitude ? ` – ${t.altitude}m` : ""}
@@ -91,13 +91,13 @@ export default function TakeoffDetails({ details, sites }: Props) {
               ))}
             </ul>
           ) : (
-            <span className="text-gray-500 ">No takeoffs available</span>
+            <span className="text-gray-800 ">No takeoffs available</span>
           )}
         </div>
 
         {/* Landings */}
         <div>
-          <h3 className="font-medium text-emerald-600  mb-2 flex items-center gap-2">
+          <h3 className="font-medium text-stone-600  mb-2 flex items-center gap-2">
             🛬 Landings
           </h3>
           {sites.landing.length ? (
@@ -106,7 +106,7 @@ export default function TakeoffDetails({ details, sites }: Props) {
                 <li key={l.id}>
                   <Link
                     href={`/landing/${l.id}`}
-                    className="block px-3 py-1 rounded-md hover:bg-emerald-100/60  transition-colors"
+                    className="block px-3 py-1 rounded-md hover:bg-stone-100/60  transition-colors"
                   >
                     {l.name}
                     {l.altitude ? ` – ${l.altitude}m` : ""}
@@ -115,7 +115,7 @@ export default function TakeoffDetails({ details, sites }: Props) {
               ))}
             </ul>
           ) : (
-            <span className="text-gray-500 ">No landings available</span>
+            <span className="text-gray-800 ">No landings available</span>
           )}
         </div>
       </div>

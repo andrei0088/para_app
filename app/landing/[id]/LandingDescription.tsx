@@ -28,9 +28,9 @@ export default function LandingDescription({
     value ? value : "No information";
 
   return (
-    <section className="w-full max-w-6xl mx-auto p-6 bg-white/70 backdrop-blur-md rounded-2xl shadow-md border border-gray-200 transition-colors space-y-6">
+    <section className="w-full max-w-6xl mx-auto p-6  space-y-6">
       {/* Nume */}
-      <h1 className="text-3xl font-bold text-green-700">{name}</h1>
+      <h1 className="text-3xl font-bold text-stone-700">{name}</h1>
 
       {/* Iconuri pentru facilitati: */}
       <div className="flex gap-2">
@@ -60,14 +60,14 @@ export default function LandingDescription({
 
       {/* Descriere */}
       {landing.description && (
-        <section className="prose prose-lg text-gray-800 dark:text-gray-200">
+        <section className="prose prose-lg ">
           <p>{landing.description}</p>
         </section>
       )}
 
       {/* Access */}
       {landing.access && (
-        <section className="text-gray-700">
+        <section className="">
           <h2 className="text-lg font-semibold">Access</h2>
           <ul className="list-disc list-inside">
             <li>Parking: {boolToText(landing.access.parking)}</li>
@@ -90,7 +90,7 @@ export default function LandingDescription({
 
       {/* Facilities */}
       {landing.facilities && (
-        <section className="text-gray-700">
+        <section className="">
           <h2 className="text-lg font-semibold">Facilities</h2>
           <ul className="list-disc list-inside">
             <li>Toilets: {boolToText(landing.facilities.toilets)}</li>
@@ -117,7 +117,7 @@ export default function LandingDescription({
 
       {/* Safety */}
       {landing.safety && (
-        <section className="text-gray-700">
+        <section className="">
           <h2 className="text-lg font-semibold">Safety</h2>
           <ul className="list-disc list-inside">
             <li>
@@ -137,7 +137,7 @@ export default function LandingDescription({
 
       {/* Notes */}
       {landing.notes && (
-        <section className="text-gray-700">
+        <section className="">
           <h2 className="text-lg font-semibold">Notes</h2>
           <p>{landing.notes}</p>
         </section>

@@ -12,7 +12,7 @@ export default function Meteow({ url }: { url: string }) {
         sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox"
         style={{
           width: "460px",
-          height: "578px",
+          height: "572px",
           border: 0,
           overflow: "hidden",
         }}

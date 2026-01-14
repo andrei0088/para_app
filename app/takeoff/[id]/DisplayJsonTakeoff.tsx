@@ -10,11 +10,15 @@ import Image from "next/image";
 interface TakeoffDescriptionProps {
   takeoff: string | null;
   name: string;
+  wind: string | null;
+  altitude: number | null;
 }
 
 export default function DisplayJsonTakeoff({
   takeoff,
   name,
+  wind,
+  altitude,
 }: TakeoffDescriptionProps) {
   // Fallback HTML text
   const fallback = `
@@ -46,9 +50,12 @@ export default function DisplayJsonTakeoff({
     value ? value : "No information";
 
   return (
-    <section className="w-full max-w-6xl mx-auto p-6 bg-white/70 backdrop-blur-md rounded-2xl shadow-md border border-gray-200 transition-colors space-y-6">
+    <section className="w-full max-w-6xl mx-auto p-6 bg-white transition-colors space-y-6">
       {/* Name */}
-      <h1 className="text-3xl font-bold text-green-700">{name}</h1>
+      <h1 className="text-3xl font-bold text-slate-700">
+        {name} {wind !== null ? `(${wind})` : ""}{" "}
+        {altitude !== null ? `- ${altitude} m` : ""}
+      </h1>
 
       {/* Icons */}
       <div className="flex gap-2">
@@ -66,14 +73,14 @@ export default function DisplayJsonTakeoff({
 
       {/* Description */}
       {take.description && (
-        <section className="prose prose-lg text-gray-800 dark:text-gray-200">
+        <section className="prose prose-lg ">
           <p>{take.description}</p>
         </section>
       )}
 
       {/* Access */}
       {take.access && (
-        <section className="text-gray-700">
+        <section className="">
           <h2 className="text-lg font-semibold">Access</h2>
           <ul className="list-disc list-inside">
             <li>Parking: {boolToText(take.access.parking)}</li>
@@ -98,7 +105,7 @@ export default function DisplayJsonTakeoff({
               href={take.contactWebsite.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 underline hover:text-blue-800"
+              className="text-indigo-600 underline hover:text-indigo-800"
             >
               {take.contactWebsite.name}
             </a>
@@ -108,14 +115,14 @@ export default function DisplayJsonTakeoff({
 
       {/* takeoffDifficulty */}
       {take.takeoffDifficulty && (
-        <section className="text-gray-700">
+        <section className="">
           Takeoff Difficulty: {textOrFallback(take.takeoffDifficulty)}
         </section>
       )}
 
       {/* Notes */}
       {take.notes && (
-        <section className="text-gray-700">
+        <section className="">
           <h2 className="text-lg font-semibold">Notes</h2>
           <p>{take.notes}</p>
         </section>

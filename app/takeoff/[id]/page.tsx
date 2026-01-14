@@ -82,7 +82,7 @@ export default async function TakeoffPage({ params }: PageProps) {
   );
 
   return (
-    <div className="space-y-6 dark:text-gray-800">
+    <div className="">
       <SEO title={takeoff.name} description={takeoff.description} />
 
       {/* Detalii takeoff + regiune */}
@@ -90,6 +90,7 @@ export default async function TakeoffPage({ params }: PageProps) {
 
       {/* Vizualizare takeoff + hărți */}
       <ViewTakeoff takeoff={takeoff} details={detail} maps={maps} />
+      <div className="w-full h-px rounded-sm bg-linear-to-r from-cyan-100 via-slate-500 to-cyan-100 blur-[0.3px]" />
 
       {/* Social sharing */}
       <SocialComponent

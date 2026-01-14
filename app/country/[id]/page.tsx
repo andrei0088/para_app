@@ -158,7 +158,7 @@ export default async function Country({ params }: CountryPageProps) {
           {/* ViewCountry pe dreapta pe desktop */}
           <ViewCountry country={countrySafe} />
         </div>
-        <div className="w-full h-px rounded-full bg-linear-to-r from-white via-cyan-900 to-white blur-[0.3px]" />
+        <div className="w-full h-px rounded-sm bg-linear-to-r from-cyan-100 via-slate-500 to-cyan-100 blur-[0.3px]" />
 
         {/* Social */}
         <SocialComponent
