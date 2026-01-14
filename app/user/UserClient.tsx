@@ -109,8 +109,8 @@ export default function UserClient({ initialUser }: UserClientProps) {
   };
 
   return (
-    <div className="w-full dark:text-gray-800 max-w-4xl mx-auto mt-10 p-8 bg-white  shadow-lg rounded-2xl border border-gray-200  transition-colors duration-300">
-      <h1 className="text-3xl font-bold mb-6 text-gray-900  text-center sm:text-left">
+    <div className="w-full  max-w-4xl mx-auto mt-10 p-8 bg-white  ">
+      <h1 className="text-3xl font-bold mb-6   text-center sm:text-left">
         Your setings
       </h1>
 
@@ -120,16 +120,16 @@ export default function UserClient({ initialUser }: UserClientProps) {
       {/* NAME + EMAIL */}
       <div className="mb-8 space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-          <span className="font-semibold text-gray-700  w-32">Name:</span>
+          <span className="font-semibold   w-32">Name:</span>
           {editing ? (
             <input
               type="text"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              className="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 "
+              className="flex-1 px-3 py-2 border rounded-sm  "
             />
           ) : (
-            <span className="flex-1 text-gray-900 ">{user.name}</span>
+            <span className="flex-1">{user.name}</span>
           )}
 
           <div className="flex gap-2 mt-2 sm:mt-0">
@@ -138,13 +138,13 @@ export default function UserClient({ initialUser }: UserClientProps) {
                 <button
                   onClick={handleSave}
                   disabled={loading}
-                  className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg transition"
+                  className="bg-slate-500 hover:bg-slate-600 text-white px-3 py-1 rounded-sm transition"
                 >
                   Save
                 </button>
                 <button
                   onClick={handleCancel}
-                  className="bg-gray-300 hover:bg-gray-400 text-gray-900 px-3 py-1 rounded-lg transition"
+                  className="bg-gray-300 hover:bg-slate-400 text-slate-900 px-3 py-1 rounded-sm transition"
                 >
                   Cancel
                 </button>
@@ -152,7 +152,7 @@ export default function UserClient({ initialUser }: UserClientProps) {
             ) : (
               <button
                 onClick={() => setEditing(true)}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg transition"
+                className="bg-blue-500 hover:bg-slate-600 text-white px-3 py-1 rounded-sm transition"
               >
                 Edit
               </button>
@@ -160,16 +160,14 @@ export default function UserClient({ initialUser }: UserClientProps) {
           </div>
         </div>
 
-        <p className="text-gray-700 ">
+        <p className=" ">
           <span className="font-semibold">Email:</span> {user.email}
         </p>
       </div>
 
       {/* RESET PASSWORD */}
       <div className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-900 ">
-          Reset Password
-        </h2>
+        <h2 className="text-2xl font-semibold mb-4 ">Reset Password</h2>
 
         <form
           action={async (formData: FormData) => {
@@ -179,7 +177,7 @@ export default function UserClient({ initialUser }: UserClientProps) {
           className="space-y-4"
         >
           {pwMessage && (
-            <p className="mt-2 text-center text-sm text-blue-600">
+            <p className="mt-2 text-center text-sm text-slate-600">
               {pwMessage}
             </p>
           )}
@@ -189,7 +187,7 @@ export default function UserClient({ initialUser }: UserClientProps) {
             name="oldPassword"
             placeholder="Current password"
             required
-            className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400"
+            className="w-full px-3 py-2 border rounded-sm"
           />
 
           <input
@@ -201,13 +199,13 @@ export default function UserClient({ initialUser }: UserClientProps) {
               setNewPassword(e.target.value);
               evaluateStrength(e.target.value);
             }}
-            className="w-full px-3 py-2 border rounded-lg  focus:ring-2 focus:ring-blue-400"
+            className="w-full px-3 py-2 border rounded-sm "
           />
 
-          <div className="h-2 w-full bg-gray-200  rounded">
+          <div className="h-2 w-full bg-gray-200  rounded-sm">
             <div
               className={[
-                "h-full rounded transition-all duration-300",
+                "h-full rounded-sm transition-all duration-300",
                 passwordStrength === 1 && "w-1/4 bg-red-500",
                 passwordStrength === 2 && "w-1/2 bg-orange-500",
                 passwordStrength === 3 && "w-3/4 bg-yellow-500",
@@ -223,10 +221,10 @@ export default function UserClient({ initialUser }: UserClientProps) {
             name="confirmPassword"
             placeholder="Confirm new password"
             required
-            className="w-full px-3 py-2 border rounded-lg  focus:ring-2 focus:ring-blue-400"
+            className="w-full px-3 py-2 border rounded-sm"
           />
 
-          <button className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition">
+          <button className="w-full bg-blue-500 hover:bg-slate-600 text-white py-2 rounded-sm transition">
             Change Password
           </button>
         </form>
@@ -236,7 +234,7 @@ export default function UserClient({ initialUser }: UserClientProps) {
       <button
         onClick={handleDeleteAccount}
         disabled={loading}
-        className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg disabled:opacity-50 transition"
+        className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-sm disabled:opacity-50 transition"
       >
         {loading ? "Deleting..." : "Delete Account"}
       </button>

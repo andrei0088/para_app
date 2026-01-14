@@ -40,18 +40,12 @@ export default async function ProfilePage() {
   return (
     <div className="w-full px-7 xl:max-w-7xl xl:mx-auto dark:text-gray-800">
       <GeneralData isPublic={profile.public} url={profile.url} />
-      <div className="w-full h-0.5 bg-linear-to-r from-gray-300 via-cyan-500 to-gray-300  rounded-full"></div>
 
       <div className="w-full flex gap-5 md:flex-row flex-col ">
         <div className="w-full">
           <ViewAvatar image={profile.image} />
-          <hr />
           <PublicProfile isPublic={profile.public} />
-          <hr />
           <ChangeUrl initialUrl={profile.url} />
-
-          <div className="w-full h-0.5 bg-linear-to-r from-gray-300 via-cyan-500 to-gray-300  rounded-full"></div>
-
           <ProfileFormsClient initialData={profile} />
         </div>
         <div className="w-full">
