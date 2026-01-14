@@ -152,7 +152,7 @@ export default function UserClient({ initialUser }: UserClientProps) {
             ) : (
               <button
                 onClick={() => setEditing(true)}
-                className="bg-blue-500 hover:bg-slate-600 text-white px-3 py-1 rounded-sm transition"
+                className="bg-slate-500 hover:bg-slate-600 text-white px-3 py-1 rounded-sm transition"
               >
                 Edit
               </button>
@@ -224,7 +224,7 @@ export default function UserClient({ initialUser }: UserClientProps) {
             className="w-full px-3 py-2 border rounded-sm"
           />
 
-          <button className="w-full bg-blue-500 hover:bg-slate-600 text-white py-2 rounded-sm transition">
+          <button className="w-full bg-slate-500 hover:bg-slate-600 text-white py-2 rounded-sm transition">
             Change Password
           </button>
         </form>

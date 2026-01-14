@@ -117,7 +117,7 @@ export default function UpdateImage({ currentImage }: UpdateImageProps) {
               border-2 border-dashed cursor-pointer overflow-hidden transition
               ${
                 isDragActive
-                  ? "border-blue-500 bg-blue-50"
+                  ? "border-slate-500 bg-slate-50"
                   : "border-gray-300 bg-gray-50"
               }`}
           >
@@ -171,7 +171,7 @@ export default function UpdateImage({ currentImage }: UpdateImageProps) {
       <div className="flex gap-5 items-center">
         <button
           onClick={handleSubmit}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+          className="bg-slate-500 text-white px-4 py-2 rounded hover:bg-slate-600 transition"
         >
           Submit
         </button>
@@ -183,7 +183,7 @@ export default function UpdateImage({ currentImage }: UpdateImageProps) {
           Delete
         </button>
 
-        {msg && <p className="text-green-600">{msg}</p>}
+        {msg && <p className="text-slate-600">{msg}</p>}
       </div>
 
       <hr className="my-4" />
