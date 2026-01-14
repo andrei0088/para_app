@@ -121,9 +121,9 @@ export default function RegisterClient() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-100 to-gray-200  px-4 py-6">
-      <div className="w-full max-w-md bg-white  shadow-xl rounded-2xl p-8 border border-gray-200 ">
-        <h1 className="text-2xl font-semibold text-center mb-6 text-gray-900 ">
+    <div className="min-h-screen flex items-center justify-center   px-4 py-6">
+      <div className="w-full max-w-md   shadow-sm rounded-sm p-8 ">
+        <h1 className="text-2xl font-semibold text-center mb-6">
           Create Your ParaUP Account 🪂
         </h1>
 
@@ -141,7 +141,7 @@ export default function RegisterClient() {
               name="name"
               placeholder="Full Name"
               onChange={handleChange}
-              className={`w-full bg-white  text-gray-900  px-4 py-2.5 rounded-lg border transition
+              className={`w-full  px-4 py-2.5 rounded-sm border transition
             ${
               errors.name
                 ? "border-red-500 focus:ring-red-500"
@@ -160,7 +160,7 @@ export default function RegisterClient() {
               name="email"
               placeholder="Email Address"
               onChange={handleChange}
-              className={`w-full bg-white  text-gray-900  px-4 py-2.5 rounded-lg border transition
+              className={`w-full  px-4 py-2.5 rounded-sm border transition
             ${
               errors.email
                 ? "border-red-500 focus:ring-red-500"
@@ -179,7 +179,7 @@ export default function RegisterClient() {
               name="password"
               placeholder="Password"
               onChange={handleChange}
-              className={`w-full bg-white  text-gray-900  px-4 py-2.5 rounded-lg border transition
+              className={`w-full px-4 py-2.5 rounded-sm border transition
             ${
               errors.password
                 ? "border-red-500 focus:ring-red-500"
@@ -198,7 +198,7 @@ export default function RegisterClient() {
               name="ckpassword"
               placeholder="Confirm Password"
               onChange={handleChange}
-              className={`w-full bg-white  text-gray-900  px-4 py-2.5 rounded-lg border transition
+              className={`w-full  px-4 py-2.5 rounded-sm border transition
             ${
               errors.ckpassword
                 ? "border-red-500 focus:ring-red-500"
@@ -212,14 +212,12 @@ export default function RegisterClient() {
 
           {/* Birth Date */}
           <div>
-            <label className="block mb-1 text-sm text-gray-700 ">
-              Birth Date
-            </label>
+            <label className="block mb-1 text-sm ">Birth Date</label>
             <input
               type="date"
               name="bdate"
               onChange={handleChange}
-              className={`w-full bg-white  text-gray-900  px-4 py-2.5 rounded-lg border transition
+              className={`w-full  px-4 py-2.5 rounded-sm border transition
             ${
               errors.bdate
                 ? "border-red-500 focus:ring-red-500"
@@ -232,17 +230,17 @@ export default function RegisterClient() {
           </div>
 
           {/* Terms */}
-          <label className="flex items-center gap-2 text-sm text-gray-700 ">
+          <label className="flex items-center gap-2 text-sm  ">
             <input
               type="checkbox"
               name="agree"
               onChange={handleChange}
-              className="w-4 h-4 rounded border-gray-300"
+              className="w-4 h-4 rounded-sm border"
             />
             I agree to the{" "}
             <Link
               href="/user/tnc"
-              className="text-green-600 hover:text-green-700 underline"
+              className="text-cyan-600 hover:text-cyan-700 underline"
             >
               Terms & Conditions
             </Link>
@@ -255,17 +253,17 @@ export default function RegisterClient() {
           <button
             type="submit"
             disabled={pending}
-            className="w-full bg-green-600 text-white py-2.5 rounded-lg font-medium transition-all hover:bg-green-700 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-cyan-600 text-white py-2.5 rounded-sm font-medium transition-all hover:bg-cyan-700 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {pending ? "Registering..." : "Register"}
           </button>
         </form>
 
-        <p className="mt-5 text-center text-sm text-gray-600 ">
+        <p className="mt-5 text-center text-sm">
           Already have an account?{" "}
           <Link
             href="/user/login"
-            className="text-green-600 hover:text-green-700 underline"
+            className="text-cyan-600 hover:text-cyan-700 underline"
           >
             Log in
           </Link>

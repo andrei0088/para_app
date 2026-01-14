@@ -41,8 +41,8 @@ export default function ResetPasswordClient({
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100 px-4">
-      <div className="bg-white max-w-md w-full p-8 rounded-2xl shadow-lg">
+    <div className="min-h-screen flex justify-center items-center px-4">
+      <div className=" max-w-md w-full p-8 rounded-sm shadow-sm">
         <h1 className="text-2xl font-bold text-center mb-6">Reset Password</h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -52,7 +52,7 @@ export default function ResetPasswordClient({
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full border rounded-lg px-4 py-2"
+            className="w-full border rounded-sm px-4 py-2"
           />
 
           <input
@@ -61,13 +61,13 @@ export default function ResetPasswordClient({
             value={confirm}
             onChange={(e) => setConfirm(e.target.value)}
             required
-            className="w-full border rounded-lg px-4 py-2"
+            className="w-full border rounded-sm px-4 py-2"
           />
 
           <button
             disabled={loading}
             type="submit"
-            className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 disabled:bg-green-400 disabled:cursor-not-allowed"
+            className="w-full bg-cyan-600 text-white py-2 rounded-sm hover:bg-cyan-700 disabled:bg-cyan-400 disabled:cursor-not-allowed"
           >
             {loading ? "Changeing Password" : "Change Password"}
             Change Password

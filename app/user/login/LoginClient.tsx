@@ -56,13 +56,13 @@ export default function LoginClient({ succes = false }: Succes) {
   }
 
   return (
-    <div className=" flex items-center justify-center bg-linear-to-br  p-6">
-      <div className="bg-white  p-8 rounded-2xl shadow-xl border border-gray-200  w-full max-w-sm transition-all">
-        <h2 className="text-2xl font-semibold text-center mb-6 text-gray-900 ">
+    <div className=" flex items-center justify-center p-6">
+      <div className=" p-8 rounded-sm shadow-sm w-full max-w-sm transition-all">
+        <h2 className="text-2xl font-semibold text-center mb-6  ">
           Don’t have an account yet?{" "}
           <Link
             href={"/user/register"}
-            className="text-green-800 hover:text-green-900 underline"
+            className="text-cyan-800 hover:text-cyan-900 underline"
           >
             Sign up here
           </Link>{" "}
@@ -70,14 +70,14 @@ export default function LoginClient({ succes = false }: Succes) {
         </h2>
 
         {succes && (
-          <div className="bg-green-100  border-green-300  text-green-700  rounded-lg p-3 text-sm text-center font-medium mb-4 animate-fade-in">
+          <div className="bg-green-100  border-green-300  text-green-700  rounded-sm p-3 text-sm text-center font-medium mb-4 animate-fade-in">
             ✅ Your account has been successfully verified! You can now log in
             ✨
           </div>
         )}
 
         {errorMessage && (
-          <div className="text-red-600 bg-red-100  border-red-300  rounded-lg p-2 text-sm text-center font-medium mb-4">
+          <div className="text-red-600 bg-red-100  border-red-300  rounded-sm p-2 text-sm text-center font-medium mb-4">
             ❌ {errorMessage}
           </div>
         )}
@@ -91,7 +91,7 @@ export default function LoginClient({ succes = false }: Succes) {
             placeholder="Email"
             value={formState.email}
             onChange={handleChange}
-            className="w-full border border-gray-300  bg-white  px-4 py-2.5 rounded-lg text-gray-900  focus:ring-2 focus:ring-green-500 focus:outline-none transition"
+            className="w-full border border-gray-300  bg-white  px-4 py-2.5 rounded-sm text-gray-900  "
           />
 
           <input
@@ -102,12 +102,12 @@ export default function LoginClient({ succes = false }: Succes) {
             placeholder="Password"
             value={formState.password}
             onChange={handleChange}
-            className="w-full border border-gray-300  bg-white  px-4 py-2.5 rounded-lg text-gray-900  focus:ring-2 focus:ring-green-500 focus:outline-none transition"
+            className="w-full border border-gray-300  bg-white  px-4 py-2.5 rounded-sm text-gray-900  "
           />
 
           <Link
             href="/user/forgot-password"
-            className="block text-right text-sm text-green-600 hover:underline"
+            className="block text-right text-sm text-slate-600 hover:underline"
           >
             I forgot my password
           </Link>
@@ -115,11 +115,11 @@ export default function LoginClient({ succes = false }: Succes) {
           <button
             type="submit"
             disabled={isPending}
-            className={`w-full py-2.5 rounded-lg text-white font-medium transition-all duration-200 
+            className={`w-full py-2.5 rounded-sm text-white font-medium transition-all duration-200 
             ${
               isPending
-                ? "bg-green-400 cursor-not-allowed"
-                : "bg-green-600 hover:bg-green-700 active:scale-[0.98]"
+                ? "bg-cyan-400 cursor-not-allowed"
+                : "bg-cyan-600 hover:bg-cyan-700 active:scale-[0.98]"
             }`}
           >
             {isPending ? "Signing in..." : "Sign In"}

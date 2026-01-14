@@ -30,15 +30,15 @@ export default function ResendEmailClient({
   }, [rez]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-100 to-gray-200  p-6">
-      <div className="max-w-md w-full bg-white  p-8 rounded-2xl shadow-xl border border-gray-200  text-center">
+    <div className="min-h-screen flex items-center justify-center p-6">
+      <div className="max-w-md w-full   p-8 rounded-sm shadow-sm text-center">
         {sending ? (
-          <p className="text-gray-700 ">
+          <p className=" ">
             ⏳ Sending verification email to <strong>{email}</strong>...
           </p>
         ) : (
           <p
-            className={`p-4 rounded-md text-sm ${
+            className={`p-4 rounded-sm text-sm ${
               msg.startsWith("✅")
                 ? "bg-green-100 text-green-800 "
                 : "bg-red-100 text-red-700 "
