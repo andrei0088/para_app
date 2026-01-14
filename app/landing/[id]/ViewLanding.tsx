@@ -3,6 +3,7 @@ import MapGenerate from "@/app/components/map/MapGenerate";
 import TopView from "@/app/components/dinamic/TopView";
 import ViewLandingMap from "./ViewLandingMap";
 import LandingDescription from "./LandingDescription";
+import { Suspense } from "react";
 
 interface Landing {
   id: number;
@@ -107,7 +108,17 @@ export default function ViewLanding({
 
         {/* Col 2-3 - Description + Map */}
         <div className="col-span-2 flex flex-col gap-4">
-          <ViewLandingMap map={landing.map || ""} maps={sendMaps} />
+          <div className="w-full rounded-sm overflow-hidden mb-5">
+            <Suspense
+              fallback={
+                <div className="text-gray-500">
+                  Loading all grate flying places...
+                </div>
+              }
+            >
+              <ViewLandingMap map={landing.map || ""} maps={sendMaps} />
+            </Suspense>
+          </div>
           {landing.description ? (
             <LandingDescription
               description={landing.description}

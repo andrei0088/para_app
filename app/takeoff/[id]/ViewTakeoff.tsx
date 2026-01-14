@@ -3,6 +3,7 @@ import MapGenerate from "@/app/components/map/MapGenerate";
 import TopView from "@/app/components/dinamic/TopView";
 import ViewTakeoffMap from "./ViewTakeoffMap";
 import DisplayJsonTakeoff from "./DisplayJsonTakeoff";
+import { Suspense } from "react";
 
 interface Takeoff {
   id: number;
@@ -79,7 +80,17 @@ export default function ViewTakeoff({
 
         {/* Col 2-3 - Descriere + Map */}
         <div className="col-span-2 flex flex-col gap-4">
-          <ViewTakeoffMap map={takeoff.map} maps={sendMaps} />
+          <div className="w-full rounded-sm overflow-hidden mb-5">
+            <Suspense
+              fallback={
+                <div className="text-gray-500">
+                  Loading all grate flying places...
+                </div>
+              }
+            >
+              <ViewTakeoffMap map={takeoff.map} maps={sendMaps} />
+            </Suspense>
+          </div>
           <DisplayJsonTakeoff
             takeoff={takeoff.description}
             name={takeoff.name}

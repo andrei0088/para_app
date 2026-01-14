@@ -72,7 +72,7 @@ export default function ViewRegion({
   return (
     <section className="w-full p-4 ">
       {region.map && (
-        <div className="w-full rounded-xl overflow-hidden mb-5">
+        <div className="w-full rounded-sm overflow-hidden mb-5">
           <Suspense
             fallback={
               <div className="text-gray-500">
