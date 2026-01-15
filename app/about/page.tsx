@@ -3,11 +3,11 @@ import SEO from "../components/Seo";
 
 const AboutPage = () => {
   return (
-    <section className="min-h-screen bg-linear-to-b from-white to-blue-50 px-6 py-20">
+    <section className="px-6 py-20">
       <SEO title={"About"} description={""} />
 
       <div className="max-w-4xl mx-auto space-y-10">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-blue-700 text-center tracking-tight">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-cyan-900 text-center tracking-tight">
           About Our Paragliding Community
         </h1>
 
@@ -48,8 +48,8 @@ const AboutPage = () => {
           </p>
         </div>
 
-        <div className="bg-white border border-gray-200 shadow-md rounded-xl p-8 space-y-4">
-          <h2 className="text-2xl font-bold text-blue-700">Our Values</h2>
+        <div className="shadow-md rounded-sm p-8 space-y-4">
+          <h2 className="text-2xl font-bold text-cyan-800">Our Values</h2>
           <ul className="space-y-3 text-gray-700 text-lg">
             <li>
               🪂 <strong>Community First</strong> — We grow by helping each
@@ -73,7 +73,7 @@ const AboutPage = () => {
         <p className="text-center text-lg text-gray-700 pt-6 max-w-3xl mx-auto">
           Whether you’re a new pilot discovering the skies or a long-time flyer
           exploring new regions — you’re invited to be part of this.
-          <span className="block font-semibold text-blue-700 mt-2">
+          <span className="block font-semibold text-sky-700 mt-2">
             Together, we fly further.
           </span>
         </p>
@@ -81,7 +81,7 @@ const AboutPage = () => {
         <div className="text-center pt-4">
           <a
             href="/contact"
-            className="inline-block bg-blue-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-blue-700 transition shadow-md"
+            className="inline-block bg-cyan-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-cyan-700 transition shadow-md"
           >
             Contact Us & Contribute
           </a>

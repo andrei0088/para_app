@@ -51,19 +51,14 @@ export default function RightBar() {
 
       {/* Extra section */}
       <div className="flex flex-col items-center gap-2 w-full px-3 ">
-        <button
-          className="
-    bg-linear-to-r from-blue-500 to-indigo-500 
-    text-white font-semibold 
-    px-6 py-2 rounded-lg 
-    shadow-md 
-    hover:brightness-105 hover:scale-105 
-    transition 
-    duration-200
-  "
+        <a
+          href="https://www.paypal.com/donate/?hosted_button_id=Z98ZZ6XFM5PRA"
+          className="inline-block bg-cyan-600 text-white font-semibold px-8 py-3 rounded-lg hover:bg-cyan-700 transition shadow-md"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          Donate
-        </button>
+          Donate via PayPal
+        </a>
       </div>
     </aside>
   );

@@ -37,17 +37,17 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center py-16 px-4">
+    <div className="flex flex-col items-center py-16 px-4">
       {/* Header */}
-      <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4 text-center">
+      <h1 className="text-4xl md:text-5xl font-bold mb-4 text-center">
         Get in Touch
       </h1>
 
-      <p className="text-gray-600 text-center max-w-xl mb-12">
+      <p className=" text-center max-w-xl mb-12">
         Feel free to reach out at{" "}
         <a
           href="mailto:contact@paragliding-high.eu"
-          className="text-blue-600 hover:underline"
+          className="text-sky-600 hover:underline"
         >
           contact@paragliding-high.eu
         </a>{" "}
@@ -55,13 +55,10 @@ export default function ContactPage() {
       </p>
 
       {/* Form */}
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-lg bg-white rounded-lg shadow-md p-8 space-y-6"
-      >
+      <form onSubmit={handleSubmit} className="w-full max-w-lg   p-8 space-y-6">
         {success && (
           <div className="bg-green-100 text-green-700 p-3 rounded">
-            ✅ Your message has been sent successfully!
+            Your message has been sent successfully!
           </div>
         )}
 
@@ -71,10 +68,7 @@ export default function ContactPage() {
 
         {/* Name */}
         <div>
-          <label
-            className="block text-gray-700 font-medium mb-1"
-            htmlFor="name"
-          >
+          <label className="block font-medium mb-1" htmlFor="name">
             Name
           </label>
           <input
@@ -84,16 +78,13 @@ export default function ContactPage() {
             type="text"
             value={formData.name}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-gray-500 outline-none"
           />
         </div>
 
         {/* Email */}
         <div>
-          <label
-            className="block text-gray-700 font-medium mb-1"
-            htmlFor="email"
-          >
+          <label className="block font-medium mb-1" htmlFor="email">
             Email
           </label>
           <input
@@ -103,16 +94,13 @@ export default function ContactPage() {
             type="email"
             value={formData.email}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none"
+            className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-gray-500 outline-none"
           />
         </div>
 
         {/* Message */}
         <div>
-          <label
-            className="block text-gray-700 font-medium mb-1"
-            htmlFor="message"
-          >
+          <label className="block font-medium mb-1" htmlFor="message">
             Message
           </label>
           <textarea
@@ -122,7 +110,7 @@ export default function ContactPage() {
             rows={5}
             value={formData.message}
             onChange={handleChange}
-            className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none resize-none"
+            className="w-full border border-gray-300 rounded px-4 py-2 focus:ring-2 focus:ring-gray-500 outline-none resize-none"
           />
         </div>
 
@@ -130,7 +118,7 @@ export default function ContactPage() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full bg-blue-600 text-white font-semibold rounded py-3 hover:bg-blue-700 transition disabled:opacity-50"
+          className="w-full bg-cyan-600 text-white font-semibold rounded py-3 hover:bg-cyan-700 transition disabled:opacity-50"
         >
           {submitting ? "Sending..." : "Send Message"}
         </button>
