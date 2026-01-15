@@ -50,8 +50,8 @@ export default async function TakeoffPage({ params }: PageProps) {
     name: takeoffRaw.name,
     latitude: takeoffRaw.latitude,
     longitude: takeoffRaw.longitude,
-    altitude: takeoffRaw.altitude ?? 0,
-    wind: takeoffRaw.wind ?? undefined,
+    altitude: takeoffRaw.altitude ?? null,
+    wind: takeoffRaw.wind ?? null,
     description:
       takeoffRaw.description && takeoffRaw.description.trim() !== ""
         ? takeoffRaw.description

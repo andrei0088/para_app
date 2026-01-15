@@ -28,10 +28,7 @@ export default function LandingDescription({
     value ? value : "No information";
 
   return (
-    <section className="w-full max-w-6xl mx-auto p-6  ">
-      {/* Nume */}
-      <h1 className="text-3xl font-bold text-stone-700">{name}</h1>
-
+    <section className="w-full p-6  ">
       {/* Iconuri pentru facilitati: */}
       <div className="flex gap-2">
         {landing.access.parking && (

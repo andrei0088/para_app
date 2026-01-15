@@ -32,7 +32,7 @@ export default function NavBarServer() {
                 href="/map"
                 className="hover:text-gray-900 hover:font-bold  transition-colors duration-200"
               >
-                Map Sites
+                Map
               </Link>
             </li>
             <li>

@@ -35,7 +35,7 @@ export default function ExploreClient({
   regions: { id: number; name: string }[];
 }) {
   return (
-    <div className="max-w-6xl mx-auto px-4 py-10 text-gray-800">
+    <div className="w-full mx-auto px-4 py-10">
       <SEO title={"Explore"} description={""} />
 
       <h1 className="text-2xl md:text-3xl font-bold text-center mb-8 tracking-tight">
@@ -46,7 +46,7 @@ export default function ExploreClient({
         {/* Season */}
         <SectionCard
           title="Select a Season"
-          icon={<Sun className="w-5 h-5 text-blue-600" />}
+          icon={<Sun className="w-5 h-5 text-cyan-800" />}
           items={displaySeason.map((s) => ({
             href: `/season/${s.id}`,
             label: `${s.emoji} ${s.name}`,
@@ -56,7 +56,7 @@ export default function ExploreClient({
         {/* Month */}
         <SectionCard
           title="Select a Month"
-          icon={<CalendarDays className="w-5 h-5 text-blue-600" />}
+          icon={<CalendarDays className="w-5 h-5 text-cyan-800" />}
           items={MonthNames.map((m, idx) => ({
             href: `/month/${idx + 1}`,
             label: m,
@@ -66,7 +66,7 @@ export default function ExploreClient({
         {/* Country */}
         <SectionCard
           title="Select a Country"
-          icon={<Globe className="w-5 h-5 text-blue-600" />}
+          icon={<Globe className="w-5 h-5 text-cyan-800" />}
           items={countrys.map((c) => ({
             href: `/country/${c.id}`,
             label: c.name,
@@ -76,7 +76,7 @@ export default function ExploreClient({
         {/* Region */}
         <SectionCard
           title="Select a Region"
-          icon={<Map className="w-5 h-5 text-blue-600" />}
+          icon={<Map className="w-5 h-5 text-cyan-800" />}
           items={regions.map((r) => ({
             href: `/region/${r.id}`,
             label: r.name,
@@ -101,11 +101,11 @@ function SectionCard({
     <motion.div
       whileHover={{ scale: 1.01 }}
       transition={{ type: "spring", stiffness: 180 }}
-      className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-200 border border-gray-200 p-6"
+      className="rounded-sm shadow-sm hover:shadow-md transition-all duration-200  p-6"
     >
       <div className="flex items-center gap-2 mb-4">
         {icon}
-        <h2 className="text-lg font-semibold text-gray-900">{title}</h2>
+        <h2 className="text-lg xl:text-3xl font-semibold ">{title}</h2>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -113,7 +113,7 @@ function SectionCard({
           <Link
             key={item.href}
             href={item.href}
-            className="px-3 py-1.5 text-sm rounded-full bg-gray-100 hover:bg-blue-100 text-gray-800 font-medium transition-colors duration-150"
+            className="px-3 py-1.5 xl:text-xl rounded-sm  hover:bg-sky-50 hover:text-cyan-900  font-medium "
           >
             {item.label}
           </Link>

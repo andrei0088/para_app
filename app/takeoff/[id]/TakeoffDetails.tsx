@@ -40,7 +40,7 @@ export default function TakeoffDetails({ details, sites }: Props) {
     : "N/A";
 
   return (
-    <section className="w-full max-w-7xl mx-auto p-2">
+    <section className="w-full  p-2">
       {/* === HEADER: Region / Country / Best Season === */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
         <div className="flex flex-wrap items-center gap-3  font-medium tracking-tight">

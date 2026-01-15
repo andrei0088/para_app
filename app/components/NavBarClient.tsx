@@ -11,7 +11,7 @@ export default function NavBarClient() {
   const menuItems = [
     { href: "/", label: "Home" },
     { href: "/explore", label: "Explore Sites" },
-    { href: "/map", label: "Map Sites" },
+    { href: "/map", label: "Map" },
     { href: "/contact", label: "Contact" },
     { href: "/wing-up", label: "User Area" },
     { href: "/about", label: "About" },

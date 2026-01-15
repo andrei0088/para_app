@@ -75,10 +75,12 @@ export default function ViewLanding({
 `;
 
   return (
-    <section className="w-full max-w-7xl mx-auto p-2   ">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <section className="w-full p-2   ">
+      <div className="grid grid-cols-1 md:grid-cols-[1fr_3fr] gap-6">
         {/* Col 1 - Info + Map */}
-        <div className="flex flex-col space-y-4 col-span-1">
+        <div className="flex flex-col gap-4 px-5">
+          <h1 className="text-3xl font-bold text-slate-700">{landing.name}</h1>
+
           <TopView component="l" id={landing.id} />
 
           <p className="text-gray-700">
@@ -107,8 +109,8 @@ export default function ViewLanding({
         </div>
 
         {/* Col 2-3 - Description + Map */}
-        <div className="col-span-2 flex flex-col gap-4">
-          <div className="w-full rounded-sm overflow-hidden mb-2">
+        <div className="flex flex-col gap-4 w-full">
+          <div className="w-full rounded-sm overflow-hidden mb-2 ">
             <Suspense
               fallback={
                 <div className="text-gray-500">

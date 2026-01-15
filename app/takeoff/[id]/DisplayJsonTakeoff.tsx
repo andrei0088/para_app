@@ -9,16 +9,10 @@ import Image from "next/image";
 
 interface TakeoffDescriptionProps {
   takeoff: string | null;
-  name: string;
-  wind: string | null;
-  altitude: number | null;
 }
 
 export default function DisplayJsonTakeoff({
   takeoff,
-  name,
-  wind,
-  altitude,
 }: TakeoffDescriptionProps) {
   // Fallback HTML text
   const fallback = `
@@ -50,13 +44,7 @@ export default function DisplayJsonTakeoff({
     value ? value : "No information";
 
   return (
-    <section className="w-full max-w-6xl mx-auto p-6 bg-white transition-colors space-y-6">
-      {/* Name */}
-      <h1 className="text-3xl font-bold text-slate-700">
-        {name} {wind !== null ? `(${wind})` : ""}{" "}
-        {altitude !== null ? `- ${altitude} m` : ""}
-      </h1>
-
+    <section className="w-full  p-6  space-y-3">
       {/* Icons */}
       <div className="flex gap-2">
         {take.access?.parking && (
