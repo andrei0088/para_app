@@ -66,8 +66,8 @@ export default function SeasonView({
                 href={`/season/${s.id}`}
                 className={`px-3 py-1 rounded-sm transition-colors ${
                   isActiveSeason
-                    ? "bg-gray-800 text-white  font-semibold"
-                    : "bg-gray-200 text-gray-800  hover:bg-gray-300 "
+                    ? "bg-gray-300  font-semibold"
+                    : "bg-white hover:bg-gray-100 shadow-sm  transition"
                 }`}
               >
                 {s.name}
@@ -88,8 +88,8 @@ export default function SeasonView({
                 href={`/month/${monthNumber}`}
                 className={`px-3 py-1 rounded-sm transition-colors ${
                   isInSeason
-                    ? "bg-gray-800 text-white  font-semibold"
-                    : "bg-gray-200 text-gray-800  hover:bg-gray-300 "
+                    ? "bg-gray-300   font-semibold"
+                    : "bg-white hover:bg-gray-100 shadow-sm  transition"
                 }`}
               >
                 {month}
@@ -128,10 +128,7 @@ export default function SeasonView({
         if (!countryRegions.length) return null;
 
         return (
-          <div
-            key={country.id}
-            className="mb-10 p-6 rounded-sm shadow-sm border  "
-          >
+          <div key={country.id} className="mb-10 p-6 rounded-sm shadow-sm  ">
             <h2 className="text-2xl font-semibold mb-4">{country.name}</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">

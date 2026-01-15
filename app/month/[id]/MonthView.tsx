@@ -86,8 +86,8 @@ export default function MonthView({
                 href={`/season/${s.id}`}
                 className={`px-3 py-1 rounded-sm transition-colors ${
                   isActiveSeason
-                    ? "bg-gray-800 text-white  font-semibold"
-                    : "bg-gray-200 text-gray-800  hover:bg-gray-300 "
+                    ? "bg-gray-300  font-semibold"
+                    : "bg-white hover:bg-gray-100 shadow-sm  transition"
                 }`}
               >
                 {s.name}
@@ -107,8 +107,8 @@ export default function MonthView({
                 href={`/month/${monthNumber}`}
                 className={`px-3 py-1 rounded-sm transition-colors ${
                   isActiveMonth
-                    ? "bg-gray-800 text-white  font-semibold"
-                    : "bg-gray-200 text-gray-800  hover:bg-gray-300 "
+                    ? "bg-gray-300  font-semibold"
+                    : "bg-white hover:bg-gray-100 shadow-sm  transition"
                 }`}
               >
                 {name}
@@ -120,7 +120,7 @@ export default function MonthView({
 
       {/* --- Lista țărilor filtrabile --- */}
       {sortedCountries.length === 0 ? (
-        <p className="text-gray-700 ">
+        <p className=" ">
           We are currently collecting data for this month. Please check back
           later.
         </p>
@@ -147,10 +147,7 @@ export default function MonthView({
         if (!countryRegions.length) return null;
 
         return (
-          <div
-            key={country.id}
-            className="mb-10 p-6 bg-slate-50  rounded-sm shadow-sm "
-          >
+          <div key={country.id} className="mb-10 p-6 rounded-sm shadow-sm ">
             <h2 className="text-2xl font-semibold mb-4">{country.name}</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -172,8 +169,8 @@ export default function MonthView({
                           key={m}
                           className={`px-2 py-0.5 rounded-sm ${
                             m === month
-                              ? "bg-gray-800 text-white  font-semibold"
-                              : "bg-gray-200 text-gray-800 "
+                              ? "bg-gray-300  font-semibold"
+                              : "bg-white hover:bg-gray-100 shadow-sm  transition"
                           }`}
                         >
                           {MonthNames[m - 1]}
