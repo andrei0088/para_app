@@ -1,4 +1,4 @@
-import { auth } from "@/app/lib/auth";
+import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import Link from "next/link";
 export default async function JoinView({

@@ -7,7 +7,7 @@ import { add_comment_like, remove_comment_like } from "./action";
 type CommentCharType = "c" | "r" | "t" | "l";
 
 interface TopClientProps {
-  commentId: number;
+  commentId: string;
   like: number;
   type: CommentCharType;
   userLiked: boolean;

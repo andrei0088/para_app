@@ -1,8 +1,8 @@
 "use server";
 
-import { prisma } from "@/app/api/prisma";
+import { prisma } from "@/lib/prisma";
 import { v2 as cloudinary } from "cloudinary";
-import { auth } from "../lib/auth";
+import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
 interface CloudinaryUploadResult {
@@ -36,17 +36,19 @@ export async function add_picture(
   }
 
   // Upload la Cloudinary
-  const result: CloudinaryUploadResult = await new Promise((resolve, reject) => {
-    const uploadStream = cloudinary.uploader.upload_stream(
-      { folder: "profile_pic", public_id: filename },
-      (err, res) => {
-        if (err) return reject(err);
-        resolve(res as CloudinaryUploadResult);
-      }
-    );
+  const result: CloudinaryUploadResult = await new Promise(
+    (resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { folder: "profile_pic", public_id: filename },
+        (err, res) => {
+          if (err) return reject(err);
+          resolve(res as CloudinaryUploadResult);
+        }
+      );
 
-    uploadStream.end(nodeBuffer);
-  });
+      uploadStream.end(nodeBuffer);
+    }
+  );
 
   // Șterge imaginea veche dacă există
   if (currentImage) {
@@ -70,7 +72,6 @@ export async function add_picture(
   return { success: true, publicId: result.public_id, url: result.secure_url };
 }
 
-
 export async function delete_picture() {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session?.user) return { success: false, message: "User not logged in" };
@@ -80,7 +81,8 @@ export async function delete_picture() {
     where: { userId: session.user.id },
   });
 
-  if (!profile?.image) return { success: false, message: "No profile picture to delete" };
+  if (!profile?.image)
+    return { success: false, message: "No profile picture to delete" };
 
   // Șterge din Cloudinary
   try {

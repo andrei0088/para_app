@@ -1,8 +1,9 @@
 "use server";
-import { prisma } from "@/app/api/prisma";
-import { auth } from "@/app/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 import { Country, Landing, Region, Takeoff } from "@prisma/client";
 import { headers } from "next/headers";
+import { CountryEditDTO } from "@/app/types";
 
 export async function get_country(id: number) {
   const rez = await prisma.country.findFirst({ where: { id } });
@@ -44,7 +45,7 @@ export async function get_region_name() {
   return rez;
 }
 
-export async function update_country(updated: Country) {
+export async function update_country(updated: CountryEditDTO) {
   try {
     if (!updated) return { success: false };
     const session = await auth.api.getSession({

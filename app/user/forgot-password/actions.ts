@@ -1,5 +1,5 @@
 "use server";
-import { auth } from "@/app/lib/auth";
+import { auth } from "@/lib/auth";
 
 export async function sendResetEmail(email: string) {
   const result = await auth.api.requestPasswordReset({

@@ -1,8 +1,8 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
-import { prisma } from "../api/prisma"; // ajustează calea dacă e nevoie
-import { sendEmail } from "../api/actions/auth"; // ajustează calea
+import { prisma } from "./prisma"; // ajustează calea dacă e nevoie
+import { sendEmail } from "../app/api/actions/auth"; // ajustează calea
 
 export const auth = betterAuth({
   emailAndPassword: {

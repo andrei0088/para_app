@@ -1,4 +1,4 @@
-import { prisma } from "@/app/api/prisma";
+import { prisma } from "@/lib/prisma";
 
 export async function softDeleteUser(userId: string) {
   // mark user as deleted
@@ -14,4 +14,3 @@ export async function softDeleteUser(userId: string) {
 
   return { success: true, message: "User account has been deactivated." };
 }
-

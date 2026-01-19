@@ -6,7 +6,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Roboto, Oswald } from "next/font/google";
 import Banner from "./components/Banner";
-import GoogleAnalytics from "./lib/GoogleAnalytics";
+import GoogleAnalytics from "@/lib/GoogleAnalytics";
 import { Metadata } from "next";
 import Cookie from "./components/Cookie";
 import { cookies } from "next/headers";

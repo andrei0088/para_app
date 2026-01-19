@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, FormEvent } from "react";
-import { add_country, add_region, add_landing, add_takeoff } from "./lib/admin";
+import { add_country, add_region, add_landing, add_takeoff } from "./admin";
 import { Country, Region } from "@prisma/client";
 
 const capitalizeFirstLetter = (str: string) => {

@@ -1,7 +1,7 @@
 "use server";
 
-import { prisma } from "@/app/api/prisma";
-import { auth } from "@/app/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 import { headers as nextHeaders } from "next/headers";
 import { revalidatePath } from "next/cache";
 import * as leoProfanity from "leo-profanity";

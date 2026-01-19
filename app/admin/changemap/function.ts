@@ -1,4 +1,4 @@
-import { prisma } from "@/app/api/prisma";
+import { prisma } from "@/lib/prisma";
 
 export async function get_country_maps(id: number) {
   const map = await prisma.country.findUnique({

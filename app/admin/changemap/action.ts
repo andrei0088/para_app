@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/app/api/prisma";
+import { prisma } from "@/lib/prisma";
 import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({

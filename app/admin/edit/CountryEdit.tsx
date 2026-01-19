@@ -4,14 +4,15 @@ import { useState } from "react";
 import { update_country } from "./action";
 import { Country } from "@prisma/client";
 import Link from "next/link";
+import { CountryEditDTO } from "@/app/types";
 
 // Props componentă
 interface CountryEditProps {
-  country: Country;
+  country: CountryEditDTO;
 }
 
 async function edit_country(
-  updated: Country
+  updated: CountryEditDTO
 ): Promise<{ success: boolean; message?: string }> {
   try {
     await update_country(updated);
@@ -39,7 +40,7 @@ export default function CountryEdit({ country }: CountryEditProps) {
     setLoading(true);
     setMessage("");
 
-    const updatedCountry: Country = {
+    const updatedCountry: CountryEditDTO = {
       id: country.id,
       name,
       description,

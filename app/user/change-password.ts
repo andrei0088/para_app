@@ -1,6 +1,6 @@
 "use server";
 
-import { auth } from "../lib/auth";
+import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
 export default async function change_password(formData: FormData) {
@@ -52,6 +52,5 @@ export default async function change_password(formData: FormData) {
     }
 
     return { success: false, message };
-  
   }
 }

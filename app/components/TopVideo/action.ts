@@ -1,4 +1,4 @@
-import { prisma } from "@/app/api/prisma";
+import { prisma } from "@/lib/prisma";
 
 export interface Video {
   id: number;

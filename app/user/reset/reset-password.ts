@@ -1,5 +1,5 @@
 "use server";
-import { auth } from "@/app/lib/auth";
+import { auth } from "@/lib/auth";
 
 export async function change_password(formData: FormData) {
   const token = formData.get("token") as string;

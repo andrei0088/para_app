@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { headers } from "next/headers";
-import { auth } from "@/app/lib/auth";
+import { auth } from "@/lib/auth";
 import is_admin from "@/app/api/actions/is_admin";
 
 export async function middleware(request: NextRequest) {

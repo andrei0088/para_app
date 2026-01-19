@@ -1,4 +1,4 @@
-import { prisma } from "../prisma";
+import { prisma } from "@/lib/prisma";
 
 export async function get_home_country() {
   return await prisma.country.findMany({

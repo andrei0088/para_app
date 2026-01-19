@@ -81,8 +81,9 @@ interface ApiCountry {
   description: string | null;
   latitude: number | null;
   longitude: number | null;
-  seo: string | null; // ✅ adăugat
+  seo: string | null;
   image: string | null;
+  comments: string[];
 }
 
 // ---------------- SEZONALE ----------------

@@ -5,20 +5,27 @@ import {
   get_comment_update,
   get_delete_comment,
   raport_comment,
-} from "@/app/api/get/get_comments";
+} from "./mongoComment";
 import LikeComment from "./LikeComment";
 
 type CommentUser = {
-  id: string;
-  name: string;
+  id?: string | null;
+  name?: string | null;
+  success: boolean;
+  message?: string | null;
 };
 
 type CommentItem = {
-  id: number;
-  comment: string;
-  createdAt: string | Date;
+  id: string;
+  componentId: number;
+  profileId: number;
   userId: string;
-  user: CommentUser;
+  userName: string;
+  comment: string;
+  report: number;
+  reportedBy?: string[];
+  deletedAt: string | Date | null;
+  createdAt: string | Date;
   temp?: boolean;
 };
 
@@ -27,7 +34,7 @@ type SocialViewProps = {
   selectedId: number;
   selectedName: string;
   comments: CommentItem[];
-  user: string | null;
+  user: CommentUser | null;
 };
 
 export default function SocialView({
@@ -37,12 +44,12 @@ export default function SocialView({
   comments,
   user,
 }: SocialViewProps) {
-  const [editId, setEditId] = useState<number | null>(null);
+  const [editId, setEditId] = useState<string | null>(null);
   const [editText, setEditText] = useState("");
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(false);
   const [commentList, setCommentList] = useState<CommentItem[]>([...comments]);
-  const [raportedIds, setRaportedIds] = useState<Set<number>>(new Set());
+  const [raportedIds, setRaportedIds] = useState<Set<string>>(new Set());
 
   const [message, setMessage] = useState<string | null>(null);
   const [messageType, setMessageType] = useState<"success" | "error" | null>(
@@ -84,12 +91,16 @@ export default function SocialView({
       setMessage(rez.message);
       // Adaugă comentariul nou direct în state, fără reload
       const newCommentObj: CommentItem = {
-        id: Date.now(), // temporar până primești ID real
+        id: Date.now().toString(),
         comment: newComment,
         createdAt: new Date(),
-        userId: user || "",
-        user: { id: user || "", name: "You" },
+        userId: user?.id || "",
+        userName: "You",
         temp: true,
+        componentId: selectedId,
+        profileId: 0,
+        report: 0,
+        deletedAt: null,
       };
       setCommentList((prev) => [...prev, newCommentObj]);
       setNewComment("");
@@ -126,7 +137,7 @@ export default function SocialView({
     }
   }
 
-  async function handleDelete(id: number) {
+  async function handleDelete(id: string) {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this comment? This action cannot be undone."
     );
@@ -135,7 +146,7 @@ export default function SocialView({
     const rez = await get_delete_comment(id, selectedTipe);
 
     if (rez.success) {
-      setCommentList((prev) => prev.filter((c) => c.id !== id));
+      setCommentList((prev) => prev.filter((c) => c.id != id));
       setMessageType("success");
       setMessage(rez.message);
     } else {
@@ -166,17 +177,17 @@ export default function SocialView({
           <article key={c.id} className="p-4 rounded-sm border bg-white ">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-medium text-sky-900 ">
-                {c.userId === user ? (
+                {c.userId === user?.id ? (
                   <span className="italic  mr-1">You</span>
                 ) : (
-                  c.user.name
+                  c.userName
                 )}
                 <span className="ml-2 text-sm text-gray-900 ">
                   on {new Date(c.createdAt).toLocaleDateString()}
                 </span>
               </h3>
               {!c.temp && <LikeComment commentId={c.id} type={selectedTipe} />}
-              {c.userId != user && (
+              {c.userId != user?.id && (
                 <button
                   className={`text-sm px-3 py-1 rounded-sm border ${
                     raportedIds.has(c.id)
@@ -188,11 +199,11 @@ export default function SocialView({
                     setRaportedIds((prev) => new Set(prev).add(c.id));
                   }}
                 >
-                  {!raportedIds.has(c.id) ? "!RAPORT!" : "!RAPORT!"}
+                  {!raportedIds.has(c.id) ? "!REPORT!" : "!REPORT!"}
                 </button>
               )}
 
-              {c.userId === user && editId !== c.id && (
+              {c.userId === user?.id && editId !== c.id && (
                 <button
                   className="text-sm px-3 py-1 rounded-sm border hover:bg-gray-200 "
                   onClick={() => startEdit(c)}

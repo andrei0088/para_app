@@ -16,7 +16,7 @@ model Country {
   longitude   Float?
   seo         String?
   image       String?
-  comments    CountryComment[]
+  comments    String[]
   likes       CountryLike[]
   landings    Landing[]
   regions     Region[]
@@ -35,7 +35,7 @@ model Region {
   seo         String?
   landings    Landing[]       @relation("LandingRegion")
   country     Country         @relation(fields: [countryId], references: [id])
-  comments    RegionComment[]
+  comments    String[]
   likes       RegionLike[]
   takeoffs    Takeoff[]       @relation("TakeoffRegion")
 }
@@ -54,7 +54,7 @@ model Takeoff {
   seo         String?
   country     Country          @relation(fields: [countryId], references: [id])
   region      Region           @relation("TakeoffRegion", fields: [regionId], references: [id])
-  comments    TakeoffComment[]
+  comments    String[]
   likes       TakeoffLike[]
 }
 
@@ -71,7 +71,7 @@ model Landing {
   seo         String?
   country     Country          @relation(fields: [countryId], references: [id])
   region      Region           @relation("LandingRegion", fields: [regionId], references: [id])
-  comments    LandingComment[]
+  comments    String[]
   likes       LandingLike[]
 }
 
@@ -95,16 +95,16 @@ model User {
   userType            UserType            @default(Pilot)
   deletedAt           DateTime?
   commentLikes        CommentLike[]
-  countryComments     CountryComment[]
+  countryComments     String[]
   countryLikes        CountryLike[]
-  landingComments     LandingComment[]
+  landingComments     String[]
   landingLikes        LandingLike[]
   passwordResetTokens PasswordResetToken?
   profile             Profile?
   profileLikes        ProfileLike[]
-  regionComments      RegionComment[]
+  regionComments      String[]
   regionLikes         RegionLike[]
-  takeoffComments     TakeoffComment[]
+  takeoffComments     String[]
   takeoffLikes        TakeoffLike[]
   videoComments       VideoComment[]
   videoLikes          VideoLike[]
@@ -224,61 +224,9 @@ model VideoLike {
   @@unique([userId, videoId])
 }
 
-model CountryComment {
-  id         Int       @id @default(autoincrement())
-  userId     String
-  countryId  Int
-  comment    String
-  createdAt  DateTime  @default(now())
-  deletedAt  DateTime?
-  raport     Int       @default(0)
-  reportedBy String[]  @default([])
-  profileId  Int
-  country    Country   @relation(fields: [countryId], references: [id])
-  user       User      @relation(fields: [userId], references: [id])
-}
 
-model RegionComment {
-  id         Int       @id @default(autoincrement())
-  userId     String
-  regionId   Int
-  comment    String
-  createdAt  DateTime  @default(now())
-  deletedAt  DateTime?
-  raport     Int       @default(0)
-  reportedBy String[]  @default([])
-  profileId  Int
-  region     Region    @relation(fields: [regionId], references: [id])
-  user       User      @relation(fields: [userId], references: [id])
-}
 
-model TakeoffComment {
-  id         Int       @id @default(autoincrement())
-  userId     String
-  takeoffId  Int
-  comment    String
-  createdAt  DateTime  @default(now())
-  deletedAt  DateTime?
-  raport     Int       @default(0)
-  reportedBy String[]  @default([])
-  profileId  Int
-  takeoff    Takeoff   @relation(fields: [takeoffId], references: [id])
-  user       User      @relation(fields: [userId], references: [id])
-}
 
-model LandingComment {
-  id         Int       @id @default(autoincrement())
-  userId     String
-  landingId  Int
-  comment    String
-  createdAt  DateTime  @default(now())
-  deletedAt  DateTime?
-  raport     Int       @default(0)
-  reportedBy String[]  @default([])
-  profileId  Int
-  landing    Landing   @relation(fields: [landingId], references: [id])
-  user       User      @relation(fields: [userId], references: [id])
-}
 
 model Profile {
   id             Int            @id @default(autoincrement())
@@ -317,7 +265,7 @@ model Video {
 model CommentLike {
   id        Int         @id @default(autoincrement())
   userId    String
-  commentId Int
+  commentId String
   type      CommentType
   createdAt DateTime    @default(now())
   user      User        @relation(fields: [userId], references: [id])

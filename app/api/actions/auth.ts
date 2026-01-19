@@ -1,9 +1,9 @@
 "use server";
 
-import { auth } from "@/app/lib/auth";
+import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { prisma } from "../prisma";
+import { prisma } from "@/lib/prisma";
 import nodemailer from "nodemailer";
 
 interface SignUpResult {

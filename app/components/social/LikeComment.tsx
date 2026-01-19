@@ -6,7 +6,7 @@ import LikeCommentClient from "./LikeCommentClient";
 type CommentCharType = "c" | "r" | "t" | "l";
 
 type LikeCommentProps = {
-  commentId: number;
+  commentId: string;
   type: CommentCharType;
 };
 

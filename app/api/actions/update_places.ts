@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/app/api/prisma";
+import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { BasePlace, PlaceType } from "@/app/types";
 
@@ -63,7 +63,8 @@ export async function addPlace(
         break;
 
       case "region":
-        if (!options.countryId) return { success: false, message: "countryId required for region" };
+        if (!options.countryId)
+          return { success: false, message: "countryId required for region" };
         rez = await prisma.region.create({
           data: { name, countryId: options.countryId },
         });
@@ -78,7 +79,11 @@ export async function addPlace(
           options.longitude == null ||
           options.altitude == null
         )
-          return { success: false, message: "countryId, regionId, latitude, longitude, altitude required" };
+          return {
+            success: false,
+            message:
+              "countryId, regionId, latitude, longitude, altitude required",
+          };
 
         rez =
           type === "takeoff"

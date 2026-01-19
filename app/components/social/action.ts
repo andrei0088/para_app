@@ -1,6 +1,6 @@
 "use server";
-import { prisma } from "@/app/api/prisma";
-import { auth } from "@/app/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import type { CommentType } from "@prisma/client";
 
@@ -26,7 +26,7 @@ export async function get_like_comment({
   commentId,
   type,
 }: {
-  commentId: number;
+  commentId: string;
   type: string;
 }) {
   if (!commentId || !type) {
@@ -65,7 +65,7 @@ export async function add_comment_like({
   commentId,
   type,
 }: {
-  commentId: number;
+  commentId: string;
   type: string;
 }) {
   if (!commentId || !type) {
@@ -114,7 +114,7 @@ export async function remove_comment_like({
   commentId,
   type,
 }: {
-  commentId: number;
+  commentId: string;
   type: string;
 }) {
   if (!commentId || !type) {

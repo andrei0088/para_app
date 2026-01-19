@@ -1,7 +1,7 @@
 "use server";
 
-import { auth } from "@/app/lib/auth";
-import { prisma } from "@/app/api/prisma";
+import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 
 export default async function resendValidationEmail(email: string) {
   if (!email) {

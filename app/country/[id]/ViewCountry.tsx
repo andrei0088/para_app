@@ -27,16 +27,15 @@ export default function ViewCountry({ country }: CountrySearchProps) {
       Stay tuned for updates and thank you for your support.
     </p>
   `;
-
-  let descriptionJson = null;
-  if (country.description) {
+  console.log("Country description:", country.description);
+  let descriptionJson;
+  if (typeof country.description === "string") {
     try {
       descriptionJson = JSON.parse(country.description);
-    } catch (e) {
-      console.error("Invalid JSON in country.description", e);
+    } catch {
+      descriptionJson = null;
     }
   }
-
   return (
     <div className="w-full md:w-3/4 px-2 my-4">
       <div className="relative">

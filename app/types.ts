@@ -119,13 +119,11 @@ export type Comment = {
   userId: string;
   comment: string;
   profileId: number;
+  componentId: number;
   raport: number;
   createdAt: Date;
   deletedAt: Date | null;
-  user: {
-    id: string;
-    name: string;
-  };
+  userName: string;
 };
 
 export interface SignUpResult {
@@ -151,4 +149,14 @@ export interface LandingTakeoff {
   map?: string;
   regionId: number;
   countryId: number;
+}
+
+export interface CountryEditDTO {
+  id: number;
+  name: string;
+  description: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  seo: string | null;
+  image: string | null;
 }

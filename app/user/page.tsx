@@ -1,5 +1,5 @@
 // app/user/UserServer.tsx
-import { auth } from "@/app/lib/auth";
+import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import UserClient from "./UserClient";
 import { redirect } from "next/navigation";
