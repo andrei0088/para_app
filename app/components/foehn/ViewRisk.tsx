@@ -18,11 +18,11 @@ export default async function ParaglidingRisk() {
     [...foehnPlaces, ...mistralPlaces].map(async (city) => {
       const res = await fetch(
         `${urlBase}?q=${city}&appid=${ApiKey}&units=metric`,
-        { next: { revalidate: 3600 } }
+        { next: { revalidate: 3600 } },
       );
       const json = await res.json();
       return json.cod === 200 ? json : { main: { pressure: null }, name: city };
-    })
+    }),
   );
 
   // Calculate risk based on pressure difference
@@ -70,7 +70,7 @@ export default async function ParaglidingRisk() {
   ];
 
   return (
-    <div className="space-y-2 text-sm px-2 md:px-4 text-gray-800">
+    <div className="w-full space-y-2 text-sm px-2 md:px-4 text-gray-800">
       <h2 className="font-bold  ">Paragliding Wind Risk</h2>
 
       <h3 className="font-semibold  ">Foehn:</h3>

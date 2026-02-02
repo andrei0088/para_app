@@ -5,7 +5,6 @@ import {
   get_takeoff_comment,
 } from "./mongoComment";
 import SocialView from "./SocialView";
-import type { Comment } from "@/app/types";
 import { Suspense } from "react";
 
 type CommentItem = {

@@ -12,8 +12,10 @@ export default async function JoinView({
     headers: await headers(),
   });
   var url;
-  if (session?.user) url = `/update?type=${type}&id=${id}`;
-  else url = "/user/register";
+  if (type === "country") url = `/wing-up/community/c${id}`;
+  if (type === "region") url = `/wing-up/community/r${id}`;
+  else url = `/wing-up/`;
+
   return (
     <Link href={url}>
       <div

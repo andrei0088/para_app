@@ -10,8 +10,6 @@ import CountryComment from "@/models/CountryComment";
 import RegionComment from "@/models/RegionComment";
 import LandingComment from "@/models/LandingComment";
 import TakeoffComment from "@/models/TakeoffComment";
-import { use } from "react";
-import succes from "@/app/user/login/succes/page";
 
 leoProfanity.loadDictionary("en");
 leoProfanity.loadDictionary("fr");
@@ -211,7 +209,7 @@ export async function get_landing_comment({ id }: { id: number }) {
 export async function add_comment(
   component: ComponentType,
   componentId: number,
-  comment: string
+  comment: string,
 ) {
   if (!comment.trim())
     return { success: false, message: "Comment cannot be empty." };
@@ -330,32 +328,32 @@ async function getCommentModel(component: ComponentType, id: string) {
 async function updateCommentModel(
   component: ComponentType,
   id: string,
-  text: string
+  text: string,
 ) {
   switch (component) {
     case "c":
       return CountryComment.findByIdAndUpdate(
         id,
         { comment: text },
-        { new: true }
+        { new: true },
       );
     case "r":
       return RegionComment.findByIdAndUpdate(
         id,
         { comment: text },
-        { new: true }
+        { new: true },
       );
     case "t":
       return TakeoffComment.findByIdAndUpdate(
         id,
         { comment: text },
-        { new: true }
+        { new: true },
       );
     case "l":
       return LandingComment.findByIdAndUpdate(
         id,
         { comment: text },
-        { new: true }
+        { new: true },
       );
   }
 }
@@ -366,25 +364,25 @@ async function deleteCommentModel(component: ComponentType, id: string) {
       return CountryComment.findByIdAndUpdate(
         id,
         { deletedAt: new Date() },
-        { new: true }
+        { new: true },
       );
     case "r":
       return RegionComment.findByIdAndUpdate(
         id,
         { deletedAt: new Date() },
-        { new: true }
+        { new: true },
       );
     case "t":
       return TakeoffComment.findByIdAndUpdate(
         id,
         { deletedAt: new Date() },
-        { new: true }
+        { new: true },
       );
     case "l":
       return LandingComment.findByIdAndUpdate(
         id,
         { deletedAt: new Date() },
-        { new: true }
+        { new: true },
       );
   }
 }
@@ -392,7 +390,7 @@ async function deleteCommentModel(component: ComponentType, id: string) {
 export async function get_comment_update(
   commentId: string,
   text: string,
-  tipe: ComponentType
+  tipe: ComponentType,
 ) {
   const user = await getUserId();
   const comment = await getCommentModel(tipe, commentId);
@@ -416,7 +414,7 @@ export async function get_comment_update(
 
 export async function get_delete_comment(
   commentId: string,
-  tipe: ComponentType
+  tipe: ComponentType,
 ) {
   const user = await getUserId();
   const comment = await getCommentModel(tipe, commentId);

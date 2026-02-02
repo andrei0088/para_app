@@ -7,7 +7,7 @@ export default function RightBar() {
   return (
     <aside className="w-full h-full lg:w-64 bg-white  flex flex-col items-center py-3 gap-4 border-r border-l border-r-1 border-gray-100 ">
       {/* ViewRisk component */}
-      <div className="w-full px-3">
+      <div className="">
         <ViewRisk />
       </div>
 

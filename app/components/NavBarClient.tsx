@@ -12,8 +12,8 @@ export default function NavBarClient() {
     { href: "/", label: "Home" },
     { href: "/explore", label: "Explore Sites" },
     { href: "/map", label: "Map" },
+    { href: "/wing-up", label: "Community" },
     { href: "/contact", label: "Contact" },
-    { href: "/wing-up", label: "User Area" },
     { href: "/about", label: "About" },
   ];
 

@@ -37,20 +37,21 @@ export default function NavBarServer() {
             </li>
             <li>
               <Link
+                href="/wing-up"
+                className="hover:text-gray-900 hover:font-bold  transition-colors duration-200"
+              >
+                Community
+              </Link>
+            </li>
+            <li>
+              <Link
                 href="/contact"
                 className="hover:text-gray-900 hover:font-bold  transition-colors duration-200"
               >
                 Contact
               </Link>
             </li>
-            <li>
-              <Link
-                href="/wing-up"
-                className="hover:text-gray-900 hover:font-bold  transition-colors duration-200"
-              >
-                User Area
-              </Link>
-            </li>
+
             <li>
               <Link
                 href="/about"

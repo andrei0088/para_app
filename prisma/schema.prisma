@@ -75,6 +75,26 @@ model Landing {
   likes       LandingLike[]
 }
 
+model Community{
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  url       String   @unique
+  type      CommunityType 
+  users     String[] 
+  locals    String[] 
+  allowPM   String[]
+  messages  String[]
+  longitude Float
+  latitude  Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+  validated Boolean  @default(false)
+  countryId   String?
+  countryName   String?
+  regions   Int[]
+  clubs     Int[]
+}
+
 model PasswordResetToken {
   id        String   @id @default(cuid())
   token     String   @unique
@@ -287,6 +307,7 @@ model VideoComment {
   video     Video     @relation(fields: [videoId], references: [id])
 }
 
+
 enum UserType {
   Admin
   Pilot
@@ -298,3 +319,11 @@ enum CommentType {
   Takeoff
   Landing
 }
+
+enum CommunityType {
+  Country
+  Region
+  Club
+}
+
+
