@@ -7,11 +7,20 @@ import { Country, Region, Takeoff, Landing } from "@prisma/client";
 import SEO from "../components/Seo";
 import MapGetParams from "./MapGetParams";
 
+type Community = {
+  id: number;
+  name: string;
+  url: string;
+  latitude: number;
+  longitude: number;
+};
+
 interface Props {
   countries: Country[];
   regions: Region[];
   takeoffs: Takeoff[];
   landings: Landing[];
+  community: Community[];
 }
 
 export default function MapPageClient({
@@ -19,6 +28,7 @@ export default function MapPageClient({
   regions,
   takeoffs,
   landings,
+  community,
 }: Props) {
   const [selectedLatLng, setSelectedLatLng] = useState<{
     lat: number | null;
@@ -30,7 +40,7 @@ export default function MapPageClient({
   const handleSelect = (
     id: number | null,
     type: string | null,
-    newZoom: number | null
+    newZoom: number | null,
   ) => {
     if (!id || !type) return;
 
@@ -91,6 +101,7 @@ export default function MapPageClient({
           landings={landings}
           selected={selectedLatLng}
           zoom={zoom}
+          community={community}
         />
       </div>
     </div>

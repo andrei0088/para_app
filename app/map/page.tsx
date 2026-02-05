@@ -3,6 +3,7 @@ import {
   get_all_regions,
   get_all_takeoff,
   get_all_landing,
+  get_all_community,
 } from "@/app/api/get/get_places";
 
 import MapPageClient from "./MapPageClient";
@@ -19,6 +20,7 @@ export default async function MapRutePage({ searchParams }: PageProps) {
   const regionsRaw = await get_all_regions();
   const takeoffsRaw = await get_all_takeoff();
   const landingsRaw = await get_all_landing();
+  const community = await get_all_community();
 
   // map null -> null (nu undefined)
   const countries: Country[] = countriesRaw.map((c) => ({
@@ -60,6 +62,7 @@ export default async function MapRutePage({ searchParams }: PageProps) {
       regions={regions}
       takeoffs={takeoffs}
       landings={landings}
+      community={community}
     />
   );
 }

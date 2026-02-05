@@ -4,11 +4,20 @@ import dynamic from "next/dynamic";
 import { Site } from "../types";
 import { Landing, Takeoff } from "@prisma/client";
 
+type Community = {
+  id: number;
+  name: string;
+  url: string;
+  latitude: number;
+  longitude: number;
+};
+
 interface Props {
   takeoffs: Takeoff[];
   landings: Landing[];
   selected: { lat: number | null; lng: number | null };
   zoom: number;
+  community: Community[];
 }
 
 // Importăm MapView doar pe client, cu loader
@@ -26,6 +35,7 @@ export default function MapClientWrapper({
   landings,
   selected,
   zoom,
+  community,
 }: Props) {
   const initialCenter: [number, number] = [45.7, 7];
 
@@ -60,5 +70,12 @@ export default function MapClientWrapper({
     selected.lat !== null && selected.lng !== null
       ? [selected.lat, selected.lng]
       : initialCenter;
-  return <MapView allSites={initialSites} center={center} zoom={zoom} />;
+  return (
+    <MapView
+      allSites={initialSites}
+      center={center}
+      zoom={zoom}
+      community={community}
+    />
+  );
 }

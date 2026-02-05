@@ -6,11 +6,20 @@ import L from "leaflet";
 import Link from "next/link";
 import { Site } from "@/app/types";
 
+type Community = {
+  id: number;
+  name: string;
+  url: string;
+  latitude: number;
+  longitude: number;
+};
+
 interface MapProps {
   center: [number, number];
   takeoff?: Site[];
   landing?: Site[];
   zoom: number;
+  community?: Community[];
 }
 
 export default function MapView({
@@ -18,21 +27,29 @@ export default function MapView({
   takeoff = [],
   landing = [],
   zoom,
+  community,
 }: MapProps) {
   const takeoffIcon = new L.Icon({
     iconUrl: "/icons/takeoff.png",
-    iconSize: [25, 25],
-    iconAnchor: [12, 25],
-    popupAnchor: [0, -25],
+    iconSize: [38, 38],
+    iconAnchor: [19, 38],
+    popupAnchor: [0, -38],
   });
 
   const landingIcon = new L.Icon({
     iconUrl: "/icons/landing.png",
-    iconSize: [25, 25],
-    iconAnchor: [12, 25],
-    popupAnchor: [0, -25],
+    iconSize: [38, 38],
+    iconAnchor: [19, 38],
+    popupAnchor: [0, -38],
   });
 
+  const communityicon = new L.Icon({
+    iconUrl: "/icons/community.png",
+    iconSize: [38, 38],
+    iconAnchor: [19, 38],
+    popupAnchor: [0, -38],
+  });
+  console.log({ community });
   return (
     <MapContainer
       center={center}
@@ -73,6 +90,26 @@ export default function MapView({
               <Link href={`/landing/${site.id}`}>{site.name}</Link>
             ) : (
               "Landing"
+            )}
+          </Popup>
+        </Marker>
+      ))}
+      {community?.map((site, i) => (
+        <Marker
+          key={`community-${i}`}
+          position={[site.latitude, site.longitude]}
+          icon={communityicon}
+        >
+          <Popup>
+            {site.name ? (
+              <Link href={`/community/${site.url}`}>
+                <span className="block text-center">
+                  Community <br />
+                  {site.name}
+                </span>
+              </Link>
+            ) : (
+              "Community"
             )}
           </Popup>
         </Marker>

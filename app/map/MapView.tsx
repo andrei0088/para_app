@@ -5,6 +5,15 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect } from "react";
 import { Site } from "../types";
+import Link from "next/link";
+
+type Community = {
+  id: number;
+  name: string;
+  url: string;
+  latitude: number;
+  longitude: number;
+};
 
 // Icon-uri custom
 const takeoffIcon = new L.Icon({
@@ -43,9 +52,21 @@ interface MapViewProps {
   allSites: Site[];
   center: [number, number];
   zoom: number;
+  community: Community[];
 }
 
-export default function MapView({ allSites, center, zoom }: MapViewProps) {
+export default function MapView({
+  allSites,
+  center,
+  zoom,
+  community,
+}: MapViewProps) {
+  const communityicon = new L.Icon({
+    iconUrl: "/icons/community.png",
+    iconSize: [38, 38],
+    iconAnchor: [19, 38],
+    popupAnchor: [0, -38],
+  });
   return (
     <MapContainer
       center={center}
@@ -75,15 +96,36 @@ export default function MapView({ allSites, center, zoom }: MapViewProps) {
             icon={icon}
           >
             <Popup>
-              <a href={link} className="text-blue-600 underline">
+              <Link href={link} className="text-blue-600 underline">
                 {site.name} {site.wind && ` (${site.wind})`}
                 <br />
                 {site.altitude} m
-              </a>
+              </Link>
             </Popup>
           </Marker>
         );
       })}
+
+      {community?.map((site, i) => (
+        <Marker
+          key={`community-${i}`}
+          position={[site.latitude, site.longitude]}
+          icon={communityicon}
+        >
+          <Popup>
+            {site.name ? (
+              <Link href={`/community/${site.url}`}>
+                <span className="block text-center">
+                  Community <br />
+                  {site.name}
+                </span>
+              </Link>
+            ) : (
+              "Community"
+            )}
+          </Popup>
+        </Marker>
+      ))}
     </MapContainer>
   );
 }

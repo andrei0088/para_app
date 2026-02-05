@@ -132,3 +132,17 @@ export async function get_region_landings_takeoffs({
 
   return { takeoff, landing };
 }
+
+export async function get_all_community() {
+  const community = await prisma.community.findMany({
+    where: { validated: true },
+    select: {
+      id: true,
+      name: true,
+      url: true,
+      latitude: true,
+      longitude: true,
+    },
+  });
+  return community;
+}

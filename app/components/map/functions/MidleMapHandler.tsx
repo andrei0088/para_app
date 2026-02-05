@@ -12,10 +12,18 @@ const MapView = dynamic(() => import("./MapView"), {
   ),
 });
 
+type Community = {
+  id: number;
+  name: string;
+  url: string;
+  latitude: number;
+  longitude: number;
+};
 interface MapGenerateProps {
   center: [number, number];
   takeoff?: Site[];
   landing?: Site[];
+  community?: Community[];
   zoom?: number;
 }
 
@@ -24,6 +32,7 @@ export default function MidleMapHandler({
   takeoff = [],
   landing = [],
   zoom,
+  community,
 }: MapGenerateProps) {
   return (
     <MapView
@@ -31,6 +40,7 @@ export default function MidleMapHandler({
       takeoff={takeoff}
       landing={landing}
       zoom={zoom ?? 8}
+      community={community}
     />
   );
 }
