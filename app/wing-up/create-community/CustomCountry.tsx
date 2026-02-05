@@ -19,6 +19,8 @@ export default function CustomCountry() {
 
     const formData = new FormData(e.currentTarget);
     const name = formData.get("name") as string;
+    const nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1);
+
     const allowPM = formData.get("pm") === "on";
 
     const response = await fetch("/api/wing-up/create-country-community", {
@@ -26,7 +28,7 @@ export default function CustomCountry() {
       credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        name,
+        name: nameCapitalized,
         latitude: Number(latitude),
         longitude: Number(longitude),
         allowPM,
