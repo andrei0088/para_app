@@ -16,7 +16,20 @@ type Session = {
   };
 } | null;
 
-export default function ClientUserDesktop({ session }: { session: Session }) {
+type Admin = {
+  isAdmin: boolean;
+  notifications: number;
+};
+type ClientUserDesktopProps = {
+  session: Session;
+  url?: string;
+  admin?: Admin;
+};
+export default function ClientUserDesktop({
+  session,
+  url,
+  admin,
+}: ClientUserDesktopProps) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -55,6 +68,24 @@ export default function ClientUserDesktop({ session }: { session: Session }) {
       ref={menuRef}
       onClick={() => setOpen(!open)}
     >
+      {admin?.isAdmin && admin?.notifications > 0 && (
+        <span
+          className="
+      absolute -top-2 -right-2
+      min-w-5.5 h-5.5
+      px-2
+      flex items-center justify-center
+      rounded-full
+      bg-red-500
+      text-white text-xs font-semibold
+      shadow-md
+    "
+          aria-label={`Admin notifications: ${admin.notifications}`}
+          title="Notificări admin"
+        >
+          {admin.notifications} 🔔 !
+        </span>
+      )}
       {/* User Name */}
       <span className="text-sm font-medium text-gray-800 ">
         {session.user.name}
@@ -98,6 +129,22 @@ export default function ClientUserDesktop({ session }: { session: Session }) {
           className="absolute left-0 md:top-full top-0 w-full bg-gray-50 
                 rounded-b-sm border border-t-0 border-gray-100 z-50"
         >
+          {admin?.isAdmin && (
+            <Link
+              href={`/admin`}
+              className="block px-4 py-2 hover:bg-gray-100  text-sm text-gray-700  transition-colors duration-150"
+            >
+              Admin page
+            </Link>
+          )}
+          {url && (
+            <Link
+              href={`/profile/${url}`}
+              className="block px-4 py-2 hover:bg-gray-100  text-sm text-gray-700  transition-colors duration-150"
+            >
+              View Profile
+            </Link>
+          )}
           <Link
             href="/user/profile"
             className="block px-4 py-2 hover:bg-gray-100  text-sm text-gray-700  transition-colors duration-150"

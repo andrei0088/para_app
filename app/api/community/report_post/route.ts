@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
     {
       $push: { reportedBy: userId },
       $inc: { report: 1 },
+      $set: { notified: false },
     },
   );
 

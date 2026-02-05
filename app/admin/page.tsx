@@ -8,6 +8,8 @@ import ViewPlacesEdit from "./ViewPlacesEdit";
 import AddPlace from "./AddPlace";
 import { revalidateAllCache } from "./revalidateCache";
 import EditDetails from "./EditDetails";
+import Raported from "./Raports";
+import NewCommunity from "./NewCommunity";
 
 // Props pentru Raported
 
@@ -32,8 +34,14 @@ export default async function AdminPage() {
         </button>
       </div>
 
-      {/* Comentarii raportate */}
-      {/* <Raported comments={mappedComments} /> */}
+      <div>
+        {/* raportari */}
+        <Raported />
+      </div>
+
+      <div>
+        <NewCommunity />
+      </div>
 
       {/* Vizualizare și editare locuri */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

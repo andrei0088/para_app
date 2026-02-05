@@ -41,10 +41,15 @@ const CountryCommentSchema = new Schema(
       type: Date,
       default: null,
     },
+
+    notified: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true, // creează createdAt + updatedAt
-  }
+  },
 );
 
 export default models.CountryComment ||

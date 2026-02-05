@@ -472,6 +472,7 @@ export async function raport_comment({
   const updateData = {
     reportedBy: newReportedBy,
     report: newReportedBy.length,
+    notified: false,
   };
 
   // facem update-ul în baza de date

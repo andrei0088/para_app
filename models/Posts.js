@@ -42,6 +42,11 @@ const PostsSchema = new Schema(
       default: null,
       index: true,
     },
+
+    notified: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true, // creează createdAt + updatedAt

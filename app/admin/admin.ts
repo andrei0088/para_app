@@ -1,5 +1,11 @@
 "use server";
+import dbConnect from "@/lib/mongodb";
 import { prisma } from "@/lib/prisma";
+import CountryComment from "@/models/CountryComment";
+import LandingComment from "@/models/LandingComment";
+import Posts from "@/models/Posts";
+import RegionComment from "@/models/RegionComment";
+import TakeoffComment from "@/models/TakeoffComment";
 
 export async function get_country_region_all() {
   try {
@@ -63,7 +69,7 @@ export async function add_takeoff(
   region: number,
   latitude: number,
   longitude: number,
-  altitude: number
+  altitude: number,
 ) {
   try {
     const rez = await prisma.takeoff.create({
@@ -88,7 +94,7 @@ export async function add_landing(
   region: number,
   latitude: number,
   longitude: number,
-  altitude: number
+  altitude: number,
 ) {
   try {
     const rez = await prisma.landing.create({
@@ -106,4 +112,23 @@ export async function add_landing(
   } catch (e) {
     return { success: false, error: e };
   }
+}
+
+export async function raported() {
+  await dbConnect();
+
+  const query = {
+    report: { $ne: 0 },
+    deletedAt: null,
+  };
+
+  const [country, region, landing, takeoff, posts] = await Promise.all([
+    CountryComment.find(query),
+    RegionComment.find(query),
+    LandingComment.find(query),
+    TakeoffComment.find(query),
+    Posts.find(query),
+  ]);
+
+  return { country, region, landing, takeoff, posts };
 }
