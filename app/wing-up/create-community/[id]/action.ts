@@ -63,7 +63,7 @@ export async function createCountryCommunity(formData: FormData) {
       countryId: `c${country.id}`,
       countryName: country.name,
       latitude: region.latitude ?? 0,
-      longitude: region.latitude ?? 0,
+      longitude: region.longitude ?? 0,
     };
     const rez = await prisma.community.create({ data: community });
     if (rez) {
